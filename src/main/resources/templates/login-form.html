@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ApplGar - Авторизация для доступа к схемам Omcowner и Fiasowner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+
+</head>
+<body>
+	<div class="container d-flex align-items-center justify-content-center">
+		<form th:method="POST" th:action="@{/}" th:object="${user}">
+			<h1 class="mb-3">ApplGar</h1>
+			<div class="form-outline mb-4">
+				<label class="form-label" for="name"> Имя </label> <input
+					type="text" id="name" class="form-control" th:field="*{name}" />
+			</div>
+
+			<div class="form-outline mb-4">
+				<label class="form-label" for="passwd"> Пароль </label> <input
+					type="password" id="passwd" class="form-control"
+					th:field="*{passwd}" />
+			</div>
+
+			<button type="submit" class="btn btn-primary">Войти</button>
+
+		</form>
+	</div>
+</body>
+</html>

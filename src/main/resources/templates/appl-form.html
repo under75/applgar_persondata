@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ApplGar - Поиск заявлений</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="container">
+		<form th:method="POST" th:action="@{/appl}" id="applForm"
+			onsubmit="document.getElementById('spinner').style.display = 'inline-block';">
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th colspan="3">Поиск заявлений в ЕРЗ ТФОМС</th>
+					</tr>
+				</thead>
+				<tr>
+					<td>Дата регистрации(диапазон)*</td>
+					<td
+						th:classappend="${#fields.hasErrors('applSParam.dtReg1')} ? 'alert alert-danger' : ''"><input
+						type="date" th:field="*{applSParam.dtReg1}" id="dtReg1"
+						class="form-control" /></td>
+					<td
+						th:classappend="${#fields.hasErrors('applSParam.dtReg2')} ? 'alert alert-danger' : ''"><input
+						type="date" th:field="*{applSParam.dtReg2}" id="dtReg2"
+						class="form-control" /></td>
+				</tr>
+				<tr>
+					<td>Инспектор</td>
+					<td colspan="2"><select th:field="*{applSParam.cdInsp}"
+						class="form-control">
+							<option value=""></option>
+							<option th:each="inspector : ${inspectors}"
+								th:value="${inspector.cdInsp}" th:text="${inspector.fioInsp}"
+								th:selected="${applSParam.cdInsp}"></option>
+					</select></td>
+				</tr>
+				<tr>
+					<td>Документ,<br>удостоверяющий личность
+					</td>
+					<td>серия <input type="text" th:field="*{applSParam.serDoc}"
+						id="serDoc" class="form-control" /></td>
+					<td>номер <input type="text" th:field="*{applSParam.numDoc}"
+						id="numDoc" class="form-control" /></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Поиск" class="btn btn-primary" />
+						<input type="button" value="Очистить"
+						onclick="location.href='/appl?clear=1'" class="btn btn-secondary" />
+						<input type="button" value="В Excel"
+						th:onclick="|downloadExcel()|" class="btn btn-secondary" /></td>
+					<td>
+						<button class="btn btn-info" type="button" disabled id="spinner"
+							style="display: none;">
+							<span class="spinner-grow spinner-grow-sm" role="status"
+								aria-hidden="true"></span> Пожалуйста подождите...
+						</button>
+					</td>
+					<td><input type="button" value="Выход" class="btn btn-dark"
+						onclick="location.href='/appl?exit=1'" /></td>
+				</tr>
+			</table>
+			<br>
+			<div th:if="${applPage.content.size} > 0">
+				<table class="table table-striped table-hover">
+					<thead class="thead-dark">
+						<tr>
+							<th>Фамилия</th>
+							<th>Имя</th>
+							<th>Отчество</th>
+							<th>Дата рождения</th>
+							<th>Дата подачи</th>
+							<th>Код филиала</th>
+							<th>Инспектор</th>
+							<th>Адрес по ГАР</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="appl, iStat : ${applPage.content}"
+							class='clickable-row' th:onclick="|goToAddress(${appl.id_appl})|"
+							style="cursor: pointer;">
+							<td align="left" th:text="${appl.fam}" />
+							<td align="left" th:text="${appl.im}" />
+							<td align="left" th:text="${appl.ot}" />
+							<td align="left"
+								th:text="${#dates.format(appl.dr, 'dd.MM.yyyy')}" />
+							<td align="left"
+								th:text="${#dates.format(appl.dtAppl, 'dd.MM.yyyy')}" />
+							<td align="left" th:text="${appl.cdSmo}" />
+							<td align="left" th:text="${appl.inspector.fioInsp}" />
+							<td align="center"><span th:if="${appl.garAppl != null}">&check;</span></td>
+						</tr>
+					</tbody>
+				</table>
+				<nav aria-label="Pagination" th:if="${applPage.totalPages gt 0}">
+					<ul class="pagination justify-content-center font-weight-medium">
+						<li class="page-item"
+							th:classappend="${applPage.number eq 0} ? 'disabled'">
+							<button type="button" class="btn btn-link"
+								th:classappend="${applPage.number eq 0} ? 'disabled'"
+								th:onclick="|goToPage(${applPage.number lt 2 ? 1 : applPage.number})|">
+								<p>Пред
+								<p>
+							</button>
+						</li>
+						<li class="page-item"
+							th:classappend="${i eq applPage.number + 1} ? 'active'"
+							th:each="i : ${#numbers.sequence(applPage.totalPages > applPage.number + 10 ? applPage.number + 1 : applPage.totalPages - 10, applPage.totalPages > 10 + applPage.number ? applPage.number + 10 : applPage.totalPages, 1)}">
+							<a class="page-link" href="#" th:onclick="|goToPage(${i})|" th:text="${i}"><span class="sr-only">(current)</span></a>
+						</li>
+						<li class="page-item disabled"
+							th:if="${applPage.number + 10 < applPage.totalPages}"><a
+							class="page-link" href="#"> ... </a></li>
+						<li class="page-item"
+							th:classappend="${applPage.number + 1 eq applPage.totalPages} ? 'disabled'">
+							<button type="button" class="btn btn-link"
+								th:classappend="${applPage.number + 1 eq applPage.totalPages} ? 'disabled'"
+								th:onclick="|goToPage(${applPage.number + 2})|">
+								<p>След
+								<p>
+							</button>
+						</li>
+					</ul>
+				</nav>
+			</div>
+			<input type="hidden" id="page" name="page" /> <input type="hidden"
+				id="idAppl" name="idAppl" />
+		</form>
+	</div>
+	<script type="text/javascript">
+		document.getElementById("applForm").onkeypress = function(e) {
+			var key = e.charCode || e.keyCode || 0;
+			if (key == 13) {
+				e.preventDefault();
+			}
+		}
+		function goToPage(page) {
+			document.getElementById('spinner').style.display = 'inline-block';
+			document.getElementById("applForm").page.value = page;
+			document.getElementById("applForm").submit();
+		}
+		function goToAddress(idAppl) {
+			form = document.getElementById("applForm");
+			form.idAppl.value = idAppl;
+			form.action = "/appl/addr";
+			form.target = "_blank";
+			form.submit();
+			form.action = "/appl";
+			form.target = "_self";
+		}
+		function downloadExcel() {
+			form = document.getElementById("applForm");
+			if (form.dtReg1.value != '' && form.dtReg2.value != '')
+				form.action = "/appl/report";
+			form.submit();
+			form.action = "/appl";
+			timerId = setInterval(function() {
+				getReportStatus();
+			}, 1000);
+			document.getElementById('spinner').style.display = 'inline-block';
+		}
+		function getReportStatus() {
+			const xhttp = new XMLHttpRequest();
+			xhttp.onload = function() {
+				if (xhttp.responseText == 'done') {
+					clearTimeout(timerId);
+					document.getElementById('spinner').style.display = 'none';
+				}
+			}
+			xhttp.open("GET", window.location.href + "/report/status");
+			xhttp.send();
+		}
+	</script>
+</body>
+</html>
