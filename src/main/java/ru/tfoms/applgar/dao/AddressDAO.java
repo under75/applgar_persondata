@@ -160,9 +160,9 @@ public class AddressDAO {
 	public Integer findIdLev2Reg(Long id_appl) {
 		MapSqlParameterSource namedParams = new MapSqlParameterSource();
 		namedParams.addValue("id_appl", id_appl);
-		return jdbcTemplate.queryForObject(
+		return jdbcTemplate.queryForList(
 				"select a.id from fiasowner.as_addr_obj a inner join omcowner.address_gar g on a.objectguid = g.rguidreg where a.isactual = 1 and g.id_appl = :id_appl",
-				namedParams, Integer.class);
+				namedParams, Integer.class).stream().findAny().orElse(null);
 	}
 
 	public Integer findIdLev3Reg(Long id_appl) {

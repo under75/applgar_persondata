@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary"
+		th:fragment="navbar">
+		<span class="navbar-brand mb-0 h1">ApplGar</span>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false"
+			aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"
+					th:classappend="${#httpServletRequest.servletPath} == '/appl' ? 'active' : ''">
+					<a class="nav-link " href="/appl">Поиск заявлений<span
+						class="sr-only"
+						th:if="${#httpServletRequest.servletPath == '/appl'}">(current)</span></a>
+				</li>
+				<li class="nav-item"
+					th:classappend="${#httpServletRequest.servletPath} == '/pers' ? 'active' : ''">
+					<a class="nav-link" href="/pers">Поиск персональных данных<span
+						class="sr-only"
+						th:if="${#httpServletRequest.servletPath == '/pers'}">(current)</span></a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</body>
+</html>

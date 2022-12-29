@@ -28,6 +28,7 @@ import ru.tfoms.applgar.util.Constants;
 
 @Service
 public class ApplService {
+	private static final Integer PAGE_SIZE = 15;
 	private final ApplRepository applRepository;
 	private final ApplDAO applDAO;
 
@@ -119,7 +120,7 @@ public class ApplService {
 		Inspector inspector = new Inspector();
 		inspector.setCdInsp(cdInsp);
 		int currentPage = page.orElse(1);
-		int pageSize = size.orElse(5);
+		int pageSize = size.orElse(PAGE_SIZE);
 		boolean userHasHsmoRole = user.getRoles().stream().filter(t -> t.getRole_name().equals(Constants.HSMO_ROLE))
 				.collect(Collectors.toList()).size() > 0;
 

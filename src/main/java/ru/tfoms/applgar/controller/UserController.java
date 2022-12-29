@@ -23,7 +23,7 @@ public class UserController {
 	}
 
 	@GetMapping("/")
-	public String editUserById(Model model) {
+	public String login(Model model) {
 		model.addAttribute("user", new User());
 		return "login-form";
 	}

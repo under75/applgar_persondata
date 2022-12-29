@@ -14,9 +14,9 @@
 	<div class="container">
 		<form th:method="POST" th:action="@{/appl/addr}" id="addrForm">
 			<input type="hidden" name="idAppl" th:value="${appl.id_appl}" />
-			<table class="table">
+			<table class="table table-sm">
 				<thead class="thead-dark">
-					<tr>
+					<tr class="small">
 						<th>Фамилия</th>
 						<th>Имя</th>
 						<th>Отчество</th>
@@ -25,7 +25,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					<tr class="small">
 						<td align="left" th:text="${appl.fam}" />
 						<td align="left" th:text="${appl.im}" />
 						<td align="left" th:text="${appl.ot}" />
@@ -35,27 +35,28 @@
 					</tr>
 				</tbody>
 			</table>
-			<table class="table">
+			<table class="table table-sm">
 				<tbody>
-					<tr>
+					<tr class="small">
 						<td>Адрес регистрации в заявлении<br />
-							<div class="alert alert-secondary" role="alert"
+							<div class="alert alert-info" role="alert"
 								th:text="${okato}"></div></td>
 					</tr>
 				</tbody>
 			</table>
-			<table class="table" th:if="${appl.id_adrpr != null}">
+			<table class="table table-sm" th:if="${appl.id_adrpr != null}">
 				<thead class="thead-dark">
-					<tr>
+					<tr class="small">
 						<th colspan="2">Адрес регистрации (выбор из ГАР)</th>
 						<th colspan="2" class="w-25">Фильтр</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					<tr class="small">
 						<td class="w-25">Субъект РФ</td>
 						<td class="w-50"><select th:field="*{selAddress.idlev1Reg}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="freglev1" value=""></option>
 								<option th:each="address : ${gar.level1Reg}"
 									th:value="${address.id}"
@@ -63,13 +64,15 @@
 									th:selected="${selAddress.idlev1Reg}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev1Reg}"
-							id="freglev1" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="freglev1" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr>
+					<tr class="small">
 						<td>Город, район, населенный пункт</td>
 						<td><select th:field="*{selAddress.idlev2Reg}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="freglev2" value=""></option>
 								<option th:each="address : ${gar.level2Reg}"
 									th:value="${address.id}"
@@ -77,13 +80,15 @@
 									th:selected="${selAddress.idlev2Reg}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev2Reg}"
-							id="freglev2" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="freglev2" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr>
+					<tr class="small">
 						<td>Код ГАР с точностью до улицы</td>
 						<td><select th:field="*{selAddress.idlev3Reg}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="freglev3" value=""></option>
 								<option th:each="address : ${gar.level3Reg}"
 									th:value="${address.id}"
@@ -91,13 +96,15 @@
 									th:selected="${selAddress.idlev3Reg}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev3Reg}"
-							id="freglev3" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="freglev3" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr th:if="${gar.level31Reg != null}">
+					<tr th:if="${gar.level31Reg != null}" class="small">
 						<td></td>
 						<td><select th:field="*{selAddress.idlev31Reg}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="freglev31" value=""></option>
 								<option th:each="address : ${gar.level31Reg}"
 									th:value="${address.id}"
@@ -105,13 +112,15 @@
 									th:selected="${selAddress.idlev31Reg}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev31Reg}"
-							id="freglev31" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="freglev31" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr>
+					<tr class="small">
 						<td>Код ГАР с точностью до дома</td>
 						<td><select th:field="*{selAddress.idlev4Reg}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="freglev4" value=""></option>
 								<option th:each="address : ${gar.level4Reg}"
 									th:value="${address.id}"
@@ -119,23 +128,26 @@
 									th:selected="${selAddress.idlev4Reg}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev4Reg}"
-							id="freglev4" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="freglev4" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
 				</tbody>
 			</table>
-			<table class="table" th:if="${appl.id_adrpr != appl.id_adrreg}">
+			<table class="table table-sm"
+				th:if="${appl.id_adrpr != appl.id_adrreg}">
 				<thead class="thead-dark">
-					<tr>
+					<tr class="small">
 						<th colspan="2">Адрес проживания (выбор из ГАР)</th>
 						<th colspan="2" class="w-25">Фильтр</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					<tr class="small">
 						<td class="w-25">Субъект РФ</td>
 						<td class="w-50"><select th:field="*{selAddress.idlev1Pr}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="fprlev1" value=""></option>
 								<option th:each="address : ${gar.level1Pr}"
 									th:value="${address.id}"
@@ -143,13 +155,15 @@
 									th:selected="${selAddress.idlev1Pr}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev1Pr}"
-							id="fprlev1" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="fprlev1" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr>
+					<tr class="small">
 						<td>Город, район, населенный пункт</td>
 						<td><select th:field="*{selAddress.idlev2Pr}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="fprlev2" value=""></option>
 								<option th:each="address : ${gar.level2Pr}"
 									th:value="${address.id}"
@@ -157,13 +171,15 @@
 									th:selected="${selAddress.idlev2Pr}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev2Pr}"
-							id="fprlev2" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="fprlev2" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr>
+					<tr class="small">
 						<td>Код ГАР с точностью до улицы</td>
 						<td><select th:field="*{selAddress.idlev3Pr}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="fprlev3" value=""></option>
 								<option th:each="address : ${gar.level3Pr}"
 									th:value="${address.id}"
@@ -171,13 +187,15 @@
 									th:selected="${selAddress.idlev3Pr}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev3Pr}"
-							id="fprlev3" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="fprlev3" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr th:if="${gar.level31Pr != null}">
+					<tr th:if="${gar.level31Pr != null}" class="small">
 						<td></td>
 						<td><select th:field="*{selAddress.idlev31Pr}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="fprlev31" value=""></option>
 								<option th:each="address : ${gar.level31Pr}"
 									th:value="${address.id}"
@@ -185,13 +203,15 @@
 									th:selected="${selAddress.idlev31Pr}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev31Pr}"
-							id="fprlev31" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="fprlev31" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
-					<tr>
+					<tr class="small">
 						<td>Код ГАР с точностью до дома</td>
 						<td><select th:field="*{selAddress.idlev4Pr}"
-							class="form-control" onchange="this.form.submit()">
+							class="form-control form-control-sm"
+							onchange="this.form.submit()">
 								<option id="fprlev4" value=""></option>
 								<option th:each="address : ${gar.level4Pr}"
 									th:value="${address.id}"
@@ -199,17 +219,18 @@
 									th:selected="${selAddress.idlev4Pr}"></option>
 						</select></td>
 						<td><input type="text" th:field="*{filter.lev4Pr}"
-							id="fprlev4" class="form-control" /></td>
-						<td><input type="submit" value="Фильтр" class="btn btn-light" /></td>
+							id="fprlev4" class="form-control form-control-sm" /></td>
+						<td><input type="submit" value="Фильтр"
+							class="btn btn-sm btn-light" /></td>
 					</tr>
 				</tbody>
 			</table>
-			<table class="table">
-				<tr>
+			<table class="table table-sm">
+				<tr class="small">
 					<td colspan="3"><input type="button" value="Запись"
-						class="btn btn-success"
+						class="btn btn-sm btn-success"
 						onclick="this.form.save.value=1;this.form.submit();" /> <input
-						type="button" value="Выход" class="btn btn-secondary"
+						type="button" value="Выход" class="btn btn-sm btn-secondary"
 						onclick="window.close();" /></td>
 				</tr>
 			</table>
@@ -217,8 +238,9 @@
 				name="exit" value="0" />
 		</form>
 		<div class="alert alert-success" role="alert"
-			th:if="${saved != null && saved != 0}">Запись успешно
-			сохранена!</div>
+			th:if="${saved != null && saved != 0}">
+			<small>Запись успешно сохранена!</small>
+		</div>
 	</div>
 </body>
 </html>

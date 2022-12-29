@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.thymeleaf.util.StringUtils;
+
 @Entity
 @Table(name = "V_APPL", schema = "OMCOWNER")
 public class Appl {
@@ -144,7 +146,7 @@ public class Appl {
 	}
 
 	public String getFam() {
-		return fam;
+		return StringUtils.capitalize(fam.toLowerCase());
 	}
 
 	public void setFam(String fam) {
@@ -152,7 +154,7 @@ public class Appl {
 	}
 
 	public String getIm() {
-		return im;
+		return StringUtils.capitalize(im.toLowerCase());
 	}
 
 	public void setIm(String im) {
@@ -160,7 +162,7 @@ public class Appl {
 	}
 
 	public String getOt() {
-		return ot;
+		return StringUtils.capitalize(ot.toLowerCase());
 	}
 
 	public void setOt(String ot) {

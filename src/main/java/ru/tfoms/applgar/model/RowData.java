@@ -2,6 +2,8 @@ package ru.tfoms.applgar.model;
 
 import java.util.Date;
 
+import org.thymeleaf.util.StringUtils;
+
 public class RowData {
 	private String num;
 
@@ -118,7 +120,7 @@ public class RowData {
 	}
 
 	public String getPersonLastName() {
-		return personLastName;
+		return StringUtils.capitalize(personLastName.toLowerCase());
 	}
 
 	public void setPersonLastName(String personLastName) {
@@ -126,7 +128,7 @@ public class RowData {
 	}
 
 	public String getPersonFirstName() {
-		return personFirstName;
+		return StringUtils.capitalize(personFirstName.toLowerCase());
 	}
 
 	public void setPersonFirstName(String personFirstName) {
@@ -134,7 +136,7 @@ public class RowData {
 	}
 
 	public String getPersonPatronymic() {
-		return personPatronymic;
+		return StringUtils.capitalize(personPatronymic.toLowerCase());
 	}
 
 	public void setPersonPatronymic(String personPatronymic) {

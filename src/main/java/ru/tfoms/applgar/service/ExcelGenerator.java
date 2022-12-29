@@ -41,41 +41,46 @@ public class ExcelGenerator {
 	}
 
 	private void createBody() {
-		CellStyle bodyStyle = template.createCellStyle();
 		Font bodyFont = template.createFont();
 		bodyFont.setFontName("Calibri");
-		bodyStyle.setFont(bodyFont);
-		bodyStyle.setAlignment(HorizontalAlignment.CENTER);
+		
+		CellStyle bodyStyleAlignmentLeft = template.createCellStyle();
+		bodyStyleAlignmentLeft.setFont(bodyFont);
+		bodyStyleAlignmentLeft.setAlignment(HorizontalAlignment.LEFT);
+		
+		CellStyle bodyStyleAlignmentCenter = template.createCellStyle();
+		bodyStyleAlignmentCenter.setFont(bodyFont);
+		bodyStyleAlignmentCenter.setAlignment(HorizontalAlignment.CENTER);
 
 		int rowNum = 2;// firstDataRow
 		for (RowData rowData : data) {
 			int column = 0;
 			HSSFRow row = sheet.createRow(rowNum++);
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getNum());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getSmoCode());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getFsmoCode());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getFsmoName());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle),
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getNum());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getSmoCode());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getFsmoCode());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getFsmoName());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter),
 					new SimpleDateFormat("dd.MM.yyyy").format(rowData.getApplDate()));
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getApplType());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getApplCause());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonLastName());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonFirstName());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonPatronymic());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle),
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getApplType());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getApplCause());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getPersonLastName());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getPersonFirstName());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getPersonPatronymic());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter),
 					new SimpleDateFormat("dd.MM.yyyy").format(rowData.getPersonBirsday()));
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonGender());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonHomePhone());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonWorkPhone());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonEmail());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getRepresentativeHomePhone());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getRepresentativeWorkPhone());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getRepresentativeEmail());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getInspectorCode());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getInspectorFullName());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonAddressReg());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonAddressPr());
-			setCellValue(createCellAndFormat(row, column++, bodyStyle), rowData.getPersonPolisNumber());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getPersonGender());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getPersonHomePhone());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getPersonWorkPhone());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getPersonEmail());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getRepresentativeHomePhone());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getRepresentativeWorkPhone());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getRepresentativeEmail());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getInspectorCode());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getInspectorFullName());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getPersonAddressReg());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentLeft), rowData.getPersonAddressPr());
+			setCellValue(createCellAndFormat(row, column++, bodyStyleAlignmentCenter), rowData.getPersonPolisNumber());
 
 		}
 		for (int i = 0; i < 22; i++) {

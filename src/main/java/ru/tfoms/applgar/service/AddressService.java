@@ -139,7 +139,8 @@ public class AddressService<T> {
 			}
 		}
 		selAddress.setIdlev4Reg(addressDAO.findIdLev4Reg(id_appl));
-		selAddress.setIdlev1Reg(addressDAO.findIdByChildId(selAddress.getIdlev2Reg()));
+		if (selAddress.getIdlev2Reg() != null)
+			selAddress.setIdlev1Reg(addressDAO.findIdByChildId(selAddress.getIdlev2Reg()));
 
 		/** PR **/
 		selAddress.setIdlev2Pr(addressDAO.findIdLev2Pr(id_appl));
@@ -155,7 +156,8 @@ public class AddressService<T> {
 			}
 		}
 		selAddress.setIdlev4Pr(addressDAO.findIdLev4Pr(id_appl));
-		selAddress.setIdlev1Pr(addressDAO.findIdByChildId(selAddress.getIdlev2Pr()));
+		if (selAddress.getIdlev2Pr() != null)
+			selAddress.setIdlev1Pr(addressDAO.findIdByChildId(selAddress.getIdlev2Pr()));
 	}
 
 	public void setLevel4Reg(Gar gar, FilterWord filter, Address lev3Reg) {
