@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,8 +28,8 @@ public class User {
 	@Column(name = "u_fsmo")
 	private Integer fSmo;
 
-	@OneToMany(cascade = CascadeType.PERSIST, fetch= FetchType.EAGER, orphanRemoval = false)
-	@JoinColumn(name = "u_name",referencedColumnName="u_name")
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name = "u_name", referencedColumnName = "u_name")
 	private Collection<Role> roles = new ArrayList<>();
 
 	public User() {

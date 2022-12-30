@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,109 +21,111 @@ public class OmsPolicy {
 	@Id
 	@Column(name = "nr")
 	private Integer nr;
-	
+
 	@Column(name = "pcyser")
 	private String pcySer;
-	
+
 	@Column(name = "pcynum")
 	private String pcyNum;
-	
+
 	@Column(name = "enpcalc")
 	private String enpCalc;
-	
+
 	@Column(name = "enp")
 	private String enp;
-	
+
 	@Column(name = "pcydateb")
 	private Date pcyDateB;
-	
+
 	@Column(name = "pcydatee")
 	private Date pcyDateE;
-	
+
 	@Column(name = "pcydateh")
 	private Date pcyDateH;
-	
+
 	@Column(name = "pcydatet")
 	private Date pcyDateT;
-	
+
 	@Column(name = "pcydateenpcalc")
 	private Date pcyDateEnpCalc;
-	
+
 	@Column(name = "pcydatepr")
 	private Date pcyDatePr;
-	
+
 	@Column(name = "pcytype")
 	private String pcyType;
-	
+
 	@Column(name = "pcystatus")
 	private String pcyStatus;
-	
-	@Column(name = "okato")
-	private String okato;
-	
+
+	@OneToOne
+	@JoinColumn(name = "okato", referencedColumnName = "cod")
+	private Okato okato;
+
 	@Column(name = "dsource")
 	private String dsource;
-	
+
 	@Column(name = "dsourcetype")
 	private String dsourceType;
-	
+
 	@Column(name = "descr")
 	private String descr;
-	
+
 	@Column(name = "sex")
 	private Integer gender;
-	
+
 	@Column(name = "insurname")
 	private String insurName;
-	
+
 	@Column(name = "insurfname")
 	private String insurfName;
-	
+
 	@Column(name = "insurogrn")
 	private String insurOgrn;
-	
+
 	@Column(name = "insurfogrn")
 	private String insurfOgrn;
-	
+
 	@Column(name = "insurcode")
 	private String insurCode;
-	
+
 	@Column(name = "insurfcode")
 	private String insurfCode;
-	
+
 	@Column(name = "insurfdate")
 	private Date insurfDate;
-	
+
 	@Column(name = "tmpcertnum")
 	private String tmpcertNum;
-	
+
 	@Column(name = "tmpcertdateb")
 	private Date tmpcertDateB;
-	
+
 	@Column(name = "tmpcertdatee")
 	private Date tmpcertDateE;
-	
+
 	@Column(name = "ueknum")
 	private String uekNum;
-	
-	@Column(name = "pcycategory")
-	private String pcyCategory;
-	
+
+	@OneToOne
+	@JoinColumn(name = "pcycategory", referencedColumnName = "idkat")
+	private PersCategory pcyCategory;
+
 	@Column(name = "fam")
 	private String lastName;
-	
+
 	@Column(name = "ot")
 	private String patronymic;
-	
+
 	@Column(name = "im")
 	private String firstName;
-	
+
 	@Column(name = "dr")
 	private Date birthDay;
-	
+
 	@Column(name = "blanknum")
 	private String blankNum;
-	
+
 	public OmsPolicy() {
 	}
 
@@ -237,11 +241,11 @@ public class OmsPolicy {
 		this.pcyStatus = pcyStatus;
 	}
 
-	public String getOkato() {
+	public Okato getOkato() {
 		return okato;
 	}
 
-	public void setOkato(String okato) {
+	public void setOkato(Okato okato) {
 		this.okato = okato;
 	}
 
@@ -365,11 +369,11 @@ public class OmsPolicy {
 		this.uekNum = uekNum;
 	}
 
-	public String getPcyCategory() {
+	public PersCategory getPcyCategory() {
 		return pcyCategory;
 	}
 
-	public void setPcyCategory(String pcyCategory) {
+	public void setPcyCategory(PersCategory pcyCategory) {
 		this.pcyCategory = pcyCategory;
 	}
 
@@ -412,5 +416,5 @@ public class OmsPolicy {
 	public void setBlankNum(String blankNum) {
 		this.blankNum = blankNum;
 	}
-	
+
 }

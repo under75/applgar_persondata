@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,33 +21,34 @@ public class Person {
 	@Id
 	@Column(name = "nr")
 	private Integer nr;
-	
+
 	@Column(name = "im")
 	private String firstName;
-	
+
 	@Column(name = "fam")
 	private String lastName;
-	
+
 	@Column(name = "ot")
 	private String patronymic;
-	
+
 	@Column(name = "dr")
 	private Date birthDay;
-	
+
 	@Column(name = "sex")
 	private Integer gender;
-	
-	@Column(name = "birth_oksm")
-	private String birthOksm;
-	
+
+	@OneToOne
+	@JoinColumn(name = "birth_oksm", referencedColumnName = "cod")
+	private Oksm birthOksm;
+
 	@Column(name = "death_dt")
 	private Date deathDate;
-	
+
 	public Person() {
 	}
 
 	public Person(Long rid, Integer nr, String firstName, String lastName, String patronymic, Date birthDay,
-			Integer gender, String birthOksm, Date deathDate) {
+			Integer gender, Oksm birthOksm, Date deathDate) {
 		super();
 		this.rid = rid;
 		this.nr = nr;
@@ -114,11 +117,11 @@ public class Person {
 		this.gender = gender;
 	}
 
-	public String getBirthOksm() {
+	public Oksm getBirthOksm() {
 		return birthOksm;
 	}
 
-	public void setBirthOksm(String birthOksm) {
+	public void setBirthOksm(Oksm birthOksm) {
 		this.birthOksm = birthOksm;
 	}
 
@@ -129,6 +132,5 @@ public class Person {
 	public void setDeathDate(Date deathDate) {
 		this.deathDate = deathDate;
 	}
-	
-	
+
 }

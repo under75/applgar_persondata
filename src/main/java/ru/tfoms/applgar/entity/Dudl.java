@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -19,70 +21,74 @@ public class Dudl {
 	@Id
 	@Column(name = "nr")
 	private Integer nr;
-	
+
 	@Column(name = "dudlser")
 	private String dudlSer;
-	
+
 	@Column(name = "dudlnum")
 	private String dudlNum;
-	
+
 	@Column(name = "dudldateb")
 	private Date dudlDateB;
-	
+
 	@Column(name = "dudldatee")
 	private Date dudlDateE;
-	
-	@Column(name = "dudltype")
-	private String dudlType;
-	
+
+	@OneToOne
+	@JoinColumn(name = "dudltype", referencedColumnName = "cd_doc")
+	private DudlType dudlType;
+
 	@Column(name = "issuer")
 	private String issuer;
-	
-	@Column(name = "issueroksm")
-	private String issuerOksm;
-	
-	@Column(name = "ctznoksm")
-	private String ctznOksm;
-	
+
+	@OneToOne
+	@JoinColumn(name = "issueroksm", referencedColumnName = "cod")
+	private Oksm issuerOksm;
+
+	@OneToOne
+	@JoinColumn(name = "ctznoksm", referencedColumnName = "cod")
+	private Oksm ctznOksm;
+
 	@Column(name = "nocitizenship")
 	private Boolean noCitizenship;
-	
+
 	@Column(name = "dsource")
 	private String dsource;
-	
+
 	@Column(name = "descr")
 	private String descr;
-	
+
 	@Column(name = "fam")
 	private String lastName;
-	
+
 	@Column(name = "ot")
 	private String patronymic;
-	
+
 	@Column(name = "im")
 	private String firstName;
-	
+
 	@Column(name = "dr")
 	private Date birthDay;
-	
+
 	@Column(name = "birthplace")
 	private String birthPlace;
-	
+
 	@Column(name = "sex")
 	private Integer gender;
-	
+
 	@Column(name = "dsourcetype")
 	private String dsourceType;
-	
-	@Column(name = "birthoksm")
-	private String birthOksm;
-	
+
+	@OneToOne
+	@JoinColumn(name = "birthoksm", referencedColumnName = "cod")
+	private Oksm birthOksm;
+
 	@Column(name = "dudlstatus")
 	private String dudlStatus;
-	
+
 	@Column(name = "dost")
 	private String dost;
-	
+
 	public Dudl() {
 	}
 
@@ -134,11 +140,11 @@ public class Dudl {
 		this.dudlDateE = dudlDateE;
 	}
 
-	public String getDudlType() {
+	public DudlType getDudlType() {
 		return dudlType;
 	}
 
-	public void setDudlType(String dudlType) {
+	public void setDudlType(DudlType dudlType) {
 		this.dudlType = dudlType;
 	}
 
@@ -150,19 +156,19 @@ public class Dudl {
 		this.issuer = issuer;
 	}
 
-	public String getIssuerOksm() {
+	public Oksm getIssuerOksm() {
 		return issuerOksm;
 	}
 
-	public void setIssuerOksm(String issuerOksm) {
+	public void setIssuerOksm(Oksm issuerOksm) {
 		this.issuerOksm = issuerOksm;
 	}
 
-	public String getCtznOksm() {
+	public Oksm getCtznOksm() {
 		return ctznOksm;
 	}
 
-	public void setCtznOksm(String ctznOksm) {
+	public void setCtznOksm(Oksm ctznOksm) {
 		this.ctznOksm = ctznOksm;
 	}
 
@@ -246,11 +252,11 @@ public class Dudl {
 		this.dsourceType = dsourceType;
 	}
 
-	public String getBirthOksm() {
+	public Oksm getBirthOksm() {
 		return birthOksm;
 	}
 
-	public void setBirthOksm(String birthOksm) {
+	public void setBirthOksm(Oksm birthOksm) {
 		this.birthOksm = birthOksm;
 	}
 
@@ -269,5 +275,5 @@ public class Dudl {
 	public void setDost(String dost) {
 		this.dost = dost;
 	}
-	
+
 }
