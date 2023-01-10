@@ -35,7 +35,7 @@ public class Dudl {
 	private Date dudlDateE;
 
 	@OneToOne
-	@JoinColumn(name = "dudltype", referencedColumnName = "cd_doc")
+	@JoinColumn(name = "dudltype", referencedColumnName = "cd_dok")
 	private DudlType dudlType;
 
 	@Column(name = "issuer")

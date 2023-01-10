@@ -10,10 +10,10 @@ import javax.persistence.Table;
 public class DudlType {
 	
 	@Id
-	@Column(name = "cd_doc")
+	@Column(name = "cd_dok")
 	private Integer docCode;
 	
-	@Column(name = "nm_doc")
+	@Column(name = "nm_dok")
 	private String docName;
 	
 	@Column(name = "rus")

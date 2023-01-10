@@ -4,17 +4,27 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.thymeleaf.util.StringUtils;
 
 @Entity
 @Table(name = "mpi_person_data", schema = "OMCOWNER")
 public class PersonData {
 	@Id
 	@Column(name = "rid")
-	private String rid;
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_sequence")
+	@SequenceGenerator(name = "id_sequence", sequenceName = "OMCOWNER.MPI_SEQ", allocationSize = 1)
+	private Long rid;
+
+	@Column(name = "hist")
+	private Boolean historical;
 
 	@Column(name = "oip")
 	private String oip;
@@ -32,7 +42,7 @@ public class PersonData {
 	private String dudlNum;
 
 	@OneToOne
-	@JoinColumn(name = "dudltype", referencedColumnName = "cd_doc")
+	@JoinColumn(name = "dudltype", referencedColumnName = "cd_dok")
 	private DudlType dudlType;
 
 	@Column(name = "snils")
@@ -40,31 +50,51 @@ public class PersonData {
 
 	@Column(name = "dr")
 	private Date birthDay;
-	
+
 	@Column(name = "fam")
 	private String lastName;
-	
+
 	@Column(name = "im")
 	private String firstName;
-	
+
 	@Column(name = "ot")
 	private String patronymic;
-	
+
 	@Column(name = "dt")
 	private Date dt;
-	
+
+	@Column(name = "dtfrom")
+	private Date dtFrom;
+
+	@Column(name = "dtto")
+	private Date dtTo;
+
 	@Column(name = "showx")
 	private String show;
-	
+
+	@Column(name = "usr")
+	private String user;
+
+	@Column(name = "dt_ins")
+	private Date dtIns;
+
 	public PersonData() {
 	}
 
-	public String getRid() {
+	public Long getRid() {
 		return rid;
 	}
 
-	public void setRid(String rid) {
+	public void setRid(Long rid) {
 		this.rid = rid;
+	}
+
+	public Boolean getHistorical() {
+		return historical;
+	}
+
+	public void setHistorical(Boolean historical) {
+		this.historical = historical;
 	}
 
 	public String getOip() {
@@ -132,7 +162,7 @@ public class PersonData {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return StringUtils.capitalize(lastName != null ? lastName.toLowerCase() : "");
 	}
 
 	public void setLastName(String lastName) {
@@ -140,7 +170,7 @@ public class PersonData {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return StringUtils.capitalize(firstName != null ? firstName.toLowerCase() : "");
 	}
 
 	public void setFirstName(String firstName) {
@@ -148,7 +178,7 @@ public class PersonData {
 	}
 
 	public String getPatronymic() {
-		return patronymic;
+		return StringUtils.capitalize(patronymic != null ? patronymic.toLowerCase() : "");
 	}
 
 	public void setPatronymic(String patronymic) {
@@ -163,6 +193,22 @@ public class PersonData {
 		this.dt = dt;
 	}
 
+	public Date getDtFrom() {
+		return dtFrom;
+	}
+
+	public void setDtFrom(Date dtFrom) {
+		this.dtFrom = dtFrom;
+	}
+
+	public Date getDtTo() {
+		return dtTo;
+	}
+
+	public void setDtTo(Date dtTo) {
+		this.dtTo = dtTo;
+	}
+
 	public String getShow() {
 		return show;
 	}
@@ -170,6 +216,20 @@ public class PersonData {
 	public void setShow(String show) {
 		this.show = show;
 	}
-	
-	
+
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public Date getDtIns() {
+		return dtIns;
+	}
+
+	public void setDtIns(Date dtIns) {
+		this.dtIns = dtIns;
+	}
 }

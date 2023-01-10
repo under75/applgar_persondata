@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import ru.tfoms.applgar.interceptor.AuthorizedUserFilter;
 
 @Configuration
-public class authFilterConfig {
+public class AuthFilterConfig {
 	@Bean
 	public FilterRegistrationBean<Filter> authFilterRegistration() {
 

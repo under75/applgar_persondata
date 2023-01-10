@@ -13,6 +13,182 @@
 	<div class="container">
 		<div th:insert="menu :: navbar"></div>
 		<br />
+		<form th:method="POST" th:action="@{/pers}" id="persForm">
+			<table class="table table-sm">
+				<tr>
+					<td class="small">Данные,<br>идентифицирующие полис
+					</td>
+					<td class="small" colspan="3">тип<select
+						th:field="*{persSParam.policyType}"
+						class="form-control form-control-sm">
+							<option value=""></option>
+							<option th:each="policyTypeEntry : ${policyTypes.entrySet}"
+								th:value="${policyTypeEntry.key}"
+								th:text="${policyTypeEntry.value}"
+								th:selected="${persSParam.policyType}"></option>
+					</select></td>
+					<td class="small"></td>
+					<td class="small">номер<input type="text"
+						th:field="*{persSParam.policyNum}" id="policyNum"
+						class="form-control form-control-sm" /></td>
+				</tr>
+				<tr>
+					<td class="small">Документ,<br>удостоверяющий личность
+					</td>
+					<td class="small" colspan="3"
+						th:classappend="${#fields.hasErrors('persSParam.dudlType')} ? 'alert alert-danger' : ''">тип<select
+						th:field="*{persSParam.dudlType}"
+						class="form-control form-control-sm">
+							<option value=""></option>
+							<option th:each="dudlType : ${dudlTypes}"
+								th:value="${dudlType.docCode}" th:text="${dudlType.docName}"
+								th:selected="${persSParam.dudlType}"></option>
+					</select></td>
+					<td class="small">серия <input type="text"
+						th:field="*{persSParam.dudlSer}" id="dudlSer"
+						class="form-control form-control-sm" /></td>
+					<td class="small"
+						th:classappend="${#fields.hasErrors('persSParam.dudlNum')} ? 'alert alert-danger' : ''">номер
+						<input type="text" th:field="*{persSParam.dudlNum}" id="dudlNum"
+						class="form-control form-control-sm" />
+					</td>
+				</tr>
+				<tr>
+					<td class="small">ФИО, СНИЛС,<br />Дата рождения
+					</td>
+					<td class="small">фамилия<input type="text"
+						th:field="*{persSParam.lastName}" id="lastName"
+						class="form-control form-control-sm" /></td>
+					<td class="small">имя <input type="text"
+						th:field="*{persSParam.firstName}" id="firstName"
+						class="form-control form-control-sm" />
+					</td>
+					<td class="small">отчество<input type="text"
+						th:field="*{persSParam.patronymic}" id="patronymic"
+						class="form-control form-control-sm" /></td>
+					<td class="small">СНИЛС<input type="text"
+						th:field="*{persSParam.snils}" id="snils"
+						class="form-control form-control-sm" /></td>
+					<td class="small">дата рождения<input type="date"
+						th:field="*{persSParam.birthDay}" id="birthDay"
+						class="form-control form-control-sm" /></td>
+				</tr>
+				<tr>
+					<td class="small">Дата, на которую выдать состояние</td>
+					<td class="small"><input th:onchange="|changeAccess(false)|"
+						class="form-check-input" type="radio" name="historical"
+						id="historicalFalse" value="0" th:field="*{persSParam.historical}">
+						<label class="form-check-label" for="historicalFalse">
+							актуально на дату </label><br /> <input
+						th:onchange="|changeAccess(true)|" class="form-check-input"
+						type="radio" name="historical" id="historicalTrue" value="1"
+						th:field="*{persSParam.historical}"> <label
+						class="form-check-label" for="historicalTrue"> искать в
+							истории </label></td>
+					<td class="small">состояние на дату<input type="date"
+						th:field="*{persSParam.dt}" id="dt"
+						class="form-control form-control-sm"
+						th:disabled="${persSParam.historical}" /></td>
+					<td class="small">начало периода<input type="date"
+						th:field="*{persSParam.dtFrom}" id="dtFrom"
+						class="form-control form-control-sm"
+						th:disabled="${!persSParam.historical}" />
+					</td>
+					<td class="small">конец периода<input type="date"
+						th:field="*{persSParam.dtTo}" id="dtTo"
+						class="form-control form-control-sm"
+						th:disabled="${!persSParam.historical}" />
+					</td>
+					<td class="small"></td>
+				</tr>
+				<tr>
+					<td class="small">Что нужно получить</td>
+					<td class="small"><select th:field="*{persSParam.show}"
+						class="form-control form-control-sm">
+							<option value="">Всё</option>
+							<option th:each="resultTypeEntry : ${resultTypes.entrySet}"
+								th:value="${resultTypeEntry.key}"
+								th:text="${resultTypeEntry.value}"
+								th:selected="${persSParam.show}"></option>
+					</select></td>
+					<td colspan="4"></td>
+				</tr>
+				<tr>
+					<td colspan="6"><input type="submit" value="Поиск"
+						class="btn btn-sm btn-primary" name="saveRequest" />&nbsp;<input
+						type="button" value="Очистить" onclick="location.href='/pers'"
+						class="btn btn-sm btn-secondary" /></td>
+				</tr>
+			</table>
+		</form>
+		<br>
+		<div th:if="${persDataPage.content.size} > 0">
+			<table class="table table-sm table-striped table-hover">
+				<thead class="thead-dark">
+					<tr class="small">
+						<th>Дата</th>
+						<th>Тип полиса</th>
+						<th>Номер полиса</th>
+						<th>Тип ДУДЛ</th>
+						<th>Серия ДУДЛ</th>
+						<th>Номер ДУДЛ</th>
+						<th>СНИЛС</th>
+						<th>Дата рождения</th>
+						<th>Фамилия</th>
+						<th>Имя</th>
+						<th>Отчество</th>
+						<th>На дату</th>
+						<th>C даты</th>
+						<th>По дату</th>
+						<th>Получить</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="persData, iStat : ${persDataPage.content}"
+						class='clickable-row small' th:onclick="" style="cursor: pointer;">
+						<td th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy')}" />
+						<td th:text="${policyTypes.get(persData.pcyType)}" />
+						<td th:text="${persData.pcy}" />
+<!-- 						<td th:text="${persData.dudlType.docName}" /> -->
+						<td></td>
+						<td th:text="${persData.dudlSer}" />
+						<td th:text="${persData.dudlNum}" />
+						<td th:text="${persData.snils}" />
+						<td th:text="${#dates.format(persData.birthDay, 'dd.MM.yyyy')}" />
+						<td th:text="${persData.lastName}" />
+						<td th:text="${persData.firstName}" />
+						<td th:text="${persData.patronymic}" />
+						<td th:text="${#dates.format(persData.dt, 'dd.MM.yyyy')}" />
+						<td th:text="${#dates.format(persData.dtFrom, 'dd.MM.yyyy')}" />
+						<td th:text="${#dates.format(persData.dtTo, 'dd.MM.yyyy')}" />
+						<td th:text="${resultTypes.get(persData.show)}" />
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
+	<script type="text/javascript">
+		document.getElementById("persForm").onkeypress = function(e) {
+			var key = e.charCode || e.keyCode || 0;
+			if (key == 13) {
+				e.preventDefault();
+			}
+		}
+		function changeAccess(historical) {
+			form = document.getElementById("persForm");
+			if (historical) {
+				form.dt.setAttribute("disabled", "disabled");
+				form.dt.value = "";
+				form.dtFrom.removeAttribute("disabled");
+				form.dtTo.removeAttribute("disabled");
+			} else {
+				form.dt.removeAttribute("disabled");
+				form.dtFrom.setAttribute("disabled", "disabled");
+				form.dtFrom.value = "";
+				form.dtTo.setAttribute("disabled", "disabled");
+				form.dtTo.value = "";
+			}
+		}
+	</script>
 </body>
 </html>
