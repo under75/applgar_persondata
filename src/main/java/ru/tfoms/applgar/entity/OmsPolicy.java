@@ -62,8 +62,9 @@ public class OmsPolicy {
 	@JoinColumn(name = "okato", referencedColumnName = "cod")
 	private Okato okato;
 
-	@Column(name = "dsource")
-	private String dsource;
+	@OneToOne
+	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	private Okato dsource;
 
 	@Column(name = "dsourcetype")
 	private String dsourceType;
@@ -249,11 +250,11 @@ public class OmsPolicy {
 		this.okato = okato;
 	}
 
-	public String getDsource() {
+	public Okato getDsource() {
 		return dsource;
 	}
 
-	public void setDsource(String dsource) {
+	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
 	}
 

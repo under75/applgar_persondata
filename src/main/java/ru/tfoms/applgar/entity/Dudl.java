@@ -42,18 +42,19 @@ public class Dudl {
 	private String issuer;
 
 	@OneToOne
-	@JoinColumn(name = "issueroksm", referencedColumnName = "cod")
+	@JoinColumn(name = "issueroksm", referencedColumnName = "alfa3")
 	private Oksm issuerOksm;
 
 	@OneToOne
-	@JoinColumn(name = "ctznoksm", referencedColumnName = "cod")
+	@JoinColumn(name = "ctznoksm", referencedColumnName = "alfa3")
 	private Oksm ctznOksm;
 
 	@Column(name = "nocitizenship")
 	private Boolean noCitizenship;
 
-	@Column(name = "dsource")
-	private String dsource;
+	@OneToOne
+	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	private Okato dsource;
 
 	@Column(name = "descr")
 	private String descr;
@@ -180,11 +181,11 @@ public class Dudl {
 		this.noCitizenship = noCitizenship;
 	}
 
-	public String getDsource() {
+	public Okato getDsource() {
 		return dsource;
 	}
 
-	public void setDsource(String dsource) {
+	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
 	}
 

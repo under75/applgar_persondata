@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ApplGar - Ошибки, препятствующие получению персональных
+	данных</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="container">
+	<br />
+		<div class="card">
+			<div class="card-header">Ошибки, препятствующие получению
+				персональных данных</div>
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>Код</th>
+							<th>Текст сообщения</th>
+							<th>Поле с ошибкой</th>
+							<th>Значение поля</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="error : ${errors}" class='small'>
+							<td th:text="${error.code}" />
+							<td th:text="${error.message}" />
+							<td th:text="${error.tag}" />
+							<td th:text="${error.value}" />
+						</tr>
+					</tbody>
+				</table>
+				<input type="button" value="Выход"
+								class="btn btn-sm btn-secondary" onclick="window.close();" />
+			</div>
+		</div>
+	</div>
+	<!-- 	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script> -->
+	<!-- 	<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script> -->
+	<!-- 	<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script> -->
+</body>

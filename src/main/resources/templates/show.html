@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div class="card" th:fragment="Person">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).Person)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapsePerson" aria-expanded="false"
+				aria-controls="collapsePerson"></button>
+		</div>
+		<div id="collapsePerson" class="collapse" aria-labelledby="headingOne"
+			data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>Фамилия</th>
+							<th>Имя</th>
+							<th>Отчество</th>
+							<th>Дата рождения</th>
+							<th>Пол</th>
+							<th>Страна рождения</th>
+							<th>Дата смерти</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="person : ${persons}" class='small'>
+							<td th:text="${person.lastName}" />
+							<td th:text="${person.firstName}" />
+							<td th:text="${person.patronymic}" />
+							<td align="center"
+								th:text="${#dates.format(person.birthDay, 'dd.MM.yyyy')}" />
+							<td align="center" th:text="${person.gender}" />
+							<td
+								th:text="${person.birthOksm != null ? person.birthOksm.name2 : ''}" />
+							<td align="center"
+								th:text="${#dates.format(person.deathDate, 'dd.MM.yyyy')}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card" th:fragment="OmsPolicy">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).OmsPolicy)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapsePolicy" aria-expanded="false"
+				aria-controls="collapsePolicy"></button>
+		</div>
+		<div id="collapsePolicy" class="collapse" aria-labelledby="headingOne"
+			data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>ЕНП</th>
+							<th>Дата начала действия полиса</th>
+							<th>Тип полиса</th>
+							<th>Статус полиса</th>
+							<th>ОКАТО</th>
+							<th>Источник данных</th>
+							<th>Вид источника</th>
+							<th>Фактическая СМО</th>
+							<th>ОГРН факт. СМО</th>
+							<th>Код факт. СМО</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="policy : ${policies}" class='small'>
+							<td th:text="${policy.enp}" />
+							<td align="center"
+								th:text="${#dates.format(policy.pcyDateB, 'dd.MM.yyyy')}" />
+							<td th:text="${policy.pcyType}" />
+							<td th:text="${policy.pcyStatus}" />
+							<td th:text="${policy.okato.title}" />
+							<td th:text="${policy.dsource != null ? policy.dsource.title : ''}" />
+							<td th:text="${policy.dsourceType}" />
+							<td th:text="${policy.insurfName}" />
+							<td th:text="${policy.insurfOgrn}" />
+							<td th:text="${policy.insurfCode}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card" th:fragment="Dudl">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).Dudl)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapseDudl" aria-expanded="false"
+				aria-controls="collapseDudl"></button>
+		</div>
+		<div id="collapseDudl" class="collapse" aria-labelledby="headingOne"
+			data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>№ ДУДЛ</th>
+							<th>Дата начала действия ДУДЛ</th>
+							<th>Тип ДУДЛ</th>
+							<th>Признак отсутствия гражданства</th>
+							<th>Источник данных </th>
+							<th>Вид источника</th>
+							<th>Статус ДУДЛ</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="dudl : ${dudls}" class='small'>
+							<td th:text="${dudl.dudlNum}" />
+							<td align="center"
+								th:text="${#dates.format(dudl.dudlDateB, 'dd.MM.yyyy')}" />
+							<td th:text="${dudl.dudlType.docName}" />
+							<td align="center" th:text="${dudl.noCitizenship}" />
+							<td th:text="${dudl.dsource != null ? dudl.dsource.title : ''}" />
+							<td th:text="${dudl.dsourceType}" />
+							<td th:text="${dudl.dudlStatus}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

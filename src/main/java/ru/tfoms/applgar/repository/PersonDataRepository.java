@@ -8,6 +8,6 @@ import ru.tfoms.applgar.entity.PersonData;
 
 public interface PersonDataRepository extends JpaRepository<PersonData, Long> {
 
-	Page<PersonData> findByUserOrderByDtIns(String name, Pageable pageable);
+	Page<PersonData> findByUserOrderByDtInsDesc(String name, Pageable pageable);
 
 }

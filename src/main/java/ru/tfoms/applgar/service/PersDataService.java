@@ -10,6 +10,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import ru.tfoms.applgar.entity.Attach;
 import ru.tfoms.applgar.entity.Contact;
@@ -37,7 +39,7 @@ import ru.tfoms.applgar.repository.SocialStatusRepository;
 @Service
 public class PersDataService {
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final Integer PAGE_SIZE = 15;
+	private static final Integer PAGE_SIZE = 10;
 
 	private final PersDataErrorRepository errorRepository;
 	private final PersonRepository personRepository;
@@ -50,16 +52,20 @@ public class PersDataService {
 	private final DudlTypeRepository dudlTypeRepository;
 	private final PersonDataRepository personDataRepository;
 
-	public final static Map<String, String> resultType = new HashMap<>();
+	public enum Show {
+		Person, OmsPolicy, Dudl, Address, Attach, Contact, Snils, SocialStatus, All
+	}
+
+	public final static Map<Show, String> resultType = new HashMap<>();
 	{
-		resultType.put("PERSON", "Информация о персоне");
-		resultType.put("OMS_POLICY", "Информация о полисе");
-		resultType.put("DUDL", "ДУДЛ");
-		resultType.put("ADDRESS", "Адрес");
-		resultType.put("ATTACH", "Прикрепление");
-		resultType.put("CONTACT", "Данные контакта");
-		resultType.put("SNILS", "Данные СНИЛС");
-		resultType.put("SOCIAL_STATUS", "Данные соц. статуса");
+		resultType.put(Show.Person, "Информация о персоне");
+		resultType.put(Show.OmsPolicy, "Информация о полисе");
+		resultType.put(Show.Dudl, "ДУДЛ");
+		resultType.put(Show.Address, "Адрес");
+		resultType.put(Show.Attach, "Прикрепление");
+		resultType.put(Show.Contact, "Данные контакта");
+		resultType.put(Show.Snils, "Данные СНИЛС");
+		resultType.put(Show.SocialStatus, "Данные соц. статуса");
 	}
 
 	public final static Map<String, String> policyType = new HashMap<>();
@@ -132,6 +138,7 @@ public class PersDataService {
 
 	public PersonData saveRequest(PersSearchParameters persSParam, User user) throws ParseException {
 		PersonData personData = new PersonData();
+		personData.setOip(persSParam.getOip());
 		personData.setPcyType(persSParam.getPolicyType());
 		personData.setPcy(persSParam.getPolicyNum());
 		if (persSParam.getDudlType() != null)
@@ -161,6 +168,37 @@ public class PersDataService {
 
 	public Page<PersonData> getPersDataPage(User user, Optional<Integer> page) {
 		int currentPage = page.orElse(1);
-		return personDataRepository.findByUserOrderByDtIns(user.getName(), PageRequest.of(currentPage - 1, PAGE_SIZE));
+		return personDataRepository.findByUserOrderByDtInsDesc(user.getName(),
+				PageRequest.of(currentPage - 1, PAGE_SIZE));
+	}
+
+	public void validate(PersSearchParameters persSParam, BindingResult bindingResult) {
+		if (persSParam.getOip().trim().isEmpty() && persSParam.getPolicyNum().trim().isEmpty()
+				&& persSParam.getDudlNum().trim().isEmpty() && persSParam.getSnils().trim().isEmpty()) {
+			bindingResult.addError(new ObjectError("globalError",
+					"Для успешного поиска, необходимо ввести обезличенный идентификатор персоны(ОИП) либо данные одного из документов(Полис, ДУдЛ, СНИЛС)"));
+		} else if (persSParam.getDudlType() != null && persSParam.getDudlNum().trim().isEmpty()) {
+			bindingResult.rejectValue("dudlNum", "");
+		} else if (!persSParam.getDudlNum().trim().isEmpty() && persSParam.getDudlType() == null) {
+			bindingResult.rejectValue("dudlType", "");
+		}
+	}
+
+	public PersonData getPersonDataByRid(Long rid) {
+		return personDataRepository.getReferenceById(rid);
+	}
+
+	public boolean isRequestValid(PersonData personData, String show) {
+		Boolean isRequestValid = true;
+		if (personData == null) {
+			isRequestValid = false;
+		}
+		try {
+			Show.valueOf(show);
+		} catch (Exception e) {
+			isRequestValid = false;
+		}
+		
+		return isRequestValid;
 	}
 }

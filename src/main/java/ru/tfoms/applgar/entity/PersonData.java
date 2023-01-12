@@ -77,6 +77,12 @@ public class PersonData {
 
 	@Column(name = "dt_ins")
 	private Date dtIns;
+	
+	@Column(name = "err")
+	private Boolean hasError;
+	
+	@Column(name = "oip_resp")
+	private String oipRes;
 
 	public PersonData() {
 	}
@@ -232,4 +238,21 @@ public class PersonData {
 	public void setDtIns(Date dtIns) {
 		this.dtIns = dtIns;
 	}
+
+	public Boolean getHasError() {
+		return hasError;
+	}
+
+	public void setHasError(Boolean hasError) {
+		this.hasError = hasError;
+	}
+
+	public String getOipRes() {
+		return oipRes;
+	}
+
+	public void setOipRes(String oipRes) {
+		this.oipRes = oipRes;
+	}
+
 }

@@ -1,6 +1,7 @@
 package ru.tfoms.applgar.model;
 
 public class PersSearchParameters {
+	private String oip;
 	private String policyType;
 	private String policyNum;
 	private Integer dudlType;
@@ -16,6 +17,14 @@ public class PersSearchParameters {
 	private String dtFrom;
 	private String dtTo;
 	private String show;
+
+	public String getOip() {
+		return oip;
+	}
+
+	public void setOip(String oip) {
+		this.oip = oip;
+	}
 
 	public String getPolicyType() {
 		return policyType;

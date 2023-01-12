@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ApplGar - Данные о персоне</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+
+</head>
+<body>
+	<div class="container">
+		<h4>Персональные данные</h4>
+		<div id="accordion">
+			<div class="card">
+				<div class="card-header">
+					<button class="btn btn-link" data-toggle="collapse"
+						data-target="#collapseOip" aria-expanded="false"
+						aria-controls="collapseOip">Обезличенный идентификатор
+						персоны</button>
+				</div>
+				<div id="collapseOip" class="collapse" aria-labelledby="headingOne"
+					data-parent="#accordion">
+					<div class="card-body">
+						<p class="card-text" th:text="${personData.oipRes}"></p>
+					</div>
+				</div>
+			</div>
+			<div
+				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Person || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:insert="show :: Person"></div>
+			<div
+				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).OmsPolicy || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:insert="show :: OmsPolicy"></div>
+			<div
+				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Dudl || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:insert="show :: Dudl"></div>
+		</div>
+	</div>
+	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+</body>
