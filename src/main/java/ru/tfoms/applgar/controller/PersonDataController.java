@@ -22,8 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import ru.tfoms.applgar.entity.Attach;
 import ru.tfoms.applgar.entity.Dudl;
 import ru.tfoms.applgar.entity.OmsPolicy;
+import ru.tfoms.applgar.entity.PersAddress;
 import ru.tfoms.applgar.entity.PersDataError;
 import ru.tfoms.applgar.entity.Person;
 import ru.tfoms.applgar.entity.PersonData;
@@ -96,6 +98,8 @@ public class PersonDataController {
 		Collection<Person> persons = service.getPersonsByRid(rid);
 		Collection<OmsPolicy> policies = service.getPoliciesByRid(rid);
 		Collection<Dudl> dudls  = service.getDudlsByRid(rid);
+		Collection<PersAddress> addresses  = service.getAddressesByRid(rid);
+		Collection<Attach> attachies  = service.getAttachiesByRid(rid);
 		
 		model.addAttribute("show", Show.valueOf(show));
 		model.addAttribute("resultTypes", resultType);
@@ -103,8 +107,10 @@ public class PersonDataController {
 		model.addAttribute("persons", persons);
 		model.addAttribute("policies", policies);
 		model.addAttribute("dudls", dudls);
+		model.addAttribute("addresses", addresses);
+		model.addAttribute("attachies", attachies);
 
 		return "pers-res";
 	}
-	
+
 }

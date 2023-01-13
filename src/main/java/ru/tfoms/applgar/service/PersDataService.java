@@ -18,6 +18,7 @@ import ru.tfoms.applgar.entity.Contact;
 import ru.tfoms.applgar.entity.Dudl;
 import ru.tfoms.applgar.entity.DudlType;
 import ru.tfoms.applgar.entity.OmsPolicy;
+import ru.tfoms.applgar.entity.PersAddress;
 import ru.tfoms.applgar.entity.PersDataError;
 import ru.tfoms.applgar.entity.Person;
 import ru.tfoms.applgar.entity.PersonData;
@@ -30,6 +31,7 @@ import ru.tfoms.applgar.repository.ContactRepository;
 import ru.tfoms.applgar.repository.DudlRepository;
 import ru.tfoms.applgar.repository.DudlTypeRepository;
 import ru.tfoms.applgar.repository.OmsPolicyRepository;
+import ru.tfoms.applgar.repository.PersAddressRepository;
 import ru.tfoms.applgar.repository.PersDataErrorRepository;
 import ru.tfoms.applgar.repository.PersonDataRepository;
 import ru.tfoms.applgar.repository.PersonRepository;
@@ -51,6 +53,7 @@ public class PersDataService {
 	private final SocialStatusRepository socialStatusRepository;
 	private final DudlTypeRepository dudlTypeRepository;
 	private final PersonDataRepository personDataRepository;
+	private final PersAddressRepository addressRepository;
 
 	public enum Show {
 		Person, OmsPolicy, Dudl, Address, Attach, Contact, Snils, SocialStatus, All
@@ -85,7 +88,7 @@ public class PersDataService {
 			OmsPolicyRepository policyRepository, DudlRepository dudlRepository, AttachRepository attachRepository,
 			ContactRepository contactRepository, SnilsRepository snilsRepository,
 			SocialStatusRepository socialStatusRepository, DudlTypeRepository dudlTypeRepository,
-			PersonDataRepository personDataRepository) {
+			PersonDataRepository personDataRepository, PersAddressRepository addressRepository) {
 		super();
 		this.errorRepository = errorRepository;
 		this.personRepository = personRepository;
@@ -97,6 +100,7 @@ public class PersDataService {
 		this.socialStatusRepository = socialStatusRepository;
 		this.dudlTypeRepository = dudlTypeRepository;
 		this.personDataRepository = personDataRepository;
+		this.addressRepository = addressRepository;
 
 	}
 
@@ -116,7 +120,7 @@ public class PersDataService {
 		return dudlRepository.getByRid(rid);
 	}
 
-	public Collection<Attach> getAttachesByRid(Long rid) {
+	public Collection<Attach> getAttachiesByRid(Long rid) {
 		return attachRepository.getByRid(rid);
 	}
 
@@ -200,5 +204,9 @@ public class PersDataService {
 		}
 		
 		return isRequestValid;
+	}
+
+	public Collection<PersAddress> getAddressesByRid(Long rid) {
+		return addressRepository.getByRid(rid);
 	}
 }

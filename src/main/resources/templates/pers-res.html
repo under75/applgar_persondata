@@ -11,7 +11,7 @@
 
 </head>
 <body>
-	<div class="container">
+	<div class="container-fluid">
 		<h4>Персональные данные</h4>
 		<div id="accordion">
 			<div class="card">
@@ -37,6 +37,12 @@
 			<div
 				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Dudl || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
 				th:insert="show :: Dudl"></div>
+			<div
+				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Address || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:insert="show :: Address"></div>
+			<div
+				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Attach || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:insert="show :: Attach"></div>
 		</div>
 	</div>
 	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>

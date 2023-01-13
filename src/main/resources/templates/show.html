@@ -76,7 +76,8 @@
 							<td th:text="${policy.pcyType}" />
 							<td th:text="${policy.pcyStatus}" />
 							<td th:text="${policy.okato.title}" />
-							<td th:text="${policy.dsource != null ? policy.dsource.title : ''}" />
+							<td
+								th:text="${policy.dsource != null ? policy.dsource.title : ''}" />
 							<td th:text="${policy.dsourceType}" />
 							<td th:text="${policy.insurfName}" />
 							<td th:text="${policy.insurfOgrn}" />
@@ -105,7 +106,7 @@
 							<th>Дата начала действия ДУДЛ</th>
 							<th>Тип ДУДЛ</th>
 							<th>Признак отсутствия гражданства</th>
-							<th>Источник данных </th>
+							<th>Источник данных</th>
 							<th>Вид источника</th>
 							<th>Статус ДУДЛ</th>
 						</tr>
@@ -120,6 +121,115 @@
 							<td th:text="${dudl.dsource != null ? dudl.dsource.title : ''}" />
 							<td th:text="${dudl.dsourceType}" />
 							<td th:text="${dudl.dudlStatus}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card" th:fragment="Address">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).Address)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapseAddress" aria-expanded="false"
+				aria-controls="collapseAddress"></button>
+		</div>
+		<div id="collapseAddress" class="collapse"
+			aria-labelledby="headingOne" data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>ОКАТО</th>
+							<th>ОКСМ</th>
+							<th>Улица</th>
+							<th>Дом</th>
+							<th>Адрес</th>
+							<th>Индекс</th>
+							<th>Квартира</th>
+							<th>Вид источника</th>
+							<th>Источник данных</th>
+							<th>Тип адреса</th>
+							<th>Начало действия</th>
+							<th>Конец действия</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="address : ${addresses}" class='small'>
+							<td th:text="${address.okato != null ? address.okato.title : ''}" />
+							<td th:text="${address.oksm != null ? address.oksm.name2 : ''}" />
+							<td
+								th:text="${address.aoguid != null ? address.aoguid.name : ''}" />
+							<td th:text="${address.addressText}" />
+							<td th:text="${address.mailIndex}" />
+							<td th:text="${address.appNum}" />
+							<td th:text="${address.dsourceType}" />
+							<td
+								th:text="${address.dsource != null ? address.dsource.title : ''}" />
+							<td th:text="${address.addressType}" />
+							<td
+								th:text="${#dates.format(address.addressDateB, 'dd.MM.yyyy')}" />
+							<td
+								th:text="${#dates.format(address.addressDateE, 'dd.MM.yyyy')}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card" th:fragment="Attach">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).Attach)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapseAttach" aria-expanded="false"
+				aria-controls="collapseAttach"></button>
+		</div>
+		<div id="collapseAttach" class="collapse" aria-labelledby="headingOne"
+			data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>Код типа участка</th>
+							<th>ИД участка МО</th>
+							<th>Способ прикрепления</th>
+							<th>Метка прикрепления</th>
+							<th>Дата начала прикрепления</th>
+							<th>Дата окончания прикрепления</th>
+							<th>Идентификатор МО</th>
+							<th>Код МО в реестре ОМС</th>
+							<th>Идентификатор филиала МО</th>
+							<th>СНИЛС</th>
+							<th>ИД участкового врача МО</th>
+							<th>Фактическая дата прикрепления к врачу</th>
+							<th>Описание</th>
+							<th>ОКАТО территории мед. организации</th>
+							<th>Статус прикрепления</th>
+							<th>Источник данных</th>
+							<th>Вид источника</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="attach : ${attachies}" class='small'>
+							<td th:text="${attach.areaType}" />
+							<td th:text="${attach.areaId}" />
+							<td th:text="${attach.attachMethod}" />
+							<td th:text="${attach.mCapitation}" />
+							<td th:text="${#dates.format(attach.dateAttachB, 'dd.MM.yyyy')}" />
+							<td th:text="${#dates.format(attach.dateAttachE, 'dd.MM.yyyy')}" />
+							<td th:text="${attach.moId}" />
+							<td th:text="${attach.lpu != null ? attach.lpu.title : ''}" />
+							<td th:text="${attach.moFId}" />
+							<td th:text="${attach.snilsDoctor}" />
+							<td th:text="${attach.doctorId}" />
+							<td th:text="${#dates.format(attach.doctorSince, 'dd.MM.yyyy')}" />
+							<td th:text="${attach.descr}" />
+							<td th:text="${attach.moOkato}" />
+							<td th:text="${attach.attachStatus}" />
+							<td th:text="${attach.dsource != null ? attach.dsource.title : ''}" />
+							<td th:text="${attach.dsourceType}" />
 						</tr>
 					</tbody>
 				</table>

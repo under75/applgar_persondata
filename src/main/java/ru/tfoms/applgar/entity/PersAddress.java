@@ -50,8 +50,9 @@ public class PersAddress {
 	@Column(name = "dsourcetype")
 	private String dsourceType;
 
-	@Column(name = "dsource")
-	private String dsource;
+	@OneToOne
+	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	private Okato dsource;
 
 	@Column(name = "addresstype")
 	private String addressType;
@@ -145,11 +146,11 @@ public class PersAddress {
 		this.dsourceType = dsourceType;
 	}
 
-	public String getDsource() {
+	public Okato getDsource() {
 		return dsource;
 	}
 
-	public void setDsource(String dsource) {
+	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
 	}
 

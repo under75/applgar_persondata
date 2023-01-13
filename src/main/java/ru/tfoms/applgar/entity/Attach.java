@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,7 +23,7 @@ public class Attach {
 	private Integer nr;
 	
 	@Column(name = "areatype")
-	private String areaType;
+	private Integer areaType;
 	
 	@Column(name = "areaid")
 	private String areaId;
@@ -41,8 +43,9 @@ public class Attach {
 	@Column(name = "moid")
 	private String moId;
 	
-	@Column(name = "mocode")
-	private String moСode;
+	@OneToOne
+	@JoinColumn(name = "mocode", referencedColumnName = "mcod")
+	private Lpu lpu;
 	
 	@Column(name = "mofid")
 	private String moFId;
@@ -65,8 +68,9 @@ public class Attach {
 	@Column(name = "attachstatus")
 	private String attachStatus;
 	
-	@Column(name = "dsource")
-	private String dsource;
+	@OneToOne
+	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	private Okato dsource;
 	
 	@Column(name = "dsourcetype")
 	private String dsourceType;
@@ -90,11 +94,11 @@ public class Attach {
 		this.nr = nr;
 	}
 
-	public String getAreaType() {
+	public Integer getAreaType() {
 		return areaType;
 	}
 
-	public void setAreaType(String areaType) {
+	public void setAreaType(Integer areaType) {
 		this.areaType = areaType;
 	}
 
@@ -146,12 +150,16 @@ public class Attach {
 		this.moId = moId;
 	}
 
-	public String getMoСode() {
-		return moСode;
+	public Lpu getLpu() {
+		return lpu;
 	}
 
-	public void setMoСode(String moСode) {
-		this.moСode = moСode;
+	public void setLpu(Lpu lpu) {
+		this.lpu = lpu;
+	}
+
+	public void setDsource(Okato dsource) {
+		this.dsource = dsource;
 	}
 
 	public String getMoFId() {
@@ -210,12 +218,8 @@ public class Attach {
 		this.attachStatus = attachStatus;
 	}
 
-	public String getDsource() {
+	public Okato getDsource() {
 		return dsource;
-	}
-
-	public void setDsource(String dsource) {
-		this.dsource = dsource;
 	}
 
 	public String getDsourceType() {
