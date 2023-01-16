@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -30,8 +32,9 @@ public class Contact {
 	@Column(name = "dsourcetype")
 	private String dsourceType;
 	
-	@Column(name = "dsource")
-	private String dsource;
+	@OneToOne
+	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	private Okato dsource;
 	
 	public Contact() {
 	}
@@ -84,12 +87,12 @@ public class Contact {
 		this.dsourceType = dsourceType;
 	}
 
-	public String getDsource() {
+	public Okato getDsource() {
 		return dsource;
 	}
 
-	public void setDsource(String dsource) {
+	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
 	}
-	
+
 }

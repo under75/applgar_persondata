@@ -17,6 +17,8 @@ public class PersSearchParameters {
 	private String dtFrom;
 	private String dtTo;
 	private String show;
+	private String dateFrom;
+	private String dateTo;
 
 	public String getOip() {
 		return oip;
@@ -144,6 +146,22 @@ public class PersSearchParameters {
 
 	public void setShow(String show) {
 		this.show = show;
+	}
+
+	public String getDateFrom() {
+		return dateFrom;
+	}
+
+	public void setDateFrom(String dateFrom) {
+		this.dateFrom = dateFrom;
+	}
+
+	public String getDateTo() {
+		return dateTo;
+	}
+
+	public void setDateTo(String dateTo) {
+		this.dateTo = dateTo;
 	}
 
 }

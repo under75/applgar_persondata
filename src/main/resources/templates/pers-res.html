@@ -29,21 +29,33 @@
 				</div>
 			</div>
 			<div
-				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Person || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).Person.name()) || showList.size() == 0}"
 				th:insert="show :: Person"></div>
 			<div
-				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).OmsPolicy || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).OmsPolicy.name()) || showList.size() == 0}"
 				th:insert="show :: OmsPolicy"></div>
 			<div
-				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Dudl || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).Dudl.name()) || showList.size() == 0}"
 				th:insert="show :: Dudl"></div>
 			<div
-				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Address || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).Address.name()) || showList.size() == 0}"
 				th:insert="show :: Address"></div>
 			<div
-				th:if="${show == T(ru.tfoms.applgar.service.PersDataService.Show).Attach || show == T(ru.tfoms.applgar.service.PersDataService.Show).All}"
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).Attach.name()) || showList.size() == 0}"
 				th:insert="show :: Attach"></div>
+			<div
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).Contact.name()) || showList.size() == 0}"
+				th:insert="show :: Contact"></div>
+			<div
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).Snils.name()) || showList.size() == 0}"
+				th:insert="show :: Snils"></div>
+			<div
+				th:if="${showList.contains(T(ru.tfoms.applgar.service.PersDataService.Show).SocialStatus.name()) || showList.size() == 0}"
+				th:insert="show :: SocialStatus"></div>
 		</div>
+		<br/>
+		<input type="button" value="Выход" class="btn btn-sm btn-secondary"
+			onclick="window.close();" />
 	</div>
 	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
 	<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>

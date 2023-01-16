@@ -3,7 +3,9 @@ package ru.tfoms.applgar.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -59,7 +61,7 @@ public class PersDataService {
 		Person, OmsPolicy, Dudl, Address, Attach, Contact, Snils, SocialStatus, All
 	}
 
-	public final static Map<Show, String> resultType = new HashMap<>();
+	public final static Map<Show, String> resultType = new LinkedHashMap<>();
 	{
 		resultType.put(Show.Person, "Информация о персоне");
 		resultType.put(Show.OmsPolicy, "Информация о полисе");
@@ -164,16 +166,34 @@ public class PersDataService {
 		} else if (!persSParam.getDt().isEmpty()) {
 			personData.setDt(DATE_FORMAT.parse(persSParam.getDt()));
 		}
-		personData.setShow(persSParam.getShow());
+		personData.setShow(persSParam.getShow() != null ? persSParam.getShow().replaceAll(",", " ") : "");
 		personData.setUser(user.getName());
 
 		return personDataRepository.save(personData);
 	}
 
-	public Page<PersonData> getPersDataPage(User user, Optional<Integer> page) {
+	public Page<PersonData> getPersDataPage(PersSearchParameters persSParam, User user, Optional<Integer> page)
+			throws ParseException {
 		int currentPage = page.orElse(1);
-		return personDataRepository.findByUserOrderByDtInsDesc(user.getName(),
-				PageRequest.of(currentPage - 1, PAGE_SIZE));
+		Page<PersonData> dataPage;
+		PageRequest pageRequest = PageRequest.of(currentPage - 1, PAGE_SIZE);
+		if (persSParam.getDateFrom() != null && !persSParam.getDateFrom().isEmpty() && persSParam.getDateTo() != null
+				&& !persSParam.getDateTo().isEmpty()) {
+			Date start = DATE_FORMAT.parse(persSParam.getDateFrom());
+			Date end = DATE_FORMAT.parse(persSParam.getDateTo());
+			dataPage = personDataRepository.findByUserAndDtInsBetweenOrderByDtInsDesc(user.getName(), start, end,
+					pageRequest);
+		} else if (persSParam.getDateFrom() != null && !persSParam.getDateFrom().isEmpty()) {
+			Date start = DATE_FORMAT.parse(persSParam.getDateFrom());
+			dataPage = personDataRepository.findByUserAndDtInsAfterOrderByDtInsDesc(user.getName(), start, pageRequest);
+		} else if (persSParam.getDateTo() != null && !persSParam.getDateTo().isEmpty()) {
+			Date end = DATE_FORMAT.parse(persSParam.getDateTo());
+			dataPage = personDataRepository.findByUserAndDtInsBeforeOrderByDtInsDesc(user.getName(), end, pageRequest);
+		} else {
+			dataPage = personDataRepository.findByUserOrderByDtInsDesc(user.getName(), pageRequest);
+		}
+
+		return dataPage;
 	}
 
 	public void validate(PersSearchParameters persSParam, BindingResult bindingResult) {
@@ -190,20 +210,6 @@ public class PersDataService {
 
 	public PersonData getPersonDataByRid(Long rid) {
 		return personDataRepository.getReferenceById(rid);
-	}
-
-	public boolean isRequestValid(PersonData personData, String show) {
-		Boolean isRequestValid = true;
-		if (personData == null) {
-			isRequestValid = false;
-		}
-		try {
-			Show.valueOf(show);
-		} catch (Exception e) {
-			isRequestValid = false;
-		}
-		
-		return isRequestValid;
 	}
 
 	public Collection<PersAddress> getAddressesByRid(Long rid) {

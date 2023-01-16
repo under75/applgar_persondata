@@ -29,9 +29,8 @@
 							<td th:text="${person.lastName}" />
 							<td th:text="${person.firstName}" />
 							<td th:text="${person.patronymic}" />
-							<td align="center"
-								th:text="${#dates.format(person.birthDay, 'dd.MM.yyyy')}" />
-							<td align="center" th:text="${person.gender}" />
+							<td th:text="${#dates.format(person.birthDay, 'dd.MM.yyyy')}" />
+							<td th:text="${person.gender}" />
 							<td
 								th:text="${person.birthOksm != null ? person.birthOksm.name2 : ''}" />
 							<td align="center"
@@ -56,32 +55,91 @@
 				<table class="table table-sm">
 					<thead>
 						<tr class="small">
-							<th>ЕНП</th>
+							<th>Cерия полиса (старого образца)</th>
+							<th>Номер полиса (старого образца)</th>
+							<th>ЕНП расчетный</th>
+							<th>ЕНП (нового образца)</th>
 							<th>Дата начала действия полиса</th>
-							<th>Тип полиса</th>
+							<th>Дата окончания действия полиса</th>
+							<th>Дата выдачи полиса на руки</th>
+							<th>Дата обращения за полисом</th>
+							<th>Дата расчёта номера ЕНП</th>
+							<th>Дата изготовления полиса</th>
+							<th>Тип полиса страхования</th>
 							<th>Статус полиса</th>
-							<th>ОКАТО</th>
+							<th>ОКАТО территории страхования</th>
 							<th>Источник данных</th>
-							<th>Вид источника</th>
-							<th>Фактическая СМО</th>
-							<th>ОГРН факт. СМО</th>
-							<th>Код факт. СМО</th>
+							<th>Вид источника данных]</th>
+							<th>Описание</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="policy : ${policies}" class='small'>
+							<td th:text="${policy.pcySer}" />
+							<td th:text="${policy.pcyNum}" />
+							<td th:text="${policy.enpCalc}" />
 							<td th:text="${policy.enp}" />
 							<td align="center"
 								th:text="${#dates.format(policy.pcyDateB, 'dd.MM.yyyy')}" />
+							<td align="center"
+								th:text="${#dates.format(policy.pcyDateE, 'dd.MM.yyyy')}" />
+							<td align="center"
+								th:text="${#dates.format(policy.pcyDateH, 'dd.MM.yyyy')}" />
+							<td align="center"
+								th:text="${#dates.format(policy.pcyDateT, 'dd.MM.yyyy')}" />
+							<td align="center"
+								th:text="${#dates.format(policy.pcyDateEnpCalc, 'dd.MM.yyyy')}" />
+							<td align="center"
+								th:text="${#dates.format(policy.pcyDatePr, 'dd.MM.yyyy')}" />
 							<td th:text="${policy.pcyType}" />
 							<td th:text="${policy.pcyStatus}" />
-							<td th:text="${policy.okato.title}" />
+							<td th:text="${policy.okato != null ? policy.okato.title : ''}" />
 							<td
 								th:text="${policy.dsource != null ? policy.dsource.title : ''}" />
 							<td th:text="${policy.dsourceType}" />
+							<td th:text="${policy.descr}" />
+						</tr>
+					</tbody>
+				</table>
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>Половая принадлежность</th>
+							<th>Официальная СМО</th>
+							<th>Фактическая СМО</th>
+							<th>ОГРН официальной СМО</th>
+							<th>ОГРН фактической СМО</th>
+							<th>Код официальной СМО</th>
+							<th>Код фактической СМО</th>
+							<th>Дата начала работы с ЗЛ</th>
+							<th>Номер временного свидет-ва</th>
+							<th>Дата начала действия ВС</th>
+							<th>Дата окончания действия ВС</th>
+							<th>Номер универсал. элек. карты</th>
+							<th>Категория ЗЛ</th>
+							<th>Номер бланка полиса</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="policy : ${policies}" class='small'>
+							<td th:text="${policy.gender}" />
+							<td th:text="${policy.insurName}" />
 							<td th:text="${policy.insurfName}" />
+							<td th:text="${policy.insurOgrn}" />
 							<td th:text="${policy.insurfOgrn}" />
+							<td th:text="${policy.insurCode}" />
 							<td th:text="${policy.insurfCode}" />
+							<td align="center"
+								th:text="${#dates.format(policy.insurfDate, 'dd.MM.yyyy')}" />
+							<td th:text="${policy.tmpcertNum}" />
+							<td align="center"
+								th:text="${#dates.format(policy.tmpcertDateB, 'dd.MM.yyyy')}" />
+							<td align="center"
+								th:text="${#dates.format(policy.tmpcertDateE, 'dd.MM.yyyy')}" />
+							<td th:text="${policy.uekNum}" />
+							<td
+								th:text="${policy.pcyCategory != null ? policy.pcyCategory.name : ''}" />
+							<td th:text="${policy.blankNum}" />
 						</tr>
 					</tbody>
 				</table>
@@ -102,25 +160,47 @@
 				<table class="table table-sm">
 					<thead>
 						<tr class="small">
+							<th>Cерия ДУДЛ</th>
 							<th>№ ДУДЛ</th>
-							<th>Дата начала действия ДУДЛ</th>
+							<th>Дата начала действия</th>
+							<th>Дата окончания действия</th>
 							<th>Тип ДУДЛ</th>
+							<th>Кем выдан</th>
+							<th>Код страны выдачи</th>
+							<th>Гражданство</th>
 							<th>Признак отсутствия гражданства</th>
 							<th>Источник данных</th>
+							<th>Описание</th>
+							<th>Место рождения</th>
 							<th>Вид источника</th>
+							<th>Страна рождения</th>
 							<th>Статус ДУДЛ</th>
+							<th>Коды надежности идентификации</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="dudl : ${dudls}" class='small'>
+							<td th:text="${dudl.dudlSer}" />
 							<td th:text="${dudl.dudlNum}" />
 							<td align="center"
 								th:text="${#dates.format(dudl.dudlDateB, 'dd.MM.yyyy')}" />
-							<td th:text="${dudl.dudlType.docName}" />
+							<td align="center"
+								th:text="${#dates.format(dudl.dudlDateE, 'dd.MM.yyyy')}" />
+							<td
+								th:text="${dudl.dudlType != null ? dudl.dudlType.docName : ''}" />
+							<td th:text="${dudl.issuer}" />
+							<td
+								th:text="${dudl.issuerOksm != null ? dudl.issuerOksm.name2 : ''}" />
+							<td th:text="${dudl.ctznOksm != null ? dudl.ctznOksm.name2 : ''}" />
 							<td align="center" th:text="${dudl.noCitizenship}" />
 							<td th:text="${dudl.dsource != null ? dudl.dsource.title : ''}" />
+							<td th:text="${dudl.descr}" />
+							<td th:text="${dudl.birthPlace}" />
 							<td th:text="${dudl.dsourceType}" />
+							<td
+								th:text="${dudl.birthOksm != null ? dudl.birthOksm.name2 : ''}" />
 							<td th:text="${dudl.dudlStatus}" />
+							<td th:text="${dudl.dost}" />
 						</tr>
 					</tbody>
 				</table>
@@ -228,8 +308,110 @@
 							<td th:text="${attach.descr}" />
 							<td th:text="${attach.moOkato}" />
 							<td th:text="${attach.attachStatus}" />
-							<td th:text="${attach.dsource != null ? attach.dsource.title : ''}" />
+							<td
+								th:text="${attach.dsource != null ? attach.dsource.title : ''}" />
 							<td th:text="${attach.dsourceType}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card" th:fragment="Contact">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).Contact)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapseContact" aria-expanded="false"
+				aria-controls="collapseContact"></button>
+		</div>
+		<div id="collapseContact" class="collapse"
+			aria-labelledby="headingOne" data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>Тип контакта</th>
+							<th>Описание</th>
+							<th>Содержимое контакта</th>
+							<th>Вид источника данных</th>
+							<th>Источник данных</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="contact : ${contacts}" class='small'>
+							<td th:text="${contact.contactType}" />
+							<td th:text="${contact.descr}" />
+							<td th:text="${contact.contactText}" />
+							<td th:text="${contact.dsourceType}" />
+							<td
+								th:text="${contact.dsource != null ? contact.dsource.title : ''}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card" th:fragment="Snils">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).Snils)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapseSnils" aria-expanded="false"
+				aria-controls="collapseSnils"></button>
+		</div>
+		<div id="collapseSnils" class="collapse" aria-labelledby="headingOne"
+			data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>СНИЛС</th>
+							<th>Источник данных</th>
+							<th>Вид источника данных</th>
+							<th>Описание</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="snils : ${snilses}" class='small'>
+							<td th:text="${snils.snils}" />
+							<td th:text="${snils.dsource != null ? snils.dsource.title : ''}" />
+							<td th:text="${snils.dsourceType}" />
+							<td th:text="${snils.descr}" />
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="card" th:fragment="SocialStatus">
+		<div class="card-header">
+			<button
+				th:text="${resultTypes.get(T(ru.tfoms.applgar.service.PersDataService.Show).SocialStatus)}"
+				class="btn btn-link" data-toggle="collapse"
+				data-target="#collapseSocialStatus" aria-expanded="false"
+				aria-controls="collapseSocialStatus"></button>
+		</div>
+		<div id="collapseSocialStatus" class="collapse" aria-labelledby="headingOne"
+			data-parent="#accordion">
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>Cтатус</th>
+							<th>Вид источника данных</th>
+							<th>Источник данных</th>
+							<th>Описание</th>
+							<th>Дата регистрации состояния</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="status : ${statuses}" class='small'>
+							<td th:text="${status.socialStatus}" />
+							<td th:text="${status.dsourceType}" />
+							<td th:text="${status.dsource != null ? status.dsource.title : ''}" />
+							<td th:text="${status.descr}" />
+							<td th:text="${#dates.format(status.regDate, 'dd.MM.yyyy')}" />
 						</tr>
 					</tbody>
 				</table>

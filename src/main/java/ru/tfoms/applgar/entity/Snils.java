@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,8 +23,9 @@ public class Snils {
 	@Column(name = "snils")
 	private String snils;
 
-	@Column(name = "dsource")
-	private String dsource;
+	@OneToOne
+	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	private Okato dsource;
 
 	@Column(name = "dsourcetype")
 	private String dsourceType;
@@ -57,11 +60,11 @@ public class Snils {
 		this.snils = snils;
 	}
 
-	public String getDsource() {
+	public Okato getDsource() {
 		return dsource;
 	}
 
-	public void setDsource(String dsource) {
+	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
 	}
 
