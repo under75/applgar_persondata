@@ -1,9 +1,13 @@
 package ru.tfoms.applgar.service;
 
+import static ru.tfoms.applgar.util.Constants.DATE_FORMAT;
+import static ru.tfoms.applgar.util.Constants.HSMO_ROLE;
+import static ru.tfoms.applgar.util.Constants.SMO_ADD_CODE;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
@@ -24,7 +28,6 @@ import ru.tfoms.applgar.exception.ExcelGeneratorException;
 import ru.tfoms.applgar.model.ApplSearchParameters;
 import ru.tfoms.applgar.model.RowData;
 import ru.tfoms.applgar.repository.ApplRepository;
-import ru.tfoms.applgar.util.Constants;
 
 @Service
 public class ApplService {
@@ -112,8 +115,8 @@ public class ApplService {
 			HttpSession session) throws ParseException {
 		User user = (User) session.getAttribute("user");
 
-		Date start = new SimpleDateFormat("yyyy-MM-dd").parse(applSParam.getDtReg1());
-		Date end = new SimpleDateFormat("yyyy-MM-dd").parse(applSParam.getDtReg2());
+		Date start = DATE_FORMAT.parse(applSParam.getDtReg1());
+		Date end = Date.from(DATE_FORMAT.parse(applSParam.getDtReg2()).toInstant().plus(1, ChronoUnit.DAYS));
 		String serDoc = applSParam.getSerDoc().trim();
 		String numDoc = applSParam.getNumDoc().trim();
 		Integer cdInsp = applSParam.getCdInsp();
@@ -121,7 +124,7 @@ public class ApplService {
 		inspector.setCdInsp(cdInsp);
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(PAGE_SIZE);
-		boolean userHasHsmoRole = user.getRoles().stream().filter(t -> t.getRole_name().equals(Constants.HSMO_ROLE))
+		boolean userHasHsmoRole = user.getRoles().stream().filter(t -> t.getRole_name().equals(HSMO_ROLE))
 				.collect(Collectors.toList()).size() > 0;
 
 		Page<Appl> applPage;
@@ -129,27 +132,24 @@ public class ApplService {
 			if (applSParam.getCdInsp() != null) {
 				if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
 					applPage = findByDtApplBetweenAndCdSmoAndSerDocAndNumDocAndInspector(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, serDoc, numDoc, inspector,
+							user.getSmo() + SMO_ADD_CODE, serDoc, numDoc, inspector,
 							PageRequest.of(currentPage - 1, pageSize));
 				} else if (!serDoc.isEmpty()) {
 					applPage = findByDtApplBetweenAndCdSmoAndSerDocAndInspector(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, serDoc, inspector,
-							PageRequest.of(currentPage - 1, pageSize));
+							user.getSmo() + SMO_ADD_CODE, serDoc, inspector, PageRequest.of(currentPage - 1, pageSize));
 				} else {
-					applPage = findByDtApplBetweenAndCdSmoAndInspector(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, inspector,
-							PageRequest.of(currentPage - 1, pageSize));
+					applPage = findByDtApplBetweenAndCdSmoAndInspector(start, end, user.getSmo() + SMO_ADD_CODE,
+							inspector, PageRequest.of(currentPage - 1, pageSize));
 				}
 			} else {
 				if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
-					applPage = findByDtApplBetweenAndCdSmoAndSerDocAndNumDoc(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, serDoc, numDoc,
-							PageRequest.of(currentPage - 1, pageSize));
+					applPage = findByDtApplBetweenAndCdSmoAndSerDocAndNumDoc(start, end, user.getSmo() + SMO_ADD_CODE,
+							serDoc, numDoc, PageRequest.of(currentPage - 1, pageSize));
 				} else if (!serDoc.isEmpty()) {
-					applPage = findByDtApplBetweenAndCdSmoAndSerDoc(start, end, user.getSmo() + Constants.SMO_ADD_CODE,
-							serDoc, PageRequest.of(currentPage - 1, pageSize));
+					applPage = findByDtApplBetweenAndCdSmoAndSerDoc(start, end, user.getSmo() + SMO_ADD_CODE, serDoc,
+							PageRequest.of(currentPage - 1, pageSize));
 				} else {
-					applPage = findByDtApplBetweenAndCdSmo(start, end, user.getSmo() + Constants.SMO_ADD_CODE,
+					applPage = findByDtApplBetweenAndCdSmo(start, end, user.getSmo() + SMO_ADD_CODE,
 							PageRequest.of(currentPage - 1, pageSize));
 				}
 			}
@@ -157,28 +157,27 @@ public class ApplService {
 			if (applSParam.getCdInsp() != null) {
 				if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
 					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndNumDocAndInspector(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, user.getfSmo(), serDoc, numDoc, inspector,
+							user.getSmo() + SMO_ADD_CODE, user.getfSmo(), serDoc, numDoc, inspector,
 							PageRequest.of(currentPage - 1, pageSize));
 				} else if (!serDoc.isEmpty()) {
 					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndInspector(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, user.getfSmo(), serDoc, inspector,
+							user.getSmo() + SMO_ADD_CODE, user.getfSmo(), serDoc, inspector,
 							PageRequest.of(currentPage - 1, pageSize));
 				} else {
 					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndInspector(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, user.getfSmo(), inspector,
+							user.getSmo() + SMO_ADD_CODE, user.getfSmo(), inspector,
 							PageRequest.of(currentPage - 1, pageSize));
 				}
 			} else {
 				if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
 					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndNumDoc(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, user.getfSmo(), serDoc, numDoc,
+							user.getSmo() + SMO_ADD_CODE, user.getfSmo(), serDoc, numDoc,
 							PageRequest.of(currentPage - 1, pageSize));
 				} else if (!serDoc.isEmpty()) {
-					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDoc(start, end,
-							user.getSmo() + Constants.SMO_ADD_CODE, user.getfSmo(), serDoc,
-							PageRequest.of(currentPage - 1, pageSize));
+					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDoc(start, end, user.getSmo() + SMO_ADD_CODE,
+							user.getfSmo(), serDoc, PageRequest.of(currentPage - 1, pageSize));
 				} else {
-					applPage = findByDtApplBetweenAndCdSmoAndCdFsmo(start, end, user.getSmo() + Constants.SMO_ADD_CODE,
+					applPage = findByDtApplBetweenAndCdSmoAndCdFsmo(start, end, user.getSmo() + SMO_ADD_CODE,
 							user.getfSmo(), PageRequest.of(currentPage - 1, pageSize));
 				}
 			}
@@ -199,15 +198,15 @@ public class ApplService {
 
 	public ByteArrayInputStream createExcel(ApplSearchParameters applSParam, HttpSession session)
 			throws ExcelGeneratorException, IOException {
-		
+
 		User user = (User) session.getAttribute("user");
-			return new ExcelGenerator(getDataForExcel(applSParam, user)).toExcel();
-	
+		return new ExcelGenerator(getDataForExcel(applSParam, user)).toExcel();
+
 	}
 
 	private Collection<RowData> getDataForExcel(ApplSearchParameters applSParam, User user) {
 
 		return applDAO.getDataForExcel(user, applSParam);
-		
+
 	}
 }

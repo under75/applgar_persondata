@@ -20,14 +20,6 @@ public class InspectorService {
 		this.inspectorRepository = inspectorRepository;
 	}
 
-//	public Collection<Inspector> findByCdSmo(Integer cdSmo) {
-//		return inspectorRepository.findByCdSmoAndLoginIsNotNullOrderByFioInsp(cdSmo);
-//	}
-//
-//	public Collection<Inspector> findByCdSmoAndcdFsmo(Integer cdSmo, Integer cdFsmo) {
-//		return inspectorRepository.findByCdSmoAndCdFsmoAndLoginIsNotNullOrderByFioInsp(cdSmo, cdFsmo);
-//	}
-
 	public Collection<Inspector> findInspectors(HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		boolean userHasHsmoRole = user.getRoles().stream().filter(t -> t.getRole_name().equals(Constants.HSMO_ROLE))

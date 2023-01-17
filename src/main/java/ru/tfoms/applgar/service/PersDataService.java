@@ -1,7 +1,7 @@
 package ru.tfoms.applgar.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,10 +39,10 @@ import ru.tfoms.applgar.repository.PersonDataRepository;
 import ru.tfoms.applgar.repository.PersonRepository;
 import ru.tfoms.applgar.repository.SnilsRepository;
 import ru.tfoms.applgar.repository.SocialStatusRepository;
+import static ru.tfoms.applgar.util.Constants.DATE_FORMAT;
 
 @Service
 public class PersDataService {
-	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	private static final Integer PAGE_SIZE = 10;
 
 	private final PersDataErrorRepository errorRepository;
@@ -162,7 +162,7 @@ public class PersDataService {
 			if (!persSParam.getDtFrom().isEmpty())
 				personData.setDtFrom(DATE_FORMAT.parse(persSParam.getDtFrom()));
 			if (!persSParam.getDtTo().isEmpty())
-				personData.setDtTo(DATE_FORMAT.parse(persSParam.getDtTo()));
+				personData.setDtTo(Date.from(DATE_FORMAT.parse(persSParam.getDtTo()).toInstant().plus(1, ChronoUnit.DAYS)));
 		} else if (!persSParam.getDt().isEmpty()) {
 			personData.setDt(DATE_FORMAT.parse(persSParam.getDt()));
 		}
@@ -180,14 +180,14 @@ public class PersDataService {
 		if (persSParam.getDateFrom() != null && !persSParam.getDateFrom().isEmpty() && persSParam.getDateTo() != null
 				&& !persSParam.getDateTo().isEmpty()) {
 			Date start = DATE_FORMAT.parse(persSParam.getDateFrom());
-			Date end = DATE_FORMAT.parse(persSParam.getDateTo());
+			Date end = Date.from(DATE_FORMAT.parse(persSParam.getDateTo()).toInstant().plus(1, ChronoUnit.DAYS));
 			dataPage = personDataRepository.findByUserAndDtInsBetweenOrderByDtInsDesc(user.getName(), start, end,
 					pageRequest);
 		} else if (persSParam.getDateFrom() != null && !persSParam.getDateFrom().isEmpty()) {
 			Date start = DATE_FORMAT.parse(persSParam.getDateFrom());
 			dataPage = personDataRepository.findByUserAndDtInsAfterOrderByDtInsDesc(user.getName(), start, pageRequest);
 		} else if (persSParam.getDateTo() != null && !persSParam.getDateTo().isEmpty()) {
-			Date end = DATE_FORMAT.parse(persSParam.getDateTo());
+			Date end = Date.from(DATE_FORMAT.parse(persSParam.getDateTo()).toInstant().plus(1, ChronoUnit.DAYS));
 			dataPage = personDataRepository.findByUserAndDtInsBeforeOrderByDtInsDesc(user.getName(), end, pageRequest);
 		} else {
 			dataPage = personDataRepository.findByUserOrderByDtInsDesc(user.getName(), pageRequest);
