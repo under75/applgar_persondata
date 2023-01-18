@@ -3,20 +3,18 @@ package ru.tfoms.applgar.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "as_addr_obj", schema = "FIASOWNER")
-@IdClass(GarId.class)
 public class AddrGar {
 	@Id
 	@Column(name = "id")
 	private Long id;
-	@Id
+	
 	@Column(name = "isactive")
 	private Boolean isActive;
-	@Id
+
 	@Column(name = "isactual")
 	private Boolean isActual;
 	

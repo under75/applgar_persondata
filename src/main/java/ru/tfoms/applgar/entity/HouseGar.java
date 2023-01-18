@@ -8,30 +8,39 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "as_houses", schema = "FIASOWNER")
-@IdClass(GarId.class)
+@IdClass(HouseId.class)
 public class HouseGar {
-	@Id
+
 	@Column(name = "id")
 	private Long id;
-	@Id
+
 	@Column(name = "isactive")
 	private Boolean isActive;
-	@Id
+
 	@Column(name = "isactual")
 	private Boolean isActual;
-	
+
 	@Column(name = "objectguid")
 	private String objectguid;
-	
+
 	@Column(name = "housenum")
 	private String houseNum;
-	
+
 	@Column(name = "addnum1")
 	private String addNum1;
-	
+
 	@Column(name = "addnum2")
 	private String addNum2;
-	
+	@Id
+	@Column(name = "objectid")
+	private Long objectid;
+	@Id
+	@Column(name = "changeid")
+	private Long changeid;
+	@Id
+	@Column(name = "opertypeid")
+	private Integer opertypeid;
+
 	public HouseGar() {
 	}
 
@@ -90,5 +99,5 @@ public class HouseGar {
 	public void setAddNum2(String addNum2) {
 		this.addNum2 = addNum2;
 	}
-	
+
 }
