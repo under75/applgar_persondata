@@ -264,7 +264,6 @@ public class AddressDAO {
 	}
 
 	public String getOcatoStr(Long addrRegId) {
-
 		Okato ocato = findOkato(addrRegId);
 		String lev1Cod;
 		String oblLev1 = null;

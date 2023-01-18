@@ -19,6 +19,7 @@ import ru.tfoms.applgar.model.SelectedAddress;
 public class AddressService<T> {
 	private final AddressDAO addressDAO;
 	public static final String CITY = "г";
+	public static final Integer STREET_LEVEL = 8;
 
 	@Autowired
 	public AddressService(AddressDAO addressDAO) {
@@ -250,7 +251,7 @@ public class AddressService<T> {
 						.filter(t -> t.getId().intValue() == selAddress.getIdlev3Reg().intValue()).findAny()
 						.orElse(null);
 				if (lev3Reg != null) {
-					if (lev3Reg.getLevel() < 7 && lev2Reg != null) {
+					if (lev3Reg.getLevel() < STREET_LEVEL && lev2Reg != null) {
 						setLevel31Reg(gar, filter, lev3Reg.getObjectId());
 						if (selAddress.getIdlev31Reg() != null) {
 							lev31Reg = gar.getLevel31Reg().stream()
@@ -300,7 +301,7 @@ public class AddressService<T> {
 						.filter(t -> t.getId().intValue() == selAddress.getIdlev3Pr().intValue()).findAny()
 						.orElse(null);
 				if (lev3Pr != null) {
-					if (lev3Pr.getLevel() < 7 && lev2Pr != null) {
+					if (lev3Pr.getLevel() < STREET_LEVEL && lev2Pr != null) {
 						setLevel31Pr(gar, filter, lev3Pr.getObjectId());
 						if (selAddress.getIdlev31Pr() != null) {
 							lev31Pr = gar.getLevel31Pr().stream()
