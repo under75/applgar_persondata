@@ -11,7 +11,8 @@ public class ApplSearchParameters {
 	private String dtReg2;
 	private String serDoc;
 	private String numDoc;
-	private Integer cdInsp;
+	private Long cdInsp;
+	private Integer cdFsmo;
 
 	public ApplSearchParameters() {
 		// TODO Auto-generated constructor stub
@@ -57,12 +58,20 @@ public class ApplSearchParameters {
 		this.numDoc = numDoc;
 	}
 
-	public Integer getCdInsp() {
+	public Long getCdInsp() {
 		return cdInsp;
 	}
 
-	public void setCdInsp(Integer cdInsp) {
+	public void setCdInsp(Long cdInsp) {
 		this.cdInsp = cdInsp;
+	}
+
+	public Integer getCdFsmo() {
+		return cdFsmo;
+	}
+
+	public void setCdFsmo(Integer cdFsmo) {
+		this.cdFsmo = cdFsmo;
 	}
 
 }

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 public class Inspector {
 	@Id
 	@Column(name = "cd_insp")
-	private Integer cdInsp;
+	private Long cdInsp;
 	
 	@Column(name = "fio_insp")
 	private String fioInsp;
@@ -29,7 +29,7 @@ public class Inspector {
 	public Inspector() {
 	}
 
-	public Inspector(Integer cdInsp, String fioInsp, Integer cdSmo, Integer cdFsmo) {
+	public Inspector(Long cdInsp, String fioInsp, Integer cdSmo, Integer cdFsmo) {
 		super();
 		this.cdInsp = cdInsp;
 		this.fioInsp = fioInsp;
@@ -37,11 +37,11 @@ public class Inspector {
 		this.cdFsmo = cdFsmo;
 	}
 
-	public Integer getCdInsp() {
+	public Long getCdInsp() {
 		return cdInsp;
 	}
 
-	public void setCdInsp(Integer cdInsp) {
+	public void setCdInsp(Long cdInsp) {
 		this.cdInsp = cdInsp;
 	}
 

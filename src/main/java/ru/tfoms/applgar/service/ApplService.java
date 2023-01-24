@@ -22,21 +22,29 @@ import org.springframework.stereotype.Service;
 
 import ru.tfoms.applgar.dao.ApplDAO;
 import ru.tfoms.applgar.entity.Appl;
+import ru.tfoms.applgar.entity.Fsmo;
 import ru.tfoms.applgar.entity.Inspector;
 import ru.tfoms.applgar.entity.User;
 import ru.tfoms.applgar.exception.ExcelGeneratorException;
 import ru.tfoms.applgar.model.ApplSearchParameters;
 import ru.tfoms.applgar.model.RowData;
 import ru.tfoms.applgar.repository.ApplRepository;
+import ru.tfoms.applgar.repository.FsmoRepository;
+import ru.tfoms.applgar.repository.InspectorRepository;
 
 @Service
 public class ApplService {
 	private static final Integer PAGE_SIZE = 15;
 	private final ApplRepository applRepository;
+	private final InspectorRepository inspectorRepository;
+	private final FsmoRepository smoRepository;
 	private final ApplDAO applDAO;
 
-	public ApplService(ApplRepository applRepository, ApplDAO applDAO) {
+	public ApplService(ApplRepository applRepository, ApplDAO applDAO, InspectorRepository inspectorRepository,
+			FsmoRepository smoRepository) {
 		this.applRepository = applRepository;
+		this.inspectorRepository = inspectorRepository;
+		this.smoRepository = smoRepository;
 		this.applDAO = applDAO;
 	}
 
@@ -119,29 +127,41 @@ public class ApplService {
 		Date end = Date.from(DATE_FORMAT.parse(applSParam.getDtReg2()).toInstant().plus(1, ChronoUnit.DAYS));
 		String serDoc = applSParam.getSerDoc().trim();
 		String numDoc = applSParam.getNumDoc().trim();
-		Integer cdInsp = applSParam.getCdInsp();
-		Inspector inspector = new Inspector();
-		inspector.setCdInsp(cdInsp);
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(PAGE_SIZE);
 		boolean userHasHsmoRole = user.getRoles().stream().filter(t -> t.getRole_name().equals(HSMO_ROLE))
 				.collect(Collectors.toList()).size() > 0;
 
 		Page<Appl> applPage;
-		if (userHasHsmoRole) {
-			if (applSParam.getCdInsp() != null) {
-				if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
-					applPage = findByDtApplBetweenAndCdSmoAndSerDocAndNumDocAndInspector(start, end,
-							user.getSmo() + SMO_ADD_CODE, serDoc, numDoc, inspector,
-							PageRequest.of(currentPage - 1, pageSize));
-				} else if (!serDoc.isEmpty()) {
-					applPage = findByDtApplBetweenAndCdSmoAndSerDocAndInspector(start, end,
-							user.getSmo() + SMO_ADD_CODE, serDoc, inspector, PageRequest.of(currentPage - 1, pageSize));
-				} else {
-					applPage = findByDtApplBetweenAndCdSmoAndInspector(start, end, user.getSmo() + SMO_ADD_CODE,
-							inspector, PageRequest.of(currentPage - 1, pageSize));
-				}
+		if (applSParam.getCdInsp() != null) {
+			Inspector inspector = inspectorRepository.getReferenceById(applSParam.getCdInsp());
+			if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
+				applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndNumDocAndInspector(start, end,
+						user.getSmo() + SMO_ADD_CODE, inspector.getCdFsmo(), serDoc, numDoc, inspector,
+						PageRequest.of(currentPage - 1, pageSize));
+			} else if (!serDoc.isEmpty()) {
+				applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndInspector(start, end,
+						user.getSmo() + SMO_ADD_CODE, inspector.getCdFsmo(), serDoc, inspector,
+						PageRequest.of(currentPage - 1, pageSize));
 			} else {
+				applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndInspector(start, end, user.getSmo() + SMO_ADD_CODE,
+						inspector.getCdFsmo(), inspector, PageRequest.of(currentPage - 1, pageSize));
+			}
+		} else if (applSParam.getCdFsmo() != null) {
+			Fsmo fSmo = smoRepository.getByCdSmoAndCdFsmo(user.getSmo() + SMO_ADD_CODE, applSParam.getCdFsmo());
+			if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
+				applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndNumDoc(start, end,
+						user.getSmo() + SMO_ADD_CODE, fSmo.getCdFsmo(), serDoc, numDoc,
+						PageRequest.of(currentPage - 1, pageSize));
+			} else if (!serDoc.isEmpty()) {
+				applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDoc(start, end, user.getSmo() + SMO_ADD_CODE,
+						fSmo.getCdFsmo(), serDoc, PageRequest.of(currentPage - 1, pageSize));
+			} else {
+				applPage = findByDtApplBetweenAndCdSmoAndCdFsmo(start, end, user.getSmo() + SMO_ADD_CODE,
+						fSmo.getCdFsmo(), PageRequest.of(currentPage - 1, pageSize));
+			}
+		} else {
+			if (userHasHsmoRole) {
 				if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
 					applPage = findByDtApplBetweenAndCdSmoAndSerDocAndNumDoc(start, end, user.getSmo() + SMO_ADD_CODE,
 							serDoc, numDoc, PageRequest.of(currentPage - 1, pageSize));
@@ -150,22 +170,6 @@ public class ApplService {
 							PageRequest.of(currentPage - 1, pageSize));
 				} else {
 					applPage = findByDtApplBetweenAndCdSmo(start, end, user.getSmo() + SMO_ADD_CODE,
-							PageRequest.of(currentPage - 1, pageSize));
-				}
-			}
-		} else {
-			if (applSParam.getCdInsp() != null) {
-				if (!serDoc.isEmpty() && !numDoc.isEmpty()) {
-					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndNumDocAndInspector(start, end,
-							user.getSmo() + SMO_ADD_CODE, user.getfSmo(), serDoc, numDoc, inspector,
-							PageRequest.of(currentPage - 1, pageSize));
-				} else if (!serDoc.isEmpty()) {
-					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndSerDocAndInspector(start, end,
-							user.getSmo() + SMO_ADD_CODE, user.getfSmo(), serDoc, inspector,
-							PageRequest.of(currentPage - 1, pageSize));
-				} else {
-					applPage = findByDtApplBetweenAndCdSmoAndCdFsmoAndInspector(start, end,
-							user.getSmo() + SMO_ADD_CODE, user.getfSmo(), inspector,
 							PageRequest.of(currentPage - 1, pageSize));
 				}
 			} else {

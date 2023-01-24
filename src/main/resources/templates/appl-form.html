@@ -28,13 +28,20 @@
 						class="form-control form-control-sm" /></td>
 				</tr>
 				<tr>
-					<td class="small">Инспектор</td>
-					<td colspan="2"><select th:field="*{applSParam.cdInsp}"
-						class="form-control form-control-sm">
+					<td class="small">Инспектор/Подразделение</td>
+					<td><select th:field="*{applSParam.cdInsp}"
+						class="form-control form-control-sm" th:onchange="checkInspectorValue(this.value)">
 							<option value=""></option>
 							<option th:each="inspector : ${inspectors}"
-								th:value="${inspector.cdInsp}" th:text="${inspector.fioInsp}"
+								th:value="${inspector.cdInsp}" th:text="${inspector.fioInsp} + ' (' + ${inspector.cdFsmo} + ' филиал)'"
 								th:selected="${applSParam.cdInsp}"></option>
+					</select></td>
+					<td><select th:field="*{applSParam.cdFsmo}"
+						class="form-control form-control-sm" th:onchange="checkBranchValue(this.value)">
+							<option value=""></option>
+							<option th:each="branch : ${branches}"
+								th:value="${branch.cdFsmo}" th:text="${branch.name}"
+								th:selected="${applSParam.cdFsmo}"></option>
 					</select></td>
 				</tr>
 				<tr>
@@ -89,7 +96,7 @@
 								th:text="${#dates.format(appl.dr, 'dd.MM.yyyy')}" />
 							<td align="left"
 								th:text="${#dates.format(appl.dtAppl, 'dd.MM.yyyy')}" />
-							<td align="left" th:text="${appl.cdSmo}" />
+							<td align="left" th:text="${appl.cdFsmo}" />
 							<td align="left" th:text="${appl.inspector.fioInsp}" />
 							<td align="center"><span th:if="${appl.garAppl != null}">&check;</span></td>
 						</tr>
@@ -173,6 +180,26 @@
 			}
 			xhttp.open("GET", window.location.href + "/report/status");
 			xhttp.send();
+		}
+		function checkInspectorValue(value) {
+			var cdFsmo = document.getElementById("cdFsmo");
+			var cdInsp = document.getElementById("cdInsp");
+			if (value != "") {
+				cdFsmo.setAttribute("disabled", "");
+				cdFsmo.value = "";
+			} else {
+				cdFsmo.removeAttribute("disabled");
+			}
+		}
+		function checkBranchValue(value) {
+			var cdFsmo = document.getElementById("cdFsmo");
+			var cdInsp = document.getElementById("cdInsp");
+			if (value != "") {
+				cdInsp.setAttribute("disabled", "");
+				cdInsp.value = "";
+			} else {
+				cdInsp.removeAttribute("disabled");
+			}
 		}
 	</script>
 </body>

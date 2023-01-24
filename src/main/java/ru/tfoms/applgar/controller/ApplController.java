@@ -38,17 +38,20 @@ import ru.tfoms.applgar.model.SelectedAddress;
 import ru.tfoms.applgar.service.AddressService;
 import ru.tfoms.applgar.service.ApplService;
 import ru.tfoms.applgar.service.InspectorService;
+import ru.tfoms.applgar.service.SmoService;
 
 @Controller
 public class ApplController {
 	private final ApplService applService;
 	private final AddressService<?> addrService;
 	private final InspectorService inspectorService;
+	private final SmoService smoService;
 
-	public ApplController(ApplService service, AddressService<?> addrService, InspectorService inspectorService) {
+	public ApplController(ApplService service, AddressService<?> addrService, InspectorService inspectorService, SmoService smoService) {
 		this.applService = service;
 		this.addrService = addrService;
 		this.inspectorService = inspectorService;
+		this.smoService = smoService;
 	}
 
 	@GetMapping("appl")
@@ -65,6 +68,7 @@ public class ApplController {
 		model.addAttribute("applSParam", applSParam);
 		model.addAttribute("applPage", new PageImpl<Appl>(new ArrayList<>()));
 		model.addAttribute("inspectors", inspectorService.findInspectors(session));
+		model.addAttribute("branches", smoService.findBranches(session));
 
 		return "appl-form";
 	}
@@ -77,12 +81,14 @@ public class ApplController {
 		HttpSession session = attr.getRequest().getSession();
 
 		model.addAttribute("applPage", new PageImpl<Appl>(new ArrayList<>()));
+		model.addAttribute("inspectors", inspectorService.findInspectors(session));
+		model.addAttribute("branches", smoService.findBranches(session));
 		if (bindingResult.hasErrors())
 			return "appl-form";
 
 		Page<Appl> applPage = applService.getPage(applSParam, page, size, session);
 		model.addAttribute("applPage", applPage);
-		model.addAttribute("inspectors", inspectorService.findInspectors(session));
+		
 
 		int totalPages = applPage.getTotalPages();
 		if (totalPages > 0) {
@@ -105,7 +111,17 @@ public class ApplController {
 			return "redirect:/";
 		}
 		model.addAttribute("appl", appl);
-		model.addAttribute("okato", addrService.findOkato(appl.getId_adrreg()));
+		
+		String okato_reg = "-";
+		String okato_pr = "-";
+		if (appl.getId_adrreg() != null) {
+			okato_reg = addrService.findOkato(appl.getId_adrreg());
+		}
+		if (appl.getId_adrpr() != null) {
+			okato_pr = addrService.findOkato(appl.getId_adrpr());
+		}
+		model.addAttribute("okato_reg", okato_reg);
+		model.addAttribute("okato_pr", okato_pr);
 
 		if (selAddress.getIdlev1Reg() == null && selAddress.getIdlev1Pr() == null
 				&& addrService.isRecordExist(appl.getId_appl())) {

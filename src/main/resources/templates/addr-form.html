@@ -39,7 +39,12 @@
 				<tbody>
 					<tr class="small">
 						<td>Адрес регистрации в заявлении<br />
-							<div class="alert alert-info" role="alert" th:text="${okato}"></div>
+							<div class="alert alert-info" role="alert" th:text="${okato_reg}"></div>
+						</td>
+					</tr>
+					<tr class="small" th:if="${appl.id_adrpr != appl.id_adrreg}">
+						<td>Адрес проживания в заявлении<br />
+							<div class="alert alert-info" role="alert" th:text="${okato_pr}"></div>
 						</td>
 					</tr>
 				</tbody>

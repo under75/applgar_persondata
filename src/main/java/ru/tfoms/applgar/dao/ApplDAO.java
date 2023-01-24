@@ -1,5 +1,8 @@
 package ru.tfoms.applgar.dao;
 
+import static ru.tfoms.applgar.util.Constants.HSMO_ROLE;
+import static ru.tfoms.applgar.util.Constants.SMO_ADD_CODE;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
@@ -10,34 +13,53 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import ru.tfoms.applgar.entity.Fsmo;
+import ru.tfoms.applgar.entity.Inspector;
 import ru.tfoms.applgar.entity.User;
 import ru.tfoms.applgar.model.ApplSearchParameters;
 import ru.tfoms.applgar.model.RowData;
-import ru.tfoms.applgar.util.Constants;
+import ru.tfoms.applgar.repository.FsmoRepository;
+import ru.tfoms.applgar.repository.InspectorRepository;
 
 @Component
 public class ApplDAO {
 	protected final NamedParameterJdbcTemplate jdbcTemplate;
+	private final InspectorRepository inspectorRepository;
+	private final FsmoRepository smoRepository;
 
 	@Autowired
-	public ApplDAO(NamedParameterJdbcTemplate jdbcTemplate) {
+	public ApplDAO(NamedParameterJdbcTemplate jdbcTemplate, InspectorRepository inspectorRepository,
+			FsmoRepository smoRepository) {
 		this.jdbcTemplate = jdbcTemplate;
+		this.inspectorRepository = inspectorRepository;
+		this.smoRepository = smoRepository;
 	}
 
 	public Collection<RowData> getDataForExcel(User user, ApplSearchParameters appl) {
 		MapSqlParameterSource namedParams = new MapSqlParameterSource();
 
 		StringBuilder sql = new StringBuilder("select rownum, appl.* from OMCOWNER.V_APPL_EXT appl where");
-		sql.append(" trunc(appl.DT_APPL) > to_date(:dtReg1, 'yyyy-MM-dd')");
-		sql.append(" and trunc(appl.DT_APPL) < to_date(:dtReg2, 'yyyy-MM-dd')");
+		sql.append(" trunc(appl.DT_APPL) >= to_date(:dtReg1, 'yyyy-MM-dd')");
+		sql.append(" and trunc(appl.DT_APPL) <= to_date(:dtReg2, 'yyyy-MM-dd')");
 		sql.append(" and appl.CD_SMO = :smo");
 		namedParams.addValue("dtReg1", appl.getDtReg1());
 		namedParams.addValue("dtReg2", appl.getDtReg2());
-		namedParams.addValue("smo", user.getSmo() + Constants.SMO_ADD_CODE);
+		namedParams.addValue("smo", user.getSmo() + SMO_ADD_CODE);
+		boolean userHasHsmoRole = user.getRoles().stream().filter(t -> t.getRole_name().equals(HSMO_ROLE)).count() > 0;
 
-		if (!(user.getRoles().stream().filter(t -> t.getRole_name().equals(Constants.HSMO_ROLE)).count() > 0)) {
+		if (appl.getCdInsp() != null) {
 			sql.append(" and appl.CD_FSMO = :fSmo");
-			namedParams.addValue("fSmo", user.getfSmo());
+			Inspector inspector = inspectorRepository.getReferenceById(appl.getCdInsp());
+			namedParams.addValue("fSmo", inspector.getCdFsmo());
+		} else if (appl.getCdFsmo() != null) {
+			sql.append(" and appl.CD_FSMO = :fSmo");
+			Fsmo fSmo = smoRepository.getByCdSmoAndCdFsmo(user.getSmo() + SMO_ADD_CODE, appl.getCdFsmo());
+			namedParams.addValue("fSmo", fSmo.getCdFsmo());
+		} else {
+			if (!userHasHsmoRole) {
+				sql.append(" and appl.CD_FSMO = :fSmo");
+				namedParams.addValue("fSmo", user.getfSmo());
+			}
 		}
 
 		String serDoc = appl.getSerDoc().trim();
