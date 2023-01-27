@@ -12,6 +12,7 @@ import ru.tfoms.applgar.model.Address;
 import ru.tfoms.applgar.model.FilterWord;
 import ru.tfoms.applgar.model.Gar;
 import ru.tfoms.applgar.model.House;
+import ru.tfoms.applgar.model.Okato;
 import ru.tfoms.applgar.model.Result;
 import ru.tfoms.applgar.model.SelectedAddress;
 
@@ -141,7 +142,7 @@ public class AddressService<T> {
 		}
 		selAddress.setIdlev4Reg(addressDAO.findIdLev4Reg(id_appl));
 		if (selAddress.getIdlev2Reg() != null)
-			selAddress.setIdlev1Reg(addressDAO.findIdByChildId(selAddress.getIdlev2Reg()));
+			selAddress.setIdlev1Reg(addressDAO.findIdLev1ByChildId(selAddress.getIdlev2Reg()));
 
 		/** PR **/
 		selAddress.setIdlev2Pr(addressDAO.findIdLev2Pr(id_appl));
@@ -158,7 +159,7 @@ public class AddressService<T> {
 		}
 		selAddress.setIdlev4Pr(addressDAO.findIdLev4Pr(id_appl));
 		if (selAddress.getIdlev2Pr() != null)
-			selAddress.setIdlev1Pr(addressDAO.findIdByChildId(selAddress.getIdlev2Pr()));
+			selAddress.setIdlev1Pr(addressDAO.findIdLev1ByChildId(selAddress.getIdlev2Pr()));
 	}
 
 	public void setLevel4Reg(Gar gar, FilterWord filter, Address lev3Reg) {
@@ -346,6 +347,26 @@ public class AddressService<T> {
 	}
 
 	public String findOkato(Long addrRegId) {
-		return addressDAO.getOcatoStr(addrRegId);
+		Okato ocato = addressDAO.findOkato(addrRegId);
+		String lev1Cod;
+		String oblLev1 = null;
+		if (ocato.getOblLev2Cod() != null) {
+			lev1Cod = ocato.getOblLev2Cod().substring(0, 5) + "0000001";
+			oblLev1 = addressDAO.findOkatoOblLev1(lev1Cod);
+		}
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(ocato.getTer() != null ? ocato.getTer() : "Саратовская обл").append(", ");
+		sb.append(oblLev1 != null ? oblLev1 + ", " : "");
+		sb.append(ocato.getOblLev2() != null && !ocato.getOblLev2().equals(oblLev1) ? ocato.getOblLev2() + ", " : "");
+		sb.append(ocato.getCity() != null ? ocato.getCity() + ", " : "");
+		sb.append(ocato.getRaion() != null ? ocato.getRaion() + ", " : "");
+		sb.append(ocato.getSettl() != null ? ocato.getSettl() + ", " : "");
+		sb.append(ocato.getStreet() != null ? ocato.getStreet() + ", " : "");
+		sb.append(ocato.getHouse() != null ? ocato.getHouse() + ", " : "");
+		sb.append(ocato.getBldn() != null ? ocato.getBldn() + ", " : "");
+		sb.append(ocato.getFlat() != null ? ocato.getFlat() + ", " : "");
+
+		return sb.substring(0, sb.lastIndexOf(","));
 	}
 }

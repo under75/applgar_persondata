@@ -109,27 +109,9 @@ public class SelectedAddress {
 		this.idlev4Pr = idlev4Pr;
 	}
 
-
-
-//	public void clear() {
-//		setIdlev1Reg(null);
-//		setIdlev2Reg(null);
-//		setIdlev3Reg(null);
-//		setIdlev4Reg(null);
-//
-//		setIdlev1Pr(null);
-//		setIdlev2Pr(null);
-//		setIdlev3Pr(null);
-//		setIdlev4Pr(null);
-//
-//	}
-
-
-
 	public Integer getIdlev31Reg() {
 		return idlev31Reg;
 	}
-
 
 
 	public void setIdlev31Reg(Integer idlev31Reg) {

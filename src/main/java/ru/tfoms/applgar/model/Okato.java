@@ -6,6 +6,7 @@ public class Okato {
 	private String oblLev2;
 	private String city;
 	private String raion;
+	private String settl;
 	private String street;
 	private String house;
 	private String bldn;
@@ -49,6 +50,14 @@ public class Okato {
 
 	public void setRaion(String raion) {
 		this.raion = raion;
+	}
+
+	public String getSettl() {
+		return settl;
+	}
+
+	public void setSettl(String settl) {
+		this.settl = settl;
 	}
 
 	public String getStreet() {

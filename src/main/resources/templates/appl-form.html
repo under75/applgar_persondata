@@ -40,7 +40,7 @@
 						class="form-control form-control-sm" th:onchange="checkBranchValue(this.value)">
 							<option value=""></option>
 							<option th:each="branch : ${branches}"
-								th:value="${branch.cdFsmo}" th:text="${branch.name}"
+								th:value="${branch.cdFsmo}" th:text="${branch.name} + ' (' + ${branch.cdFsmo} + ' филиал)'"
 								th:selected="${applSParam.cdFsmo}"></option>
 					</select></td>
 				</tr>

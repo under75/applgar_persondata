@@ -156,6 +156,14 @@ public class AddressDAO {
 				"select a.ID from fiasowner.as_addr_obj a inner join fiasowner.as_adm_hierarchy h on a.objectid = h.parentobjid where a.isactual = 1 and h.objectid in (select ad.objectid from fiasowner.as_addr_obj ad where ad.id = :childId)",
 				namedParams, Integer.class).stream().findAny().orElse(findAddressById(childId).getId());
 	}
+	
+	public Integer findIdLev1ByChildId(Integer childId) {
+		MapSqlParameterSource namedParams = new MapSqlParameterSource();
+		namedParams.addValue("childId", childId);
+		return jdbcTemplate.queryForList(
+				"select a.ID from fiasowner.as_addr_obj a inner join fiasowner.as_adm_hierarchy h on a.objectid = h.parentobjid where a.isactual = 1 and a.level_ = 1 and h.objectid in (select ad.objectid from fiasowner.as_addr_obj ad where ad.id = :childId)",
+				namedParams, Integer.class).stream().findAny().orElse(findAddressById(childId).getId());
+	}
 
 	public Integer findIdLev2Reg(Long id_appl) {
 		MapSqlParameterSource namedParams = new MapSqlParameterSource();
@@ -227,8 +235,8 @@ public class AddressDAO {
 		return jdbcTemplate.query(sql, namedParams, addressMapper).stream().findAny().orElse(null);
 	}
 
-	private Okato findOkato(Long addrRegId) {
-		String sql = "SELECT ter.naim, obl.naim, addr.raion, addr.street, addr.house, addr.bldn, addr.flat, addr.city, obl.cod"
+	public Okato findOkato(Long addrRegId) {
+		String sql = "SELECT ter.naim, obl.naim, addr.raion, addr.settl, addr.street, addr.house, addr.bldn, addr.flat, addr.city, obl.cod"
 				+ " FROM omcowner.address addr LEFT JOIN OMCOWNER.okatoter ter ON addr.ter = ter.cod"
 				+ " LEFT JOIN OMCOWNER.okatoobl obl ON addr.okato = obl.cod WHERE addr.id_addr = :addrRegId";
 
@@ -242,49 +250,26 @@ public class AddressDAO {
 				address.setTer(rs.getString(1));
 				address.setOblLev2(rs.getString(2));
 				address.setRaion(rs.getString(3));
-				address.setStreet(rs.getString(4));
-				address.setHouse(rs.getString(5));
-				address.setBldn(rs.getString(6));
-				address.setFlat(rs.getString(7));
-				address.setCity(rs.getString(8));
-				address.setOblLev2Cod(rs.getString(9));
+				address.setSettl(rs.getString(4));
+				address.setStreet(rs.getString(5));
+				address.setHouse(rs.getString(6));
+				address.setBldn(rs.getString(7));
+				address.setFlat(rs.getString(8));
+				address.setCity(rs.getString(9));
+				address.setOblLev2Cod(rs.getString(10));
 
 				return address;
 			}
 		}).stream().findAny().orElse(null);
 	}
 
-	private String findOkatoOblLev1(String lev1Cod) {
+	public String findOkatoOblLev1(String lev1Cod) {
 		String sql = "SELECT o.naim FROM OMCOWNER.okatoobl o WHERE o.cod = :lev1";
 
 		MapSqlParameterSource namedParams = new MapSqlParameterSource();
 		namedParams.addValue("lev1", lev1Cod);
 
 		return jdbcTemplate.queryForList(sql, namedParams, String.class).stream().findAny().orElse(null);
-	}
-
-	public String getOcatoStr(Long addrRegId) {
-		Okato ocato = findOkato(addrRegId);
-		String lev1Cod;
-		String oblLev1 = null;
-		if (ocato.getOblLev2Cod() != null) {
-			lev1Cod = ocato.getOblLev2Cod().substring(0, 5) + "0000001";
-			oblLev1 = findOkatoOblLev1(lev1Cod);
-		}
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(ocato.getTer() != null ? ocato.getTer() : "Саратовская обл").append(", ");
-		sb.append(oblLev1 != null ? oblLev1 + ", " : "");
-		sb.append(ocato.getOblLev2() != null && !ocato.getOblLev2().equals(oblLev1) ? ocato.getOblLev2() + ", " : "");
-		sb.append(ocato.getCity() != null ? ocato.getCity() + ", " : "");
-		sb.append(ocato.getRaion() != null ? ocato.getRaion() + ", " : "");
-		sb.append(ocato.getStreet() != null ? ocato.getStreet() + ", " : "");
-		sb.append(ocato.getHouse() != null ? ocato.getHouse() + ", " : "");
-		sb.append(ocato.getBldn() != null ? ocato.getBldn() + ", " : "");
-		sb.append(ocato.getFlat() != null ? ocato.getFlat() + ", " : "");
-
-		return sb.substring(0, sb.lastIndexOf(","));
-
 	}
 
 }

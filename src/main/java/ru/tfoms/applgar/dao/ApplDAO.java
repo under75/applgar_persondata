@@ -140,32 +140,30 @@ public class ApplDAO {
 		sql = "select addr.housenum, addr.addnum1, addr.addnum2 from FIASOWNER.as_houses addr where addr.objectguid = :objectguid";
 
 		namedParams.addValue("objectguid", data.getHsguidreg());
-		String[] arr = { "", "", "" };
+		String[] arr1 = { "", "", "" };
 		String[] lev3reg = (String[]) jdbcTemplate
 				.query(sql, namedParams, new BeanPropertyRowMapper<String[]>(String[].class) {
 					@Override
 					public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
-						arr[0] = rs.getString(1) != null ? rs.getString(1) : "";
-						arr[1] = rs.getString(2) != null ? rs.getString(2) : "";
-						arr[2] = rs.getString(3) != null ? rs.getString(3) : "";
-						return arr;
+						arr1[0] = rs.getString(1) != null ? rs.getString(1) : "";
+						arr1[1] = rs.getString(2) != null ? rs.getString(2) : "";
+						arr1[2] = rs.getString(3) != null ? rs.getString(3) : "";
+						return arr1;
 					}
-				}).stream().findAny().orElse(arr);
+				}).stream().findAny().orElse(arr1);
 
 		namedParams.addValue("objectguid", data.getHsguidpr());
-		arr[0] = "";
-		arr[1] = "";
-		arr[2] = "";
+		String[] arr2 = { "", "", "" };
 		String[] lev3pr = (String[]) jdbcTemplate
 				.query(sql, namedParams, new BeanPropertyRowMapper<String[]>(String[].class) {
 					@Override
 					public String[] mapRow(ResultSet rs, int rowNum) throws SQLException {
-						arr[0] = rs.getString(1) != null ? rs.getString(1) : "";
-						arr[1] = rs.getString(2) != null ? rs.getString(2) : "";
-						arr[2] = rs.getString(3) != null ? rs.getString(3) : "";
-						return arr;
+						arr2[0] = rs.getString(1) != null ? rs.getString(1) : "";
+						arr2[1] = rs.getString(2) != null ? rs.getString(2) : "";
+						arr2[2] = rs.getString(3) != null ? rs.getString(3) : "";
+						return arr2;
 					}
-				}).stream().findAny().orElse(arr);
+				}).stream().findAny().orElse(arr2);
 
 		data.setPersonAddressReg(
 				(lev1reg + " " + lev2reg + " " + lev3reg[0] + " " + lev3reg[1] + " " + lev3reg[2]).trim());
