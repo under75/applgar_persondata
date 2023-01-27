@@ -1,20 +1,23 @@
 package ru.tfoms.applgar.entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "SMOROLES", schema = "BIGADMIN")
-public class Role {
-
+@IdClass(RoleId.class)
+public class Role implements Serializable{
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name = "u_name")
 	private String u_name;
-
+	@Id
 	@Column(name = "role_name")
 	private String role_name;
 

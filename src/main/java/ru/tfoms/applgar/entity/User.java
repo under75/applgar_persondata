@@ -1,5 +1,6 @@
 package ru.tfoms.applgar.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
@@ -14,7 +15,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "jpol_users", schema = "BIGADMIN")
-public class User {
+public class User implements Serializable {
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "u_name")
 	private String name;
