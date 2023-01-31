@@ -8,6 +8,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "mpi_snils", schema = "OMCOWNER")
 @IdClass(PersDataId.class)
@@ -24,8 +27,12 @@ public class Snils {
 	private String snils;
 
 	@OneToOne
-	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	@NotFound(action = NotFoundAction.IGNORE) 
+	@JoinColumn(name = "dsource", referencedColumnName = "cod", insertable=false, updatable=false)
 	private Okato dsource;
+	
+	@Column(name = "dsource")
+	private String dsourceStr;
 
 	@Column(name = "dsourcetype")
 	private String dsourceType;
@@ -66,6 +73,14 @@ public class Snils {
 
 	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
+	}
+	
+	public String getDsourceStr() {
+		return dsourceStr;
+	}
+
+	public void setDsourceStr(String dsourceStr) {
+		this.dsourceStr = dsourceStr;
 	}
 
 	public String getDsourceType() {

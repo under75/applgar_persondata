@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "mpi_person", schema = "OMCOWNER")
 @IdClass(PersDataId.class)
@@ -38,9 +41,9 @@ public class Person {
 	private Integer gender;
 
 	@OneToOne
-	@JoinColumn(name = "birth_oksm", referencedColumnName = "cod")
+	@JoinColumn(name = "birth_oksm", referencedColumnName = "alfa3")
 	private Oksm birthOksm;
-
+	
 	@Column(name = "death_dt")
 	private Date deathDate;
 

@@ -12,6 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.thymeleaf.util.StringUtils;
 
 @Entity
@@ -42,7 +44,8 @@ public class PersonData {
 	private String dudlNum;
 
 	@OneToOne
-	@JoinColumn(name = "dudltype", referencedColumnName = "cd_dok")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@JoinColumn(name = "dudltype", referencedColumnName = "code",insertable=false, updatable=false)
 	private DudlType dudlType;
 
 	@Column(name = "snils")

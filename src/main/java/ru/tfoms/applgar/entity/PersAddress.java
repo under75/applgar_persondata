@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "mpi_address", schema = "OMCOWNER")
 @IdClass(PersDataId.class)
@@ -23,18 +26,22 @@ public class PersAddress {
 	private Integer nr;
 
 	@OneToOne
+	@NotFound(action = NotFoundAction.IGNORE) 
 	@JoinColumn(name = "okato", referencedColumnName = "cod")
 	private Okato okato;
 
 	@OneToOne
-	@JoinColumn(name = "oksm", referencedColumnName = "cod")
+	@NotFound(action = NotFoundAction.IGNORE) 
+	@JoinColumn(name = "oksm", referencedColumnName = "alfa3")
 	private Oksm oksm;
 
 	@OneToOne
+	@NotFound(action = NotFoundAction.IGNORE) 
 	@JoinColumn(name = "aoguid", referencedColumnName = "objectguid")
 	private AddrGar aoguid;
 
 	@OneToOne
+	@NotFound(action = NotFoundAction.IGNORE) 
 	@JoinColumn(name = "hsguid", referencedColumnName = "objectguid")
 	private HouseGar hsguid;
 
@@ -51,8 +58,12 @@ public class PersAddress {
 	private String dsourceType;
 
 	@OneToOne
-	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	@NotFound(action = NotFoundAction.IGNORE) 
+	@JoinColumn(name = "dsource", referencedColumnName = "cod", insertable=false, updatable=false)
 	private Okato dsource;
+	
+	@Column(name = "dsource")
+	private String dsourceStr;
 
 	@Column(name = "addresstype")
 	private String addressType;
@@ -152,6 +163,14 @@ public class PersAddress {
 
 	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
+	}
+
+	public String getDsourceStr() {
+		return dsourceStr;
+	}
+
+	public void setDsourceStr(String dsourceStr) {
+		this.dsourceStr = dsourceStr;
 	}
 
 	public String getAddressType() {

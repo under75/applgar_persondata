@@ -45,7 +45,7 @@ public class UserController {
 	@PostMapping("/")
 	public String login(Model model, @ModelAttribute("user") User user, BindingResult bindingResult) {
 		user = service.findByNameAndPasswd(user.getName(), user.getPasswd());
-		//VERY CAREFULLY!!!
+//		VERY CAREFULLY!!!
 //		user = service.deserializeUser("smo1544");
 		if (user == null) {
 			model.addAttribute("version", "v" + appVersion);

@@ -95,7 +95,7 @@
 							<td th:text="${policy.pcyStatus}" />
 							<td th:text="${policy.okato != null ? policy.okato.title : ''}" />
 							<td
-								th:text="${policy.dsource != null ? policy.dsource.title : ''}" />
+								th:text="${policy.dsource != null ? policy.dsource.title : policy.dsourceStr}" />
 							<td th:text="${policy.dsourceType}" />
 							<td th:text="${policy.descr}" />
 						</tr>
@@ -187,13 +187,13 @@
 							<td align="center"
 								th:text="${#dates.format(dudl.dudlDateE, 'dd.MM.yyyy')}" />
 							<td
-								th:text="${dudl.dudlType != null ? dudl.dudlType.docName : ''}" />
+								th:text="${dudl.dudlType != null ? dudl.dudlType.docName : dudl.dudlTypeStr}" />
 							<td th:text="${dudl.issuer}" />
 							<td
 								th:text="${dudl.issuerOksm != null ? dudl.issuerOksm.name2 : ''}" />
 							<td th:text="${dudl.ctznOksm != null ? dudl.ctznOksm.name2 : ''}" />
 							<td align="center" th:text="${dudl.noCitizenship}" />
-							<td th:text="${dudl.dsource != null ? dudl.dsource.title : ''}" />
+							<td th:text="${dudl.dsource != null ? dudl.dsource.title : dudl.dsourceStr}" />
 							<td th:text="${dudl.descr}" />
 							<td th:text="${dudl.birthPlace}" />
 							<td th:text="${dudl.dsourceType}" />
@@ -241,12 +241,14 @@
 							<td th:text="${address.oksm != null ? address.oksm.name2 : ''}" />
 							<td
 								th:text="${address.aoguid != null ? address.aoguid.name : ''}" />
+							<td
+								th:text="${address.hsguid != null ? address.hsguid.houseNum : ''}" />
 							<td th:text="${address.addressText}" />
 							<td th:text="${address.mailIndex}" />
 							<td th:text="${address.appNum}" />
 							<td th:text="${address.dsourceType}" />
 							<td
-								th:text="${address.dsource != null ? address.dsource.title : ''}" />
+								th:text="${address.dsource != null ? address.dsource.title : address.dsourceStr}" />
 							<td th:text="${address.addressType}" />
 							<td
 								th:text="${#dates.format(address.addressDateB, 'dd.MM.yyyy')}" />
@@ -309,7 +311,7 @@
 							<td th:text="${attach.moOkato}" />
 							<td th:text="${attach.attachStatus}" />
 							<td
-								th:text="${attach.dsource != null ? attach.dsource.title : ''}" />
+								th:text="${attach.dsource != null ? attach.dsource.title : attach.dsourceStr}" />
 							<td th:text="${attach.dsourceType}" />
 						</tr>
 					</tbody>
@@ -345,7 +347,7 @@
 							<td th:text="${contact.contactText}" />
 							<td th:text="${contact.dsourceType}" />
 							<td
-								th:text="${contact.dsource != null ? contact.dsource.title : ''}" />
+								th:text="${contact.dsource != null ? contact.dsource.title : contact.dsourceStr}" />
 						</tr>
 					</tbody>
 				</table>
@@ -375,7 +377,7 @@
 					<tbody>
 						<tr th:each="snils : ${snilses}" class='small'>
 							<td th:text="${snils.snils}" />
-							<td th:text="${snils.dsource != null ? snils.dsource.title : ''}" />
+							<td th:text="${snils.dsource != null ? snils.dsource.title : snils.dsourceStr}" />
 							<td th:text="${snils.dsourceType}" />
 							<td th:text="${snils.descr}" />
 						</tr>
@@ -409,7 +411,7 @@
 						<tr th:each="status : ${statuses}" class='small'>
 							<td th:text="${status.socialStatus}" />
 							<td th:text="${status.dsourceType}" />
-							<td th:text="${status.dsource != null ? status.dsource.title : ''}" />
+							<td th:text="${status.dsource != null ? status.dsource.title : status.dsourceStr}" />
 							<td th:text="${status.descr}" />
 							<td th:text="${#dates.format(status.regDate, 'dd.MM.yyyy')}" />
 						</tr>

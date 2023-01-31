@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name = "mpi_dudl", schema = "OMCOWNER")
 @IdClass(PersDataId.class)
@@ -35,8 +38,12 @@ public class Dudl {
 	private Date dudlDateE;
 
 	@OneToOne
-	@JoinColumn(name = "dudltype", referencedColumnName = "cd_dok")
+	@NotFound(action = NotFoundAction.IGNORE)
+	@JoinColumn(name = "dudltype", referencedColumnName = "code",insertable=false, updatable=false)
 	private DudlType dudlType;
+	
+	@Column(name = "dudltype")
+	private String dudlTypeStr;
 
 	@Column(name = "issuer")
 	private String issuer;
@@ -53,8 +60,12 @@ public class Dudl {
 	private Boolean noCitizenship;
 
 	@OneToOne
-	@JoinColumn(name = "dsource", referencedColumnName = "cod")
+	@NotFound(action = NotFoundAction.IGNORE) 
+	@JoinColumn(name = "dsource", referencedColumnName = "cod", insertable=false, updatable=false)
 	private Okato dsource;
+	
+	@Column(name = "dsource")
+	private String dsourceStr;
 
 	@Column(name = "descr")
 	private String descr;
@@ -81,7 +92,7 @@ public class Dudl {
 	private String dsourceType;
 
 	@OneToOne
-	@JoinColumn(name = "birthoksm", referencedColumnName = "cod")
+	@JoinColumn(name = "birthoksm", referencedColumnName = "alfa3")
 	private Oksm birthOksm;
 
 	@Column(name = "dudlstatus")
@@ -149,6 +160,14 @@ public class Dudl {
 		this.dudlType = dudlType;
 	}
 
+	public String getDudlTypeStr() {
+		return dudlTypeStr;
+	}
+
+	public void setDudlTypeStr(String dudlTypeStr) {
+		this.dudlTypeStr = dudlTypeStr;
+	}
+
 	public String getIssuer() {
 		return issuer;
 	}
@@ -187,6 +206,14 @@ public class Dudl {
 
 	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
+	}
+
+	public String getDsourceStr() {
+		return dsourceStr;
+	}
+
+	public void setDsourceStr(String dsourceStr) {
+		this.dsourceStr = dsourceStr;
 	}
 
 	public String getDescr() {
