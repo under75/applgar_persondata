@@ -3,6 +3,7 @@ package ru.tfoms.applgar.model;
 public class PersSearchParameters {
 	private String oip;
 	private String policyType;
+	private String policySer;
 	private String policyNum;
 	private Integer dudlType;
 	private String dudlSer;
@@ -34,6 +35,14 @@ public class PersSearchParameters {
 
 	public void setPolicyType(String policyType) {
 		this.policyType = policyType;
+	}
+
+	public String getPolicySer() {
+		return policySer;
+	}
+
+	public void setPolicySer(String policySer) {
+		this.policySer = policySer;
 	}
 
 	public String getPolicyNum() {

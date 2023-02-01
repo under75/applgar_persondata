@@ -37,16 +37,20 @@ import ru.tfoms.applgar.entity.PersonData;
 import ru.tfoms.applgar.entity.Snils;
 import ru.tfoms.applgar.entity.SocialStatus;
 import ru.tfoms.applgar.entity.User;
+import ru.tfoms.applgar.model.PersCritSearchParameters;
 import ru.tfoms.applgar.model.PersSearchParameters;
+import ru.tfoms.applgar.service.PersCritService;
 import ru.tfoms.applgar.service.PersDataService;
 
 @Controller
 public class PersonDataController {
 	private final PersDataService service;
+	private final PersCritService critService;
 
-	public PersonDataController(PersDataService service) {
+	public PersonDataController(PersDataService service, PersCritService critService) {
 		super();
 		this.service = service;
+		this.critService = critService;
 	}
 
 	@GetMapping("/pers")
@@ -140,6 +144,15 @@ public class PersonDataController {
 		model.addAttribute("statuses", statuses);
 
 		return "pers-res";
+	}
+	
+	@GetMapping("/pers/crit")
+	public String criteria(Model model) throws ParseException {
+		PersCritSearchParameters persCritSParam = new PersCritSearchParameters();
+		model.addAttribute("persCritSParam", persCritSParam);
+		model.addAttribute("okatos", critService.findAll());
+		
+		return "pers-crit-form";
 	}
 
 }

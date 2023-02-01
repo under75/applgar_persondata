@@ -97,7 +97,7 @@
 							<td align="left"
 								th:text="${#dates.format(appl.dtAppl, 'dd.MM.yyyy')}" />
 							<td align="left" th:text="${appl.cdFsmo}" />
-							<td align="left" th:text="${appl.inspector.fioInsp}" />
+							<td align="left" th:text="${appl.inspector != null ? appl.inspector.fioInsp : ''}" />
 							<td align="center"><span th:if="${appl.garAppl != null}">&check;</span></td>
 						</tr>
 					</tbody>
@@ -202,5 +202,8 @@
 			}
 		}
 	</script>
+	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 </body>
 </html>

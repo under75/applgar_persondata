@@ -34,7 +34,9 @@
 								th:text="${policyTypeEntry.value}"
 								th:selected="${persSParam.policyType}"></option>
 					</select></td>
-					<td class="small"></td>
+					<td class="small"><input type="text"
+						th:field="*{persSParam.policySer}" id="policySer"
+						class="form-control form-control-sm" placeholder="серия" /></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.policyNum}" id="policyNum"
 						class="form-control form-control-sm" placeholder="номер" /></td>
@@ -112,16 +114,18 @@
 							<input class="form-check-input" type="checkbox"
 								th:id="${resultTypeEntry.key}" th:value="${resultTypeEntry.key}"
 								th:checked="${persSParam.show != null && persSParam.show.contains(resultTypeEntry.key.name())}"
-								name="show"> <label th:for="${resultTypeEntry.key}"
+								name="show"/><label th:for="${resultTypeEntry.key}"
 								class="form-check-label" th:text="${resultTypeEntry.value}"></label>
 						</div>
+					</td>
 				</tr>
 				<tr>
 					<td colspan="5"><input type="submit" value="Поиск"
 						class="btn btn-sm btn-primary" name="saveRequest" />&nbsp;<input
 						type="button" value="Очистить" onclick="location.href='/pers'"
-						class="btn btn-sm btn-secondary" />&nbsp;<input
-						type="button" value="Обновить" th:onclick="|goToPage(${persDataPage.number + 1})|"
+						class="btn btn-sm btn-secondary" />&nbsp;<input type="button"
+						value="Обновить"
+						th:onclick="|goToPage(${persDataPage.number + 1})|"
 						class="btn btn-sm btn-secondary" /></td>
 					<td align="right"><input type="hidden" id="page" name="page" /><input
 						type="button" value="Выход" class="btn btn-sm btn-dark"
@@ -133,91 +137,91 @@
 							th:errors="*{persSParam}"></div></td>
 				</tr>
 			</table>
-		<div th:if="${persDataPage.content.size} > 0">
-			<table class="table table-sm table-striped table-hover">
-				<thead class="thead-dark">
-					<tr class="small">
-						<th>Дата поиска</th>
-						<th>ОИП</th>
-						<th>Номер полиса</th>
-						<th>Тип ДУДЛ</th>
-						<th>Серия ДУДЛ</th>
-						<th>Номер ДУДЛ</th>
-						<th>СНИЛС</th>
-						<th>Дата рождения</th>
-						<th>Фамилия</th>
-						<th>Имя</th>
-						<th>Отчество</th>
-						<!-- 						<th>На дату</th> -->
-						<!-- 						<th>C даты</th> -->
-						<!-- 						<th>По дату</th> -->
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="persData, iStat : ${persDataPage.content}"
-						class='clickable-row small'
-						th:attr="data-rid=${persData.rid}, data-done=${persData.hasError != null}"
-						onclick="goToResult(this.getAttribute('data-rid'), this.getAttribute('data-done'))"
-						style="cursor: pointer;"
-						th:classappend="|${persData.hasError != null && !persData.hasError ? 'bg-success' : ''} ${persData.hasError != null && persData.hasError ? 'bg-danger' : ''}|">
-						<td th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy')}" />
-						<td th:text="${persData.oip}" />
-						<td th:text="${persData.pcy}" />
-						<td
-							th:text="${persData.dudlType != null ? persData.dudlType.docName : ''}" />
-						<td th:text="${persData.dudlSer}" />
-						<td th:text="${persData.dudlNum}" />
-						<td th:text="${persData.snils}" />
-						<td th:text="${#dates.format(persData.birthDay, 'dd.MM.yyyy')}" />
-						<td th:text="${persData.lastName}" />
-						<td th:text="${persData.firstName}" />
-						<td th:text="${persData.patronymic}" />
-						<!-- 						<td th:text="${#dates.format(persData.dt, 'dd.MM.yyyy')}" /> -->
-						<!-- 						<td th:text="${#dates.format(persData.dtFrom, 'dd.MM.yyyy')}" /> -->
-						<!-- 						<td th:text="${#dates.format(persData.dtTo, 'dd.MM.yyyy')}" /> -->
-					</tr>
-				</tbody>
-			</table>
-			<nav aria-label="Pagination" th:if="${persDataPage.totalPages gt 0}">
-				<ul
-					class="pagination pagination-sm justify-content-center font-weight-medium">
-					<li>Дата поиска&nbsp;</li>
-					<li><input type="date" th:field="*{persSParam.dateFrom}"
-						class="form-control form-control-sm" id="dateFrom"/></li>
-					<li>&nbsp;-&nbsp;</li>
-					<li><input type="date" th:field="*{persSParam.dateTo}"
-						class="form-control form-control-sm" id="dateTo"/></li>
-					<li class="page-item"
-						th:classappend="${persDataPage.number eq 0} ? 'disabled'">
-						<button type="button" class="btn btn-sm btn-link"
-							th:classappend="${persDataPage.number eq 0} ? 'disabled'"
-							th:onclick="|goToPage(${persDataPage.number lt 2 ? 1 : persDataPage.number})|">
-							<p>&#60;&#60;
-							<p>
-						</button>
-					</li>
-					<li class="page-item"
-						th:classappend="${i eq persDataPage.number + 1} ? 'active'"
-						th:each="i : ${#numbers.sequence(persDataPage.totalPages > persDataPage.number + 10 ? persDataPage.number + 1 : persDataPage.totalPages - 10 > 0 ? persDataPage.totalPages - 10 : 1, persDataPage.totalPages > 10 + persDataPage.number ? persDataPage.number + 10 : persDataPage.totalPages, 1)}">
-						<a class="page-link" href="#" th:onclick="|goToPage(${i})|"
-						th:text="${i}"><span class="sr-only">(current)</span></a>
-					</li>
-					<li class="page-item disabled"
-						th:if="${persDataPage.number + 10 < persDataPage.totalPages}"><a
-						class="page-link" href="#"> ... </a></li>
-					<li class="page-item"
-						th:classappend="${persDataPage.number + 1 eq persDataPage.totalPages} ? 'disabled'">
-						<button type="button" class="btn btn-sm btn-link"
-							th:classappend="${persDataPage.number + 1 eq persDataPage.totalPages} ? 'disabled'"
-							th:onclick="|goToPage(${persDataPage.number + 2})|">
-							<p>&#62;&#62;
-							<p>
-						</button>
-					</li>
-				</ul>
+			<div th:if="${persDataPage.content.size} > 0">
+				<table class="table table-sm table-striped table-hover">
+					<thead class="thead-dark">
+						<tr class="small">
+							<th>Дата поиска</th>
+							<th>ОИП</th>
+							<th>Номер полиса</th>
+							<th>Тип ДУДЛ</th>
+							<th>Серия ДУДЛ</th>
+							<th>Номер ДУДЛ</th>
+							<th>СНИЛС</th>
+							<th>Дата рождения</th>
+							<th>Фамилия</th>
+							<th>Имя</th>
+							<th>Отчество</th>
+							<!-- 						<th>На дату</th> -->
+							<!-- 						<th>C даты</th> -->
+							<!-- 						<th>По дату</th> -->
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="persData, iStat : ${persDataPage.content}"
+							class='clickable-row small'
+							th:attr="data-rid=${persData.rid}, data-done=${persData.hasError != null}"
+							onclick="goToResult(this.getAttribute('data-rid'), this.getAttribute('data-done'))"
+							style="cursor: pointer;"
+							th:classappend="|${persData.hasError != null && !persData.hasError ? 'bg-success' : ''} ${persData.hasError != null && persData.hasError ? 'bg-danger' : ''}|">
+							<td th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy')}" />
+							<td th:text="${persData.oip}" />
+							<td th:text="${persData.pcy}" />
+							<td
+								th:text="${persData.dudlType != null ? persData.dudlType.docName : ''}" />
+							<td th:text="${persData.dudlSer}" />
+							<td th:text="${persData.dudlNum}" />
+							<td th:text="${persData.snils}" />
+							<td th:text="${#dates.format(persData.birthDay, 'dd.MM.yyyy')}" />
+							<td th:text="${persData.lastName}" />
+							<td th:text="${persData.firstName}" />
+							<td th:text="${persData.patronymic}" />
+							<!-- 						<td th:text="${#dates.format(persData.dt, 'dd.MM.yyyy')}" /> -->
+							<!-- 						<td th:text="${#dates.format(persData.dtFrom, 'dd.MM.yyyy')}" /> -->
+							<!-- 						<td th:text="${#dates.format(persData.dtTo, 'dd.MM.yyyy')}" /> -->
+						</tr>
+					</tbody>
+				</table>
+				<nav aria-label="Pagination" th:if="${persDataPage.totalPages gt 0}">
+					<ul
+						class="pagination pagination-sm justify-content-center font-weight-medium">
+						<li>Дата поиска&nbsp;</li>
+						<li><input type="date" th:field="*{persSParam.dateFrom}"
+							class="form-control form-control-sm" id="dateFrom" /></li>
+						<li>&nbsp;-&nbsp;</li>
+						<li><input type="date" th:field="*{persSParam.dateTo}"
+							class="form-control form-control-sm" id="dateTo" /></li>
+						<li class="page-item"
+							th:classappend="${persDataPage.number eq 0} ? 'disabled'">
+							<button type="button" class="btn btn-sm btn-link"
+								th:classappend="${persDataPage.number eq 0} ? 'disabled'"
+								th:onclick="|goToPage(${persDataPage.number lt 2 ? 1 : persDataPage.number})|">
+								<p>&#60;&#60;
+								<p>
+							</button>
+						</li>
+						<li class="page-item"
+							th:classappend="${i eq persDataPage.number + 1} ? 'active'"
+							th:each="i : ${#numbers.sequence(persDataPage.totalPages > persDataPage.number + 10 ? persDataPage.number + 1 : persDataPage.totalPages - 10 > 0 ? persDataPage.totalPages - 10 : 1, persDataPage.totalPages > 10 + persDataPage.number ? persDataPage.number + 10 : persDataPage.totalPages, 1)}">
+							<a class="page-link" href="#" th:onclick="|goToPage(${i})|"
+							th:text="${i}"><span class="sr-only">(current)</span></a>
+						</li>
+						<li class="page-item disabled"
+							th:if="${persDataPage.number + 10 < persDataPage.totalPages}"><a
+							class="page-link" href="#"> ... </a></li>
+						<li class="page-item"
+							th:classappend="${persDataPage.number + 1 eq persDataPage.totalPages} ? 'disabled'">
+							<button type="button" class="btn btn-sm btn-link"
+								th:classappend="${persDataPage.number + 1 eq persDataPage.totalPages} ? 'disabled'"
+								th:onclick="|goToPage(${persDataPage.number + 2})|">
+								<p>&#62;&#62;
+								<p>
+							</button>
+						</li>
+					</ul>
 
-			</nav>
-		</div>
+				</nav>
+			</div>
 		</form>
 	</div>
 	<form th:method="POST" id="resForm">
@@ -259,5 +263,8 @@
 			}
 		}
 	</script>
+	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 </body>
 </html>

@@ -15,15 +15,20 @@
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item"
 					th:classappend="${#httpServletRequest.servletPath} == '/appl' ? 'active' : ''">
-					<a class="nav-link" href="/appl">Поиск заявлений<span
-						class="sr-only"
-						th:if="${#httpServletRequest.servletPath == '/appl'}">(current)</span></a>
+					<a class="nav-link" href="/appl">Поиск заявлений</a>
 				</li>
-				<li class="nav-item"
-					th:classappend="${#httpServletRequest.servletPath} == '/pers' ? 'active' : ''">
-					<a class="nav-link" href="/pers">Поиск персональных данных<span
-						class="sr-only"
-						th:if="${#httpServletRequest.servletPath == '/pers'}">(current)</span></a>
+				<!-- 				<li class="nav-item" -->
+				<!-- 					th:classappend="${#httpServletRequest.servletPath} == '/pers' ? 'active' : ''"> -->
+				<!-- 					<a class="nav-link" href="/pers">Поиск персональных данных</a> -->
+				<!-- 				</li> -->
+				<li class="nav-item dropdown" th:classappend="${#httpServletRequest.servletPath.contains('/pers')} ? 'active' : ''"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">Поиск персональных данных</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/pers">Метод getPersonData</a> 
+						<a class="dropdown-item" href="/pers/crit">Метод findPersonsByPersCriteria</a>
+					</div>
 				</li>
 			</ul>
 		</div>

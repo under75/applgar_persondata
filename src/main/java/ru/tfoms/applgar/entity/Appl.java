@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.thymeleaf.util.StringUtils;
 
 @Entity
@@ -33,6 +35,7 @@ public class Appl {
 	private Integer cdFsmo;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
+	@NotFound(action = NotFoundAction.IGNORE)
 	@JoinColumn(name = "cd_insp", referencedColumnName = "cd_insp")
 	private Inspector inspector;
 
