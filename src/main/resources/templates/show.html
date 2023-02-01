@@ -240,9 +240,9 @@
 							<td th:text="${address.okato != null ? address.okato.title : ''}" />
 							<td th:text="${address.oksm != null ? address.oksm.name2 : ''}" />
 							<td
-								th:text="${address.aoguid != null ? address.aoguid.name : ''}" />
+								th:text="${address.aoguid != null ? streets.get(address.nr).toString() : ''}" />
 							<td
-								th:text="${address.hsguid != null ? address.hsguid.houseNum : ''}" />
+								th:text="${address.hsguid != null ? houses.get(address.nr).toString() : ''}" />
 							<td th:text="${address.addressText}" />
 							<td th:text="${address.mailIndex}" />
 							<td th:text="${address.appNum}" />

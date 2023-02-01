@@ -6,6 +6,8 @@ import static ru.tfoms.applgar.service.PersDataService.resultType;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
@@ -22,9 +24,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import ru.tfoms.applgar.entity.AddrGar;
 import ru.tfoms.applgar.entity.Attach;
 import ru.tfoms.applgar.entity.Contact;
 import ru.tfoms.applgar.entity.Dudl;
+import ru.tfoms.applgar.entity.HouseGar;
 import ru.tfoms.applgar.entity.OmsPolicy;
 import ru.tfoms.applgar.entity.PersAddress;
 import ru.tfoms.applgar.entity.PersDataError;
@@ -103,7 +107,19 @@ public class PersonDataController {
 		Collection<Person> persons = service.getPersonsByRid(rid);
 		Collection<OmsPolicy> policies = service.getPoliciesByRid(rid);
 		Collection<Dudl> dudls = service.getDudlsByRid(rid);
+		
 		Collection<PersAddress> addresses = service.getAddressesByRid(rid);
+		Map<Integer, HouseGar> houses = new HashMap<>();
+		Map<Integer, AddrGar> streets = new HashMap<>();
+		addresses.forEach(t->{
+			if(t.getHsguid() != null) {
+				houses.put(t.getNr(), service.getHouseByObjectguid(t.getHsguid()));
+			}
+			if(t.getAoguid() != null) {
+				streets.put(t.getNr(), service.getAddrByObjectguid(t.getAoguid()));
+			}
+		});
+		
 		Collection<Attach> attachies = service.getAttachiesByRid(rid);
 		Collection<Contact> contacts = service.getContactsByRid(rid);
 		Collection<Snils> snilses = service.getSnilsesByRid(rid);
@@ -116,6 +132,8 @@ public class PersonDataController {
 		model.addAttribute("policies", policies);
 		model.addAttribute("dudls", dudls);
 		model.addAttribute("addresses", addresses);
+		model.addAttribute("houses", houses);
+		model.addAttribute("streets", streets);
 		model.addAttribute("attachies", attachies);
 		model.addAttribute("contacts", contacts);
 		model.addAttribute("snilses", snilses);

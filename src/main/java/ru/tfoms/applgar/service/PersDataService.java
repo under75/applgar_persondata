@@ -15,10 +15,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
+import ru.tfoms.applgar.entity.AddrGar;
 import ru.tfoms.applgar.entity.Attach;
 import ru.tfoms.applgar.entity.Contact;
 import ru.tfoms.applgar.entity.Dudl;
 import ru.tfoms.applgar.entity.DudlType;
+import ru.tfoms.applgar.entity.HouseGar;
 import ru.tfoms.applgar.entity.OmsPolicy;
 import ru.tfoms.applgar.entity.PersAddress;
 import ru.tfoms.applgar.entity.PersDataError;
@@ -28,10 +30,12 @@ import ru.tfoms.applgar.entity.Snils;
 import ru.tfoms.applgar.entity.SocialStatus;
 import ru.tfoms.applgar.entity.User;
 import ru.tfoms.applgar.model.PersSearchParameters;
+import ru.tfoms.applgar.repository.AddrGarRepository;
 import ru.tfoms.applgar.repository.AttachRepository;
 import ru.tfoms.applgar.repository.ContactRepository;
 import ru.tfoms.applgar.repository.DudlRepository;
 import ru.tfoms.applgar.repository.DudlTypeRepository;
+import ru.tfoms.applgar.repository.HouseGarRepository;
 import ru.tfoms.applgar.repository.OmsPolicyRepository;
 import ru.tfoms.applgar.repository.PersAddressRepository;
 import ru.tfoms.applgar.repository.PersDataErrorRepository;
@@ -56,6 +60,8 @@ public class PersDataService {
 	private final DudlTypeRepository dudlTypeRepository;
 	private final PersonDataRepository personDataRepository;
 	private final PersAddressRepository addressRepository;
+	private final HouseGarRepository houseRepository;
+	private final AddrGarRepository addrGarRepository;
 
 	public enum Show {
 		Person, OmsPolicy, Dudl, Address, Attach, Contact, Snils, SocialStatus, All
@@ -90,7 +96,7 @@ public class PersDataService {
 			OmsPolicyRepository policyRepository, DudlRepository dudlRepository, AttachRepository attachRepository,
 			ContactRepository contactRepository, SnilsRepository snilsRepository,
 			SocialStatusRepository socialStatusRepository, DudlTypeRepository dudlTypeRepository,
-			PersonDataRepository personDataRepository, PersAddressRepository addressRepository) {
+			PersonDataRepository personDataRepository, PersAddressRepository addressRepository, HouseGarRepository houseRepository, AddrGarRepository addrGarRepository) {
 		super();
 		this.errorRepository = errorRepository;
 		this.personRepository = personRepository;
@@ -103,6 +109,8 @@ public class PersDataService {
 		this.dudlTypeRepository = dudlTypeRepository;
 		this.personDataRepository = personDataRepository;
 		this.addressRepository = addressRepository;
+		this.houseRepository = houseRepository;
+		this.addrGarRepository = addrGarRepository;
 
 	}
 
@@ -214,5 +222,13 @@ public class PersDataService {
 
 	public Collection<PersAddress> getAddressesByRid(Long rid) {
 		return addressRepository.getByRid(rid);
+	}
+	
+	public HouseGar getHouseByObjectguid(String objectguid) {
+		return houseRepository.findByObjectguidAndIsActualAndIsActive(objectguid, true, true);
+	}
+
+	public AddrGar getAddrByObjectguid(String objectguid) {
+		return addrGarRepository.findByObjectguidAndIsActualAndIsActive(objectguid, true, true);
 	}
 }

@@ -28,6 +28,9 @@ public class AddrGar implements Serializable{
 	@Column(name = "name_")
 	private String name;
 	
+	@Column(name = "typename")
+	private String typename;
+	
 	public AddrGar() {
 	}
 
@@ -69,6 +72,23 @@ public class AddrGar implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getTypename() {
+		return typename;
+	}
+
+	public void setTypename(String typename) {
+		this.typename = typename;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(name != null ? name : "");
+		sb.append(typename != null ? " " + typename : "");
+		
+		return sb.toString();
 	}
 	
 }

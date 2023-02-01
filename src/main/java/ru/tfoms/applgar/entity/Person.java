@@ -10,9 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
-
 @Entity
 @Table(name = "mpi_person", schema = "OMCOWNER")
 @IdClass(PersDataId.class)

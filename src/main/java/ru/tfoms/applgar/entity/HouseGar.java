@@ -5,13 +5,15 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "as_houses", schema = "FIASOWNER")
-public class HouseGar implements Serializable{
+@IdClass(HouseId.class)
+public class HouseGar implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Id
+	
 	@Column(name = "id")
 	private Long id;
 
@@ -32,13 +34,13 @@ public class HouseGar implements Serializable{
 
 	@Column(name = "addnum2")
 	private String addNum2;
-	
+	@Id
 	@Column(name = "objectid")
 	private Long objectid;
-	
+	@Id
 	@Column(name = "changeid")
 	private Long changeid;
-	
+	@Id
 	@Column(name = "opertypeid")
 	private Integer opertypeid;
 
@@ -125,4 +127,13 @@ public class HouseGar implements Serializable{
 		this.opertypeid = opertypeid;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(houseNum != null ? houseNum : "");
+		sb.append(addNum1 != null ? " " + addNum1 : "");
+		sb.append(addNum2 != null ? " " + addNum2 : "");
+		
+		return sb.toString();
+	}
 }

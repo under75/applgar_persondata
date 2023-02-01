@@ -35,15 +35,11 @@ public class PersAddress {
 	@JoinColumn(name = "oksm", referencedColumnName = "alfa3")
 	private Oksm oksm;
 
-	@OneToOne
-	@NotFound(action = NotFoundAction.IGNORE) 
-	@JoinColumn(name = "aoguid", referencedColumnName = "objectguid")
-	private AddrGar aoguid;
+	@JoinColumn(name = "aoguid")
+	private String aoguid;
 
-	@OneToOne
-	@NotFound(action = NotFoundAction.IGNORE) 
-	@JoinColumn(name = "hsguid", referencedColumnName = "objectguid")
-	private HouseGar hsguid;
+	@Column(name = "hsguid")
+	private String hsguid;
 
 	@Column(name = "addresstext")
 	private String addressText;
@@ -109,19 +105,19 @@ public class PersAddress {
 		this.oksm = oksm;
 	}
 
-	public AddrGar getAoguid() {
+	public String getAoguid() {
 		return aoguid;
 	}
 
-	public void setAoguid(AddrGar aoguid) {
+	public void setAoguid(String aoguid) {
 		this.aoguid = aoguid;
 	}
 
-	public HouseGar getHsguid() {
+	public String getHsguid() {
 		return hsguid;
 	}
 
-	public void setHsguid(HouseGar hsguid) {
+	public void setHsguid(String hsguid) {
 		this.hsguid = hsguid;
 	}
 
