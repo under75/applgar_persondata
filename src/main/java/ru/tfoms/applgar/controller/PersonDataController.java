@@ -41,6 +41,7 @@ import ru.tfoms.applgar.model.PersCritSearchParameters;
 import ru.tfoms.applgar.model.PersSearchParameters;
 import ru.tfoms.applgar.service.PersCritService;
 import ru.tfoms.applgar.service.PersDataService;
+import ru.tfoms.applgar.util.DateValidator;
 
 @Controller
 public class PersonDataController {
@@ -111,19 +112,19 @@ public class PersonDataController {
 		Collection<Person> persons = service.getPersonsByRid(rid);
 		Collection<OmsPolicy> policies = service.getPoliciesByRid(rid);
 		Collection<Dudl> dudls = service.getDudlsByRid(rid);
-		
+
 		Collection<PersAddress> addresses = service.getAddressesByRid(rid);
 		Map<Integer, HouseGar> houses = new HashMap<>();
 		Map<Integer, AddrGar> streets = new HashMap<>();
-		addresses.forEach(t->{
-			if(t.getHsguid() != null) {
+		addresses.forEach(t -> {
+			if (t.getHsguid() != null) {
 				houses.put(t.getNr(), service.getHouseByObjectguid(t.getHsguid()));
 			}
-			if(t.getAoguid() != null) {
+			if (t.getAoguid() != null) {
 				streets.put(t.getNr(), service.getAddrByObjectguid(t.getAoguid()));
 			}
 		});
-		
+
 		Collection<Attach> attachies = service.getAttachiesByRid(rid);
 		Collection<Contact> contacts = service.getContactsByRid(rid);
 		Collection<Snils> snilses = service.getSnilsesByRid(rid);
@@ -145,14 +146,15 @@ public class PersonDataController {
 
 		return "pers-res";
 	}
-	
-	@GetMapping("/pers/crit")
-	public String criteria(Model model) throws ParseException {
-		PersCritSearchParameters persCritSParam = new PersCritSearchParameters();
-		model.addAttribute("persCritSParam", persCritSParam);
-		model.addAttribute("okatos", critService.findAll());
-		
-		return "pers-crit-form";
-	}
+
+//	@GetMapping("/pers/crit")
+//	public String criteria(Model model) throws ParseException {
+//		PersCritSearchParameters persCritSParam = new PersCritSearchParameters();
+//		model.addAttribute("persCritSParam", persCritSParam);
+//		model.addAttribute("okatos", critService.findOkatos());
+//		model.addAttribute("oksms", critService.findOksms());
+//		
+//		return "pers-crit-form";
+//	}
 
 }

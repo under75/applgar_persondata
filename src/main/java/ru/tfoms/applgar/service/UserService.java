@@ -54,4 +54,8 @@ public class UserService {
 
 		return user;
 	}
+	
+	public Boolean userHasRole(User user, String role) {
+		return user.getRoles().stream().filter(t->t.getRole_name().equals(role)).count() > 0;
+	}
 }

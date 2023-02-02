@@ -7,6 +7,7 @@ public class PersCritSearchParameters {
 	private String patronymic;
 	private Boolean oldsfp;
 	private String dost;
+	private String oksm;
 	
 	public String getTerrOkato() {
 		return terrOkato;
@@ -54,6 +55,14 @@ public class PersCritSearchParameters {
 
 	public void setDost(String dost) {
 		this.dost = dost;
+	}
+
+	public String getOksm() {
+		return oksm;
+	}
+
+	public void setOksm(String oksm) {
+		this.oksm = oksm;
 	}
 
 }

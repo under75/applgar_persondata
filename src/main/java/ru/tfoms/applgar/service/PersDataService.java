@@ -43,6 +43,8 @@ import ru.tfoms.applgar.repository.PersonDataRepository;
 import ru.tfoms.applgar.repository.PersonRepository;
 import ru.tfoms.applgar.repository.SnilsRepository;
 import ru.tfoms.applgar.repository.SocialStatusRepository;
+import ru.tfoms.applgar.util.DateValidator;
+
 import static ru.tfoms.applgar.util.Constants.DATE_FORMAT;
 
 @Service
@@ -96,7 +98,8 @@ public class PersDataService {
 			OmsPolicyRepository policyRepository, DudlRepository dudlRepository, AttachRepository attachRepository,
 			ContactRepository contactRepository, SnilsRepository snilsRepository,
 			SocialStatusRepository socialStatusRepository, DudlTypeRepository dudlTypeRepository,
-			PersonDataRepository personDataRepository, PersAddressRepository addressRepository, HouseGarRepository houseRepository, AddrGarRepository addrGarRepository) {
+			PersonDataRepository personDataRepository, PersAddressRepository addressRepository,
+			HouseGarRepository houseRepository, AddrGarRepository addrGarRepository) {
 		super();
 		this.errorRepository = errorRepository;
 		this.personRepository = personRepository;
@@ -170,7 +173,8 @@ public class PersDataService {
 			if (!persSParam.getDtFrom().isEmpty())
 				personData.setDtFrom(DATE_FORMAT.parse(persSParam.getDtFrom()));
 			if (!persSParam.getDtTo().isEmpty())
-				personData.setDtTo(Date.from(DATE_FORMAT.parse(persSParam.getDtTo()).toInstant().plus(1, ChronoUnit.DAYS)));
+				personData.setDtTo(
+						Date.from(DATE_FORMAT.parse(persSParam.getDtTo()).toInstant().plus(1, ChronoUnit.DAYS)));
 		} else if (!persSParam.getDt().isEmpty()) {
 			personData.setDt(DATE_FORMAT.parse(persSParam.getDt()));
 		}
@@ -186,15 +190,18 @@ public class PersDataService {
 		Page<PersonData> dataPage;
 		PageRequest pageRequest = PageRequest.of(currentPage - 1, PAGE_SIZE);
 		if (persSParam.getDateFrom() != null && !persSParam.getDateFrom().isEmpty() && persSParam.getDateTo() != null
-				&& !persSParam.getDateTo().isEmpty()) {
+				&& !persSParam.getDateTo().isEmpty() && DateValidator.isValid(persSParam.getDateFrom())
+				&& DateValidator.isValid(persSParam.getDateTo())) {
 			Date start = DATE_FORMAT.parse(persSParam.getDateFrom());
 			Date end = Date.from(DATE_FORMAT.parse(persSParam.getDateTo()).toInstant().plus(1, ChronoUnit.DAYS));
 			dataPage = personDataRepository.findByUserAndDtInsBetweenOrderByDtInsDesc(user.getName(), start, end,
 					pageRequest);
-		} else if (persSParam.getDateFrom() != null && !persSParam.getDateFrom().isEmpty()) {
+		} else if (persSParam.getDateFrom() != null && !persSParam.getDateFrom().isEmpty()
+				&& DateValidator.isValid(persSParam.getDateFrom())) {
 			Date start = DATE_FORMAT.parse(persSParam.getDateFrom());
 			dataPage = personDataRepository.findByUserAndDtInsAfterOrderByDtInsDesc(user.getName(), start, pageRequest);
-		} else if (persSParam.getDateTo() != null && !persSParam.getDateTo().isEmpty()) {
+		} else if (persSParam.getDateTo() != null && !persSParam.getDateTo().isEmpty()
+				&& DateValidator.isValid(persSParam.getDateTo())) {
 			Date end = Date.from(DATE_FORMAT.parse(persSParam.getDateTo()).toInstant().plus(1, ChronoUnit.DAYS));
 			dataPage = personDataRepository.findByUserAndDtInsBeforeOrderByDtInsDesc(user.getName(), end, pageRequest);
 		} else {
@@ -214,6 +221,21 @@ public class PersDataService {
 		} else if (!persSParam.getDudlNum().trim().isEmpty() && persSParam.getDudlType() == null) {
 			bindingResult.rejectValue("dudlType", "");
 		}
+		if (persSParam.getBirthDay() != null && !persSParam.getBirthDay().isEmpty()
+				&& !DateValidator.isValid(persSParam.getBirthDay())) {
+			bindingResult.rejectValue("birthDay", "Invalid date");
+		}
+		if (persSParam.getDt() != null && !persSParam.getDt().isEmpty() && !DateValidator.isValid(persSParam.getDt())) {
+			bindingResult.rejectValue("dt", "Invalid date");
+		}
+		if (persSParam.getDtFrom() != null && !persSParam.getDtFrom().isEmpty()
+				&& !DateValidator.isValid(persSParam.getDtFrom())) {
+			bindingResult.rejectValue("dtFrom", "Invalid date");
+		}
+		if (persSParam.getDtTo() != null && !persSParam.getDtTo().isEmpty()
+				&& !DateValidator.isValid(persSParam.getDtTo())) {
+			bindingResult.rejectValue("dtTo", "Invalid date");
+		}
 	}
 
 	public PersonData getPersonDataByRid(Long rid) {
@@ -223,7 +245,7 @@ public class PersDataService {
 	public Collection<PersAddress> getAddressesByRid(Long rid) {
 		return addressRepository.getByRid(rid);
 	}
-	
+
 	public HouseGar getHouseByObjectguid(String objectguid) {
 		return houseRepository.findByObjectguidAndIsActualAndIsActive(objectguid, true, true);
 	}

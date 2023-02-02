@@ -36,7 +36,7 @@
 					</select></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.policySer}" id="policySer"
-						class="form-control form-control-sm" placeholder="серия" /></td>
+						class="form-control form-control-sm" placeholder="серия" disabled="disabled"/></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.policyNum}" id="policyNum"
 						class="form-control form-control-sm" placeholder="номер" /></td>
@@ -77,8 +77,9 @@
 					<td class="small"><input type="text"
 						th:field="*{persSParam.snils}" id="snils"
 						class="form-control form-control-sm" placeholder="СНИЛС" /></td>
-					<td class="small"><input type="date"
-						th:field="*{persSParam.birthDay}" id="birthDay"
+					<td class="small"
+						th:classappend="${#fields.hasErrors('persSParam.birthDay')} ? 'alert alert-danger' : ''"><input
+						type="date" th:field="*{persSParam.birthDay}" id="birthDay"
 						class="form-control form-control-sm" /></td>
 				</tr>
 				<tr>
@@ -91,17 +92,20 @@
 							<option value="0">Актуально на дату</option>
 							<option value="1">Искать в истории</option>
 					</select></td>
-					<td class="small"><input type="date"
-						th:field="*{persSParam.dt}" id="dt"
+					<td class="small"
+						th:classappend="${#fields.hasErrors('persSParam.dt')} ? 'alert alert-danger' : ''"><input
+						type="date" th:field="*{persSParam.dt}" id="dt"
 						class="form-control form-control-sm"
 						th:disabled="${persSParam.historical}" title="состояние на дату" /></td>
-					<td class="small"><input type="date"
-						th:field="*{persSParam.dtFrom}" id="dtFrom"
+					<td class="small"
+						th:classappend="${#fields.hasErrors('persSParam.dtFrom')} ? 'alert alert-danger' : ''"><input
+						type="date" th:field="*{persSParam.dtFrom}" id="dtFrom"
 						class="form-control form-control-sm"
 						th:disabled="${!persSParam.historical}" title="начало периода" />
 					</td>
-					<td class="small"><input type="date"
-						th:field="*{persSParam.dtTo}" id="dtTo"
+					<td class="small"
+						th:classappend="${#fields.hasErrors('persSParam.dtTo')} ? 'alert alert-danger' : ''"><input
+						type="date" th:field="*{persSParam.dtTo}" id="dtTo"
 						class="form-control form-control-sm"
 						th:disabled="${!persSParam.historical}" title="конец периода" /></td>
 					<td class="small"></td>
@@ -114,7 +118,7 @@
 							<input class="form-check-input" type="checkbox"
 								th:id="${resultTypeEntry.key}" th:value="${resultTypeEntry.key}"
 								th:checked="${persSParam.show != null && persSParam.show.contains(resultTypeEntry.key.name())}"
-								name="show"/><label th:for="${resultTypeEntry.key}"
+								name="show" /><label th:for="${resultTypeEntry.key}"
 								class="form-check-label" th:text="${resultTypeEntry.value}"></label>
 						</div>
 					</td>

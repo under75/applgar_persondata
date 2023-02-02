@@ -38,36 +38,39 @@
 					<td>Коды надежности идентификации</td>
 					<td colspan="6">
 						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="checkbox"
-								id="dost1" value="1"
+							<input class="form-check-input" type="checkbox" id="dost1"
+								value="1"
 								th:checked="${persCritSParam.dost != null && persCritSParam.dost.contains('1')}"
-								name="dost" /><label for="dost1"
-								class="form-check-label">отсутствует отчество&nbsp;&nbsp;</label>
-							<input class="form-check-input" type="checkbox"
-								id="dost2" value="2"
+								name="dost" /><label for="dost1" class="form-check-label">отсутствует
+								отчество&nbsp;&nbsp;</label> <input class="form-check-input"
+								type="checkbox" id="dost2" value="2"
 								th:checked="${persCritSParam.dost != null && persCritSParam.dost.contains('2')}"
-								name="dost" /><label for="dost2"
-								class="form-check-label">отсутствует фамилия&nbsp;&nbsp;</label>
-							<input class="form-check-input" type="checkbox"
-								id="dost3" value="3"
+								name="dost" /><label for="dost2" class="form-check-label">отсутствует
+								фамилия&nbsp;&nbsp;</label> <input class="form-check-input"
+								type="checkbox" id="dost3" value="3"
 								th:checked="${persCritSParam.dost != null && persCritSParam.dost.contains('3')}"
-								name="dost" /><label for="dost3"
-								class="form-check-label">отсутствует имя</label>
+								name="dost" /><label for="dost3" class="form-check-label">отсутствует
+								имя</label>
 						</div>
 					</td>
 				</tr>
 				<tr class="small">
 					<td>Признак поиска по архивным ФИО</td>
-					<td><select class="custom-select custom-select-sm"
+					<td colspan="6"><select class="custom-select custom-select-sm"
 						th:field="*{persCritSParam.oldsfp}">
 							<option value="0">Прямые таблицы</option>
 							<option value="1">Архивные таблицы</option>
 					</select></td>
-					<td colspan="5"></td>
 				</tr>
-<!-- 				<tr class="small"> -->
-<!-- 					<td>Гражданство</td> -->
-<!-- 				</tr> -->
+				<tr class="small">
+					<td>Гражданство</td>
+					<td colspan="6"><select class="form-control form-control-sm"
+						th:field="*{persCritSParam.oksm}">
+							<option value=""></option>
+							<option th:each="oksm : ${oksms}" th:value="${oksm.alfa3}"
+								th:text="${oksm.name1}" th:selected="${persCritSParam.oksm}"></option>
+					</select></td>
+				</tr>
 			</table>
 		</form>
 	</div>

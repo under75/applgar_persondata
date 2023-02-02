@@ -10,7 +10,7 @@ import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "SMOROLES", schema = "BIGADMIN")
+@Table(name = "APPLGAR_ROLES", schema = "BIGADMIN")
 @IdClass(RoleId.class)
 public class Role implements Serializable{
 	private static final long serialVersionUID = 1L;

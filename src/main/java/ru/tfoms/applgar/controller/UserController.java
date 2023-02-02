@@ -1,6 +1,7 @@
 package ru.tfoms.applgar.controller;
 
 import java.io.InputStream;
+import static ru.tfoms.applgar.util.Constants.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -52,11 +53,18 @@ public class UserController {
 			bindingResult.addError(new ObjectError("globalError", "Неверное имя/пароль"));
 			return "login-form";
 		}
+		StringBuilder rolesStr = new StringBuilder();
+		user.getRoles().forEach(t->rolesStr.append(t.getRole_name() + " "));	
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = attr.getRequest().getSession(true);
 		session.setAttribute("user", user);
-
-		return "redirect:appl";
+		session.setAttribute("roles", rolesStr.toString().trim());
+		
+		if (rolesStr.toString().contains(TFOMS_ROLE)) {
+			return "redirect:pers";
+		} else {
+			return "redirect:appl";
+		}
 	}
 
 	@GetMapping(value = "/help", produces = { "application/octet-stream" })

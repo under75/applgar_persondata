@@ -1,5 +1,9 @@
 package ru.tfoms.applgar.interceptor;
 
+import static ru.tfoms.applgar.util.Constants.HSMO_ROLE;
+import static ru.tfoms.applgar.util.Constants.SMO_ROLE;
+import static ru.tfoms.applgar.util.Constants.TFOMS_ROLE;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -18,15 +22,25 @@ public class AuthorizedUserFilter implements Filter {
 			throws IOException, ServletException {
 		String exit = request.getParameter("exit");
 		HttpSession session = ((HttpServletRequest) request).getSession(false);
-		if (session != null && exit != null && exit.equals("1")) {
+		if ((session != null && exit != null && exit.equals("1"))) {
 			session.invalidate();
 			session = null;
 		}
 		if (session == null || session.getAttribute("user") == null) {
 			((HttpServletResponse) response).sendRedirect("/");
 		} else {
-			chain.doFilter(request, response);
+			if (!hasRoleToAccess((HttpServletRequest) request, (String) session.getAttribute("roles"))) {
+				session.invalidate();
+				session = null;
+				((HttpServletResponse) response).sendRedirect("/");
+			} else
+				chain.doFilter(request, response);
 		}
+	}
+
+	private boolean hasRoleToAccess(HttpServletRequest request, String roles) {
+		return request.getRequestURI().contains("/appl") && (roles.contains(SMO_ROLE) || roles.contains(HSMO_ROLE))
+				|| (request.getRequestURI().contains("/pers") && roles.contains(TFOMS_ROLE));
 	}
 
 }

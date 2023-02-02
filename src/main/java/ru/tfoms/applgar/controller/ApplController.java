@@ -39,6 +39,7 @@ import ru.tfoms.applgar.service.AddressService;
 import ru.tfoms.applgar.service.ApplService;
 import ru.tfoms.applgar.service.InspectorService;
 import ru.tfoms.applgar.service.SmoService;
+import ru.tfoms.applgar.util.DateValidator;
 
 @Controller
 public class ApplController {
@@ -83,6 +84,12 @@ public class ApplController {
 		model.addAttribute("applPage", new PageImpl<Appl>(new ArrayList<>()));
 		model.addAttribute("inspectors", inspectorService.findInspectors(session));
 		model.addAttribute("branches", smoService.findBranches(session));
+		if (!DateValidator.isValid(applSParam.getDtReg1())) {
+			bindingResult.rejectValue("dtReg1", "Invalid date");
+		}
+		if (!DateValidator.isValid(applSParam.getDtReg2())) {
+			bindingResult.rejectValue("dtReg2", "Invalid date");
+		}
 		if (bindingResult.hasErrors())
 			return "appl-form";
 
