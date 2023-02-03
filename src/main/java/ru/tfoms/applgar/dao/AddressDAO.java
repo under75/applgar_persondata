@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -113,7 +115,7 @@ public class AddressDAO {
 
 		return jdbcTemplate.query(sql, namedParams, houseMapper);
 	}
-
+	@Transactional
 	public int save(Result result) {
 		String sql;
 		if (!isRecordExist(result.getId_appl())) {
@@ -270,6 +272,31 @@ public class AddressDAO {
 		namedParams.addValue("lev1", lev1Cod);
 
 		return jdbcTemplate.queryForList(sql, namedParams, String.class).stream().findAny().orElse(null);
+	}
+
+	public void updateForOkato(Long id_appl, String rguidreg, String rguidpr) {
+		String selectForReg = "with QQ as (select aao.objectguid,aaop.VALUE_ from FIASOWNER.AS_ADDR_OBJ_PARAMS aaop "
+				+ "join FIASOWNER.AS_ADDR_OBJ aao ON aaop.OBJECTID = aao.OBJECTID "
+				+ "where aao.ISACTIVE = 1 AND aao.ISACTUAL = 1 and aaop.TYPEID_ = 6 and TO_DATE(aaop.ENDDATE, 'yyyy-MM-dd') > CURRENT_DATE) "
+				+ "select distinct QQ.value_ from QQ "
+				+ "join OMCOWNER.ADDRESS_GAR ag on QQ.OBJECTGUID=ag.RGUIDREG "
+				+ "where ag.RGUIDREG=:rguidreg";
+		String selectForPr = "with QQ as (select aao.objectguid,aaop.VALUE_ from FIASOWNER.AS_ADDR_OBJ_PARAMS aaop "
+				+ "join FIASOWNER.AS_ADDR_OBJ aao ON aaop.OBJECTID = aao.OBJECTID "
+				+ "where aao.ISACTIVE = 1 AND aao.ISACTUAL = 1 and aaop.TYPEID_ = 6 and TO_DATE(aaop.ENDDATE, 'yyyy-MM-dd') > CURRENT_DATE) "
+				+ "select distinct QQ.value_ from QQ "
+				+ "join OMCOWNER.ADDRESS_GAR ag on QQ.OBJECTGUID=ag.RGUIDPR "
+				+ "where ag.RGUIDPR=:rguidpr";
+		
+		String updateForReg = "update OMCOWNER.address_gar set okatoreg = (" +selectForReg + ") where  id_appl = :id_appl";
+		String updateForPr = "update OMCOWNER.address_gar set okatopr = (" +selectForPr + ") where  id_appl = :id_appl";
+		MapSqlParameterSource params = new MapSqlParameterSource();
+		params.addValue("id_appl", id_appl);
+		params.addValue("rguidreg", rguidreg);
+		params.addValue("rguidpr", rguidpr);
+		
+		jdbcTemplate.update(updateForReg, params);
+		jdbcTemplate.update(updateForPr, params);
 	}
 
 }

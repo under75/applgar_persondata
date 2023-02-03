@@ -111,8 +111,10 @@ public class AddressService<T> {
 	}
 
 	public int save(Result result) {
-		return addressDAO.save(result);
-
+		int res = addressDAO.save(result);
+		addressDAO.updateForOkato(result.getId_appl(), result.getRguidreg(), result.getRguidpr());
+		
+		return res;
 	}
 
 	public void fillPrIfSameWithReg(Appl appl, SelectedAddress address) {
