@@ -16,22 +16,24 @@
 				<li class="nav-item"
 					th:classappend="${#httpServletRequest.servletPath} == '/appl' ? 'active' : ''"
 					th:if="${session.roles.contains(T(ru.tfoms.applgar.util.Constants).HSMO_ROLE) || session.roles.contains(T(ru.tfoms.applgar.util.Constants).SMO_ROLE)}">
-					<a class="nav-link disabled" href="/appl">Поиск заявлений</a>
+					<a class="nav-link" href="/appl">Поиск заявлений</a>
 				</li>
-				<li class="nav-item"
-					th:classappend="${#httpServletRequest.servletPath} == '/pers' ? 'active' : ''"
-					th:if="${session.roles.contains(T(ru.tfoms.applgar.util.Constants).TFOMS_ROLE)}">
-					<a class="nav-link disabled" href="/pers">Поиск персональных данных</a>
-				</li>
-				<!-- 				<li class="nav-item dropdown" th:classappend="${#httpServletRequest.servletPath.contains('/pers')} ? 'active' : ''"><a -->
-				<!-- 					class="nav-link dropdown-toggle" href="#" id="navbarDropdown" -->
-				<!-- 					role="button" data-toggle="dropdown" aria-haspopup="true" -->
-				<!-- 					aria-expanded="false">Поиск персональных данных</a> -->
-				<!-- 					<div class="dropdown-menu" aria-labelledby="navbarDropdown"> -->
-				<!-- 						<a class="dropdown-item" href="/pers">Метод getPersonData</a>  -->
-				<!-- 						<a class="dropdown-item" href="/pers/crit">Метод findPersonsByPersCriteria</a> -->
-				<!-- 					</div> -->
+				<!-- 				<li class="nav-item" -->
+				<!-- 					th:classappend="${#httpServletRequest.servletPath} == '/pers' ? 'active' : ''" -->
+				<!-- 					th:if="${session.roles.contains(T(ru.tfoms.applgar.util.Constants).TFOMS_ROLE)}"> -->
+				<!-- 					<a class="nav-link" href="/pers">Поиск персональных данных</a> -->
 				<!-- 				</li> -->
+				<li class="nav-item dropdown"
+					th:classappend="${#httpServletRequest.servletPath.contains('/pers')} ? 'active' : ''"
+					th:if="${session.roles.contains(T(ru.tfoms.applgar.util.Constants).TFOMS_ROLE)}"><a
+					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+					role="button" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">Поиск персональных данных</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/pers">Метод getPersonData</a> <a
+							class="dropdown-item" href="/pers/crit">Метод
+							findPersonsByPersCriteria</a>
+					</div></li>
 			</ul>
 		</div>
 	</nav>

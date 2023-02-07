@@ -41,7 +41,6 @@ import ru.tfoms.applgar.model.PersCritSearchParameters;
 import ru.tfoms.applgar.model.PersSearchParameters;
 import ru.tfoms.applgar.service.PersCritService;
 import ru.tfoms.applgar.service.PersDataService;
-import ru.tfoms.applgar.util.DateValidator;
 
 @Controller
 public class PersonDataController {
@@ -58,7 +57,7 @@ public class PersonDataController {
 	public String index(Model model) throws ParseException {
 		PersSearchParameters persSParam = new PersSearchParameters();
 		model.addAttribute("persSParam", persSParam);
-		model.addAttribute("policyTypes", PersDataService.policyType);
+		model.addAttribute("policyTypes", policyType);
 		model.addAttribute("dudlTypes", service.getDudlTypes());
 		model.addAttribute("resultTypes", PersDataService.resultType);
 
@@ -147,14 +146,31 @@ public class PersonDataController {
 		return "pers-res";
 	}
 
-//	@GetMapping("/pers/crit")
-//	public String criteria(Model model) throws ParseException {
-//		PersCritSearchParameters persCritSParam = new PersCritSearchParameters();
-//		model.addAttribute("persCritSParam", persCritSParam);
-//		model.addAttribute("okatos", critService.findOkatos());
-//		model.addAttribute("oksms", critService.findOksms());
-//		
-//		return "pers-crit-form";
-//	}
+	@GetMapping("/pers/crit")
+	public String criteria(Model model) throws ParseException {
+		PersCritSearchParameters persCritSParam = new PersCritSearchParameters();
+		model.addAttribute("persCritSParam", persCritSParam);
+		model.addAttribute("okatos", critService.findOkatos());
+		model.addAttribute("oksms", critService.findOksms());
+		model.addAttribute("policyTypes", policyType);
+		model.addAttribute("dudlTypes", service.getDudlTypes());
+
+		return "pers-crit-form";
+	}
+
+	@PostMapping("/pers/crit")
+	public String criteria(Model model,
+			@ModelAttribute("persCritSParam") @Valid PersCritSearchParameters persCritSParam,
+			BindingResult bindingResult) {
+
+		model.addAttribute("okatos", critService.findOkatos());
+		model.addAttribute("oksms", critService.findOksms());
+		model.addAttribute("policyTypes", policyType);
+		model.addAttribute("dudlTypes", service.getDudlTypes());
+
+		critService.validate(persCritSParam, bindingResult);
+
+		return "pers-crit-form";
+	}
 
 }

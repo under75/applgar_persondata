@@ -9,4 +9,5 @@ public class Constants {
 	
 	public final static Integer SMO_ADD_CODE = 64000;
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	
 }

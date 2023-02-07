@@ -14,30 +14,76 @@
 		<div th:insert="menu :: navbar"></div>
 		<br />
 		<form th:method="POST" th:action="@{/pers/crit}" id="persForm">
-			<table class="table table-sm">
-				<tr class="small">
-					<td class="w-25">ФИО, ОКАТО территории</td>
-					<td colspan="3"><select th:field="*{persCritSParam.terrOkato}"
-						class="form-control form-control-sm">
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label class="form-label" for="terrOkato">ОКАТО территории</label>
+						<select th:field="*{persCritSParam.terrOkato}"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.terrOkato')} ? 'is-invalid' : ''">
 							<option value=""></option>
 							<option th:each="okato : ${okatos}" th:value="${okato.code}"
 								th:text="${okato.title}"
 								th:selected="${persCritSParam.terrOkato}"></option>
-					</select></td>
-					<td><input type="text" th:field="*{persCritSParam.lastName}"
-						id="lastName" class="form-control form-control-sm"
-						placeholder="фамилия" /></td>
-					<td><input type="text" th:field="*{persCritSParam.firstName}"
-						id="firstName" class="form-control form-control-sm"
-						placeholder="имя" /></td>
-					<td><input type="text" th:field="*{persCritSParam.patronymic}"
-						id="patronymic" class="form-control form-control-sm"
-						placeholder="отчество" /></td>
-				</tr>
-				<tr class="small">
-					<td>Коды надежности идентификации</td>
-					<td colspan="6">
-						<div class="form-check form-check-inline">
+						</select>
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.terrOkato')}">Выберите
+							регион</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="lastName">Фамилия</label> <input
+							type="text" th:field="*{persCritSParam.lastName}" id="lastName"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.lastName')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.lastName')}">Минимум
+							первые три буквы</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="firstName">Имя</label> <input
+							type="text" th:field="*{persCritSParam.firstName}" id="firstName"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.firstName')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.firstName')}">Минимум
+							первые три буквы</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="patronymic">Отчество</label> <input
+							type="text" th:field="*{persCritSParam.patronymic}"
+							id="patronymic" class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.patronymic')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.patronymic')}">Минимум
+							первые три буквы</div>
+					</div>
+				</div>
+			</div>
+			<div class="alert alert-danger" role="alert"
+				th:if="${#fields.hasErrors('persCritSParam')}"
+				th:errors="*{persCritSParam}"></div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="form-label" for="oldsfp">Признак поиска по
+							архивным ФИО</label> <select class="custom-select custom-select-sm"
+							th:field="*{persCritSParam.oldsfp}">
+							<option value="0">Прямые таблицы</option>
+							<option value="1">Архивные таблицы</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="dostDiv">Коды надежности
+							идентификации</label>
+						<div class="form-check form-check-inline" id="dostDiv">
 							<input class="form-check-input" type="checkbox" id="dost1"
 								value="1"
 								th:checked="${persCritSParam.dost != null && persCritSParam.dost.contains('1')}"
@@ -52,26 +98,198 @@
 								name="dost" /><label for="dost3" class="form-check-label">отсутствует
 								имя</label>
 						</div>
-					</td>
-				</tr>
-				<tr class="small">
-					<td>Признак поиска по архивным ФИО</td>
-					<td colspan="6"><select class="custom-select custom-select-sm"
-						th:field="*{persCritSParam.oldsfp}">
-							<option value="0">Прямые таблицы</option>
-							<option value="1">Архивные таблицы</option>
-					</select></td>
-				</tr>
-				<tr class="small">
-					<td>Гражданство</td>
-					<td colspan="6"><select class="form-control form-control-sm"
-						th:field="*{persCritSParam.oksm}">
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-group">
+						<label class="form-label" for="oksm">Гражданство</label> <select
+							class="form-control form-control-sm"
+							th:field="*{persCritSParam.oksm}">
 							<option value=""></option>
 							<option th:each="oksm : ${oksms}" th:value="${oksm.alfa3}"
 								th:text="${oksm.name1}" th:selected="${persCritSParam.oksm}"></option>
-					</select></td>
-				</tr>
-			</table>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="noCitizenshipDiv">Признак
+							лица без гражданства</label>
+						<div class="form-check" id="noCitizenshipDiv">
+							<input class="form-check-input" type="checkbox"
+								id="noCitizenship" th:field="*{persCritSParam.noCitizenship}">
+							<label class="form-check-label" for="noCitizenship">отсутствует
+								гражданство</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="birthDayFrom">ДР с</label> <input
+							type="date" th:field="*{persCritSParam.birthDayFrom}"
+							id="birthDayFrom" class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.birthDayFrom')} ? 'is-invalid' : ''" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="birthDayTo">ДР по</label> <input
+							type="date" th:field="*{persCritSParam.birthDayTo}"
+							id="birthDayTo" class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.birthDayTo')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.birthDayTo')}">Диапазон
+							дат более 12 месяцев</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="deathDateFrom">Дата смерти
+							с</label> <input type="date" th:field="*{persCritSParam.deathDateFrom}"
+							id="deathDateFrom" class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.deathDateFrom')} ? 'is-invalid' : ''" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="deathDateTo">Дата смерти по</label>
+						<input type="date" th:field="*{persCritSParam.deathDateTo}"
+							id="deathDateTo" class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.deathDateTo')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.deathDateTo')}">Диапазон
+							дат более 12 месяцев</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="oip">Обезличенный
+							идентификатор персоны</label> <input type="text"
+							th:field="*{persCritSParam.oip}" id="oip"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label class="form-label" for="policyType">Тип полиса
+							страхования</label> <select th:field="*{persCritSParam.policyType}"
+							class="form-control form-control-sm">
+							<option value=""></option>
+							<option th:each="policyTypeEntry : ${policyTypes.entrySet}"
+								th:value="${policyTypeEntry.key}"
+								th:text="${policyTypeEntry.value}"
+								th:selected="${persCritSParam.policyType}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="enp">Единый номер полиса</label> <input
+							type="text" th:field="*{persCritSParam.enp}" id="enp"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="pcySer">Серия полиса
+							(старого образца)</label> <input type="text"
+							th:field="*{persCritSParam.pcySer}" id="pcySer"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="pcyNum">Номер полиса
+							(старого образца)</label> <input type="text"
+							th:field="*{persCritSParam.pcyNum}" id="pcyNum"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="tmpcertNum">Номер
+							временного свидетельства</label> <input type="text"
+							th:field="*{persCritSParam.tmpcertNum}" id="tmpcertNum"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label class="form-label" for="dudlType">Тип ДУДЛ</label> <select
+							th:field="*{persCritSParam.dudlType}"
+							class="form-control form-control-sm">
+							<option value=""></option>
+							<option th:each="dudlType : ${dudlTypes}"
+								th:value="${dudlType.docCode}" th:text="${dudlType.docName}"
+								th:selected="${persCritSParam.dudlType}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="dudlSer">Серия ДУДЛ</label> <input
+							type="text" th:field="*{persCritSParam.dudlSer}" id="dudlSer"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="dudlNum">Номер ДУДЛ</label> <input
+							type="text" th:field="*{persCritSParam.dudlNum}" id="dudlNum"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="snils">СНИЛС</label> <input
+							type="text" th:field="*{persCritSParam.snils}" id="snils"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="birthDay">Дата рождения</label> <input
+							type="date" th:field="*{persCritSParam.birthDay}" id="birthDay"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.birthDay')} ? 'is-invalid' : ''" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="ern">ИД ЕРН</label> <input
+							type="text" th:field="*{persCritSParam.ern}" id="ern"
+							class="form-control form-control-sm" />
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="dt">Дата, на которую выдать</label>
+						<input type="date" th:field="*{persCritSParam.dt}" id="dt"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.dt')} ? 'is-invalid' : ''" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<input type="submit" value="Поиск" class="btn btn-sm btn-primary"
+						name="saveRequest" />&nbsp;<input type="button" value="Очистить"
+						onclick="location.href='/pers/crit'"
+						class="btn btn-sm btn-secondary" />
+				</div>
+			</div>
 		</form>
 	</div>
 	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
