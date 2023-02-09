@@ -34,6 +34,7 @@ import ru.tfoms.applgar.entity.PersAddress;
 import ru.tfoms.applgar.entity.PersDataError;
 import ru.tfoms.applgar.entity.Person;
 import ru.tfoms.applgar.entity.PersonCritData;
+import ru.tfoms.applgar.entity.PersonCritDataResp;
 import ru.tfoms.applgar.entity.PersonData;
 import ru.tfoms.applgar.entity.Snils;
 import ru.tfoms.applgar.entity.SocialStatus;
@@ -191,4 +192,19 @@ public class PersonDataController {
 		return "pers-crit-form";
 	}
 
+	@PostMapping("/pers/crit/res")
+	public String resultByCrit(Model model, @RequestParam("rid") Long rid) {
+
+		Collection<PersDataError> errors = service.getErrorsByRid(rid);
+		if (errors.size() > 0) {
+			model.addAttribute("errors", errors);
+			return "pers-err";
+		}
+		
+		Collection<PersonCritDataResp> persons = critService.findRespByRid(rid);
+		model.addAttribute("persons", persons);
+
+		return "pers-crit-res";
+
+	}
 }

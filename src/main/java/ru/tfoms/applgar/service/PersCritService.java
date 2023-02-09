@@ -23,11 +23,13 @@ import org.springframework.validation.ObjectError;
 import ru.tfoms.applgar.entity.Okato;
 import ru.tfoms.applgar.entity.Oksm;
 import ru.tfoms.applgar.entity.PersonCritData;
+import ru.tfoms.applgar.entity.PersonCritDataResp;
 import ru.tfoms.applgar.entity.User;
 import ru.tfoms.applgar.model.PersCritSearchParameters;
 import ru.tfoms.applgar.repository.OkatoRepository;
 import ru.tfoms.applgar.repository.OksmRepository;
 import ru.tfoms.applgar.repository.PersonCritDataRepository;
+import ru.tfoms.applgar.repository.PersonCritDataRespRepository;
 import ru.tfoms.applgar.util.DateValidator;
 
 @Service
@@ -37,13 +39,15 @@ public class PersCritService {
 	private final OkatoRepository okatoRepository;
 	private final OksmRepository oksmRepository;
 	private final PersonCritDataRepository critDataRepository;
+	private final PersonCritDataRespRepository critDataRespRepository;
 
 	public PersCritService(OkatoRepository okatoRepository, OksmRepository oksmRepository,
-			PersonCritDataRepository critDataRepository) {
+			PersonCritDataRepository critDataRepository, PersonCritDataRespRepository critDataRespRepository) {
 		super();
 		this.okatoRepository = okatoRepository;
 		this.oksmRepository = oksmRepository;
 		this.critDataRepository = critDataRepository;
+		this.critDataRespRepository = critDataRespRepository;
 	}
 
 	public Collection<Okato> findOkatos() {
@@ -137,9 +141,9 @@ public class PersCritService {
 		critData.setDtIns(new Date());
 		critData.setUser(user.getName());
 		critData.setTerrOkato(persCritSParam.getTerrOkato());
-		critData.setLastName(persCritSParam.getLastName());
-		critData.setFirstName(persCritSParam.getFirstName());
-		critData.setPatronymic(persCritSParam.getPatronymic());
+		critData.setLastName(persCritSParam.getLastName().trim());
+		critData.setFirstName(persCritSParam.getFirstName().trim());
+		critData.setPatronymic(persCritSParam.getPatronymic().trim());
 		critData.setOldsfp(persCritSParam.getOldsfp());
 		critData.setDost(persCritSParam.getDost());
 		critData.setOksm(persCritSParam.getOksm());
@@ -148,15 +152,15 @@ public class PersCritService {
 		critData.setBirthDayTo(!persCritSParam.getBirthDayTo().isEmpty() ? LocalDate.parse(persCritSParam.getBirthDayTo(), DATE_TIME_FORMATTER) : null);
 		critData.setDeathDateFrom(!persCritSParam.getDeathDateFrom().isEmpty() ? LocalDate.parse(persCritSParam.getDeathDateFrom(), DATE_TIME_FORMATTER) : null);
 		critData.setDeathDateTo(!persCritSParam.getDeathDateTo().isEmpty() ? LocalDate.parse(persCritSParam.getDeathDateTo(), DATE_TIME_FORMATTER) : null);
-		critData.setOip(persCritSParam.getOip());
+		critData.setOip(persCritSParam.getOip().trim());
 		critData.setPcyType(persCritSParam.getPolicyType());
-		critData.setPcyNum(persCritSParam.getPcyNum());
+		critData.setPcyNum(persCritSParam.getPcyNum().trim());
 		critData.setDudlType(persCritSParam.getDudlType());
-		critData.setDudlSer(persCritSParam.getDudlSer());
-		critData.setDudlNum(persCritSParam.getDudlNum());
-		critData.setSnils(persCritSParam.getSnils());
+		critData.setDudlSer(persCritSParam.getDudlSer().trim());
+		critData.setDudlNum(persCritSParam.getDudlNum().trim());
+		critData.setSnils(persCritSParam.getSnils().trim());
 		critData.setBirthDay(!persCritSParam.getBirthDay().isEmpty() ? LocalDate.parse(persCritSParam.getBirthDay(), DATE_TIME_FORMATTER) : null);
-		critData.setErn(persCritSParam.getErn());
+		critData.setErn(persCritSParam.getErn().trim());
 		critData.setDt(!persCritSParam.getDt().isEmpty() ? LocalDate.parse(persCritSParam.getDt(), DATE_TIME_FORMATTER) : null);
 
 		critDataRepository.save(critData);
@@ -187,5 +191,9 @@ public class PersCritService {
 		}
 
 		return dataPage;
+	}
+
+	public Collection<PersonCritDataResp> findRespByRid(Long rid) {
+		return critDataRespRepository.findByRid(rid);
 	}
 }

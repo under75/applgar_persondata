@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ApplGar - Результат, полученный методом findPersonsByPersCriteria</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+
+</head>
+<body>
+	<div class="container">
+		<br />
+		<div class="card">
+			<div class="card-header">Персональные данные, найденные по
+				вашему запросу</div>
+			<div class="card-body">
+				<table class="table table-sm">
+					<thead>
+						<tr class="small">
+							<th>ФИО</th>
+							<th>ЕНП</th>
+							<th>Дата рождения</th>
+							<th>Пол</th>
+							<th>ОИП</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="person : ${persons}" class='small'>
+							<td th:text="${person.fio}" />
+							<td th:text="${person.enp}" />
+							<td
+								th:text="${#temporals.format(person.birthDay, 'dd.MM.yyyy')}" />
+							<td th:text="${person.gender}" />
+							<td th:text="${person.oip}" />
+						</tr>
+					</tbody>
+				</table>
+				<input type="button" value="Выход" class="btn btn-sm btn-secondary"
+					onclick="window.close();" />
+			</div>
+		</div>
+	</div>
+</body>
+</html>

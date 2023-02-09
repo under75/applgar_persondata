@@ -155,17 +155,17 @@ public class PersDataService {
 
 	public PersonData saveRequest(PersSearchParameters persSParam, User user) throws ParseException {
 		PersonData personData = new PersonData();
-		personData.setOip(persSParam.getOip());
+		personData.setOip(persSParam.getOip().trim());
 		personData.setPcyType(persSParam.getPolicyType());
-		personData.setPcy(persSParam.getPolicyNum());
+		personData.setPcy(persSParam.getPolicyNum().trim());
 		if (persSParam.getDudlType() != null)
 			personData.setDudlType(persSParam.getDudlType());
-		personData.setDudlSer(persSParam.getDudlSer());
-		personData.setDudlNum(persSParam.getDudlNum());
-		personData.setFirstName(persSParam.getFirstName());
-		personData.setLastName(persSParam.getLastName());
-		personData.setPatronymic(persSParam.getPatronymic());
-		personData.setSnils(persSParam.getSnils());
+		personData.setDudlSer(persSParam.getDudlSer().trim());
+		personData.setDudlNum(persSParam.getDudlNum().trim());
+		personData.setFirstName(persSParam.getFirstName().trim());
+		personData.setLastName(persSParam.getLastName().trim());
+		personData.setPatronymic(persSParam.getPatronymic().trim());
+		personData.setSnils(persSParam.getSnils().trim());
 		if (!persSParam.getBirthDay().isEmpty())
 			personData.setBirthDay(DATE_FORMAT.parse(persSParam.getBirthDay()));
 		personData.setHistorical(persSParam.getHistorical() == true ? persSParam.getHistorical() : null);
