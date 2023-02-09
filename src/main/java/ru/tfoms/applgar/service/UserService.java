@@ -28,7 +28,7 @@ public class UserService {
 	public void serializeUser(User user) {
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(
-					new ClassPathResource("files/" + user.getName(), this.getClass().getClassLoader()).getFilename());
+					new ClassPathResource("files/" + user.getName() + ".txt", this.getClass().getClassLoader()).getFilename());
 
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
 			//the file will appear in the root directory of the project

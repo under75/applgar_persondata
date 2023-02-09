@@ -47,7 +47,7 @@ public class UserController {
 	public String login(Model model, @ModelAttribute("user") User user, BindingResult bindingResult) {
 		user = service.findByNameAndPasswd(user.getName(), user.getPasswd());
 //		VERY CAREFULLY!!!
-//		user = service.deserializeUser("smo1544");
+//		user = service.deserializeUser("asy23");
 		if (user == null) {
 			model.addAttribute("version", "v" + appVersion);
 			bindingResult.addError(new ObjectError("globalError", "Неверное имя/пароль"));

@@ -33,6 +33,7 @@ import ru.tfoms.applgar.entity.OmsPolicy;
 import ru.tfoms.applgar.entity.PersAddress;
 import ru.tfoms.applgar.entity.PersDataError;
 import ru.tfoms.applgar.entity.Person;
+import ru.tfoms.applgar.entity.PersonCritData;
 import ru.tfoms.applgar.entity.PersonData;
 import ru.tfoms.applgar.entity.Snils;
 import ru.tfoms.applgar.entity.SocialStatus;
@@ -155,20 +156,37 @@ public class PersonDataController {
 		model.addAttribute("policyTypes", policyType);
 		model.addAttribute("dudlTypes", service.getDudlTypes());
 
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		HttpSession session = attr.getRequest().getSession();
+
+		Page<PersonCritData> persCritDataPage = critService.getPersDataPage(persCritSParam,
+				(User) session.getAttribute("user"), Optional.of(1));
+		model.addAttribute("persCritDataPage", persCritDataPage);
+
 		return "pers-crit-form";
 	}
 
 	@PostMapping("/pers/crit")
 	public String criteria(Model model,
 			@ModelAttribute("persCritSParam") @Valid PersCritSearchParameters persCritSParam,
-			BindingResult bindingResult) {
+			BindingResult bindingResult, @RequestParam("page") Optional<Integer> page) throws ParseException {
 
 		model.addAttribute("okatos", critService.findOkatos());
 		model.addAttribute("oksms", critService.findOksms());
 		model.addAttribute("policyTypes", policyType);
 		model.addAttribute("dudlTypes", service.getDudlTypes());
 
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		HttpSession session = attr.getRequest().getSession();
+
 		critService.validate(persCritSParam, bindingResult);
+		if (!bindingResult.hasErrors() && !page.isPresent()) {
+			critService.saveRequest(persCritSParam, (User) session.getAttribute("user"));
+		}
+
+		Page<PersonCritData> persCritDataPage = critService.getPersDataPage(persCritSParam,
+				(User) session.getAttribute("user"), page);
+		model.addAttribute("persCritDataPage", persCritDataPage);
 
 		return "pers-crit-form";
 	}

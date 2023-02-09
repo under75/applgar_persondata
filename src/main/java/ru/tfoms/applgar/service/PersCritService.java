@@ -1,32 +1,49 @@
 package ru.tfoms.applgar.service;
 
+import static ru.tfoms.applgar.util.Constants.DATE_FORMAT;
+import static ru.tfoms.applgar.util.Constants.DATE_TIME_FORMATTER;
+
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
 import ru.tfoms.applgar.entity.Okato;
 import ru.tfoms.applgar.entity.Oksm;
+import ru.tfoms.applgar.entity.PersonCritData;
+import ru.tfoms.applgar.entity.User;
 import ru.tfoms.applgar.model.PersCritSearchParameters;
 import ru.tfoms.applgar.repository.OkatoRepository;
 import ru.tfoms.applgar.repository.OksmRepository;
+import ru.tfoms.applgar.repository.PersonCritDataRepository;
 import ru.tfoms.applgar.util.DateValidator;
 
 @Service
 public class PersCritService {
+	private static final Integer PAGE_SIZE = 10;
+	
 	private final OkatoRepository okatoRepository;
 	private final OksmRepository oksmRepository;
+	private final PersonCritDataRepository critDataRepository;
 
-	public PersCritService(OkatoRepository okatoRepository, OksmRepository oksmRepository) {
+	public PersCritService(OkatoRepository okatoRepository, OksmRepository oksmRepository,
+			PersonCritDataRepository critDataRepository) {
 		super();
 		this.okatoRepository = okatoRepository;
 		this.oksmRepository = oksmRepository;
+		this.critDataRepository = critDataRepository;
 	}
 
 	public Collection<Okato> findOkatos() {
@@ -113,5 +130,62 @@ public class PersCritService {
 		}
 
 		return res;
+	}
+
+	public void saveRequest(@Valid PersCritSearchParameters persCritSParam, User user) {
+		PersonCritData critData = new PersonCritData();
+		critData.setDtIns(new Date());
+		critData.setUser(user.getName());
+		critData.setTerrOkato(persCritSParam.getTerrOkato());
+		critData.setLastName(persCritSParam.getLastName());
+		critData.setFirstName(persCritSParam.getFirstName());
+		critData.setPatronymic(persCritSParam.getPatronymic());
+		critData.setOldsfp(persCritSParam.getOldsfp());
+		critData.setDost(persCritSParam.getDost());
+		critData.setOksm(persCritSParam.getOksm());
+		critData.setNoCitizenship(persCritSParam.getNoCitizenship());
+		critData.setBirthDayFrom(!persCritSParam.getBirthDayFrom().isEmpty() ? LocalDate.parse(persCritSParam.getBirthDayFrom(), DATE_TIME_FORMATTER) : null);
+		critData.setBirthDayTo(!persCritSParam.getBirthDayTo().isEmpty() ? LocalDate.parse(persCritSParam.getBirthDayTo(), DATE_TIME_FORMATTER) : null);
+		critData.setDeathDateFrom(!persCritSParam.getDeathDateFrom().isEmpty() ? LocalDate.parse(persCritSParam.getDeathDateFrom(), DATE_TIME_FORMATTER) : null);
+		critData.setDeathDateTo(!persCritSParam.getDeathDateTo().isEmpty() ? LocalDate.parse(persCritSParam.getDeathDateTo(), DATE_TIME_FORMATTER) : null);
+		critData.setOip(persCritSParam.getOip());
+		critData.setPcyType(persCritSParam.getPolicyType());
+		critData.setPcyNum(persCritSParam.getPcyNum());
+		critData.setDudlType(persCritSParam.getDudlType());
+		critData.setDudlSer(persCritSParam.getDudlSer());
+		critData.setDudlNum(persCritSParam.getDudlNum());
+		critData.setSnils(persCritSParam.getSnils());
+		critData.setBirthDay(!persCritSParam.getBirthDay().isEmpty() ? LocalDate.parse(persCritSParam.getBirthDay(), DATE_TIME_FORMATTER) : null);
+		critData.setErn(persCritSParam.getErn());
+		critData.setDt(!persCritSParam.getDt().isEmpty() ? LocalDate.parse(persCritSParam.getDt(), DATE_TIME_FORMATTER) : null);
+
+		critDataRepository.save(critData);
+	}
+
+	public Page<PersonCritData> getPersDataPage(@Valid PersCritSearchParameters persCritSParam, User user,
+			Optional<Integer> page) throws ParseException {
+		int currentPage = page.orElse(1);
+		Page<PersonCritData> dataPage;
+		PageRequest pageRequest = PageRequest.of(currentPage - 1, PAGE_SIZE);
+		if (persCritSParam.getDateFrom() != null && !persCritSParam.getDateFrom().isEmpty() && persCritSParam.getDateTo() != null
+				&& !persCritSParam.getDateTo().isEmpty() && DateValidator.isValid(persCritSParam.getDateFrom())
+				&& DateValidator.isValid(persCritSParam.getDateTo())) {
+			Date start = DATE_FORMAT.parse(persCritSParam.getDateFrom());
+			Date end = Date.from(DATE_FORMAT.parse(persCritSParam.getDateTo()).toInstant().plus(1, ChronoUnit.DAYS));
+			dataPage = critDataRepository.findByUserAndDtInsBetweenOrderByDtInsDesc(user.getName(), start, end,
+					pageRequest);
+		} else if (persCritSParam.getDateFrom() != null && !persCritSParam.getDateFrom().isEmpty()
+				&& DateValidator.isValid(persCritSParam.getDateFrom())) {
+			Date start = DATE_FORMAT.parse(persCritSParam.getDateFrom());
+			dataPage = critDataRepository.findByUserAndDtInsAfterOrderByDtInsDesc(user.getName(), start, pageRequest);
+		} else if (persCritSParam.getDateTo() != null && !persCritSParam.getDateTo().isEmpty()
+				&& DateValidator.isValid(persCritSParam.getDateTo())) {
+			Date end = Date.from(DATE_FORMAT.parse(persCritSParam.getDateTo()).toInstant().plus(1, ChronoUnit.DAYS));
+			dataPage = critDataRepository.findByUserAndDtInsBeforeOrderByDtInsDesc(user.getName(), end, pageRequest);
+		} else {
+			dataPage = critDataRepository.findByUserOrderByDtInsDesc(user.getName(), pageRequest);
+		}
+
+		return dataPage;
 	}
 }

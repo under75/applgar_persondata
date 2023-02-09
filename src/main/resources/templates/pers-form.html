@@ -148,7 +148,6 @@
 							<th>Дата поиска</th>
 							<th>ОИП</th>
 							<th>Номер полиса</th>
-							<th>Тип ДУДЛ</th>
 							<th>Серия ДУДЛ</th>
 							<th>Номер ДУДЛ</th>
 							<th>СНИЛС</th>
@@ -156,9 +155,6 @@
 							<th>Фамилия</th>
 							<th>Имя</th>
 							<th>Отчество</th>
-							<!-- 						<th>На дату</th> -->
-							<!-- 						<th>C даты</th> -->
-							<!-- 						<th>По дату</th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -168,11 +164,9 @@
 							onclick="goToResult(this.getAttribute('data-rid'), this.getAttribute('data-done'))"
 							style="cursor: pointer;"
 							th:classappend="|${persData.hasError != null && !persData.hasError ? 'bg-success' : ''} ${persData.hasError != null && persData.hasError ? 'bg-danger' : ''}|">
-							<td th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy')}" />
+							<td th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy HH:mm:ss')}" />
 							<td th:text="${persData.oip}" />
 							<td th:text="${persData.pcy}" />
-							<td
-								th:text="${persData.dudlType != null ? persData.dudlType.docName : ''}" />
 							<td th:text="${persData.dudlSer}" />
 							<td th:text="${persData.dudlNum}" />
 							<td th:text="${persData.snils}" />
@@ -180,9 +174,6 @@
 							<td th:text="${persData.lastName}" />
 							<td th:text="${persData.firstName}" />
 							<td th:text="${persData.patronymic}" />
-							<!-- 						<td th:text="${#dates.format(persData.dt, 'dd.MM.yyyy')}" /> -->
-							<!-- 						<td th:text="${#dates.format(persData.dtFrom, 'dd.MM.yyyy')}" /> -->
-							<!-- 						<td th:text="${#dates.format(persData.dtTo, 'dd.MM.yyyy')}" /> -->
 						</tr>
 					</tbody>
 				</table>

@@ -7,13 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.thymeleaf.util.StringUtils;
 
 @Entity
@@ -43,10 +39,13 @@ public class PersonData {
 	@Column(name = "dudlnum")
 	private String dudlNum;
 
-	@OneToOne
-	@NotFound(action = NotFoundAction.IGNORE)
-	@JoinColumn(name = "dudltype", referencedColumnName = "code",insertable=false, updatable=false)
-	private DudlType dudlType;
+//	@OneToOne
+//	@NotFound(action = NotFoundAction.IGNORE)
+//	@JoinColumn(name = "dudltype", referencedColumnName = "code",insertable=false, updatable=false)
+//	private DudlType dudlType;
+	
+	@Column(name = "dudltype")
+	private Integer dudlType;
 
 	@Column(name = "snils")
 	private String snils;
@@ -146,11 +145,11 @@ public class PersonData {
 		this.dudlNum = dudlNum;
 	}
 
-	public DudlType getDudlType() {
+	public Integer getDudlType() {
 		return dudlType;
 	}
 
-	public void setDudlType(DudlType dudlType) {
+	public void setDudlType(Integer dudlType) {
 		this.dudlType = dudlType;
 	}
 

@@ -1,5 +1,7 @@
 package ru.tfoms.applgar.service;
 
+import static ru.tfoms.applgar.util.Constants.DATE_FORMAT;
+
 import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
@@ -44,8 +46,6 @@ import ru.tfoms.applgar.repository.PersonRepository;
 import ru.tfoms.applgar.repository.SnilsRepository;
 import ru.tfoms.applgar.repository.SocialStatusRepository;
 import ru.tfoms.applgar.util.DateValidator;
-
-import static ru.tfoms.applgar.util.Constants.DATE_FORMAT;
 
 @Service
 public class PersDataService {
@@ -159,7 +159,7 @@ public class PersDataService {
 		personData.setPcyType(persSParam.getPolicyType());
 		personData.setPcy(persSParam.getPolicyNum());
 		if (persSParam.getDudlType() != null)
-			personData.setDudlType(dudlTypeRepository.findById(persSParam.getDudlType()).get());
+			personData.setDudlType(persSParam.getDudlType());
 		personData.setDudlSer(persSParam.getDudlSer());
 		personData.setDudlNum(persSParam.getDudlNum());
 		personData.setFirstName(persSParam.getFirstName());
