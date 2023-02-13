@@ -148,6 +148,19 @@ public class PersonDataController {
 		return "pers-res";
 	}
 
+	@PostMapping("/pers/res/report")
+	public String report(Model model, @RequestParam("rid") Long rid) {
+		
+		model.addAttribute("persData", service.getPersonDataByRid(rid));
+		model.addAttribute("policies", service.getPoliciesByRid(rid));
+		model.addAttribute("person", service.getPersonsByRid(rid).stream().findAny().get());
+		model.addAttribute("dudls", service.getDudlsByRid(rid));
+		model.addAttribute("snilses", service.getSnilsesByRid(rid));
+		model.addAttribute("attaches", service.getAttachiesByRid(rid));
+		
+		return "pers-report";
+	}
+
 	@GetMapping("/pers/crit")
 	public String criteria(Model model) throws ParseException {
 		PersCritSearchParameters persCritSParam = new PersCritSearchParameters();
@@ -200,7 +213,7 @@ public class PersonDataController {
 			model.addAttribute("errors", errors);
 			return "pers-err";
 		}
-		
+
 		Collection<PersonCritDataResp> persons = critService.findRespByRid(rid);
 		model.addAttribute("persons", persons);
 

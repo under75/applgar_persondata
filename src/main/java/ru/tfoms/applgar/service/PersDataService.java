@@ -83,7 +83,7 @@ public class PersDataService {
 
 	public final static Map<String, String> policyType = new HashMap<>();
 	{
-		policyType.put("C", "Полис ОМС старого образца");
+		policyType.put("С", "Полис ОМС старого образца");
 		policyType.put("В", "Временное свидетельство в форме бумажного бланка");
 		policyType.put("Е", "Временное свидетельство в форме электронного документа");
 		policyType.put("П", "Бумажный полис ОМС единого образца");
@@ -253,4 +253,5 @@ public class PersDataService {
 	public AddrGar getAddrByObjectguid(String objectguid) {
 		return addrGarRepository.findByObjectguidAndIsActualAndIsActive(objectguid, true, true);
 	}
+
 }
