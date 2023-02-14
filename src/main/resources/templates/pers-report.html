@@ -62,7 +62,7 @@
 		<div class="row" th:if="${attaches.size > 0}"
 			th:each="attach : ${attaches}">
 			<div class="col-3">МО в реестре ОМС</div>
-			<div class="col-9" th:text="${attach.lpu.title}"></div>
+			<div class="col-9" th:text="${attach.lpu != null ? attach.lpu.title : ''}"></div>
 			<div class="col-3">Дата прикрепления</div>
 			<div class="col-9"
 				th:text="${#dates.format(attach.dateAttachB, 'dd.MM.yyyy')}"></div>

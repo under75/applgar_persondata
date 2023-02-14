@@ -142,7 +142,7 @@
 				</tr>
 			</table>
 			<div th:if="${persDataPage.content.size} > 0">
-				<table class="table table-sm table-striped table-hover">
+				<table class="table table-sm">
 					<thead class="thead-dark">
 						<tr class="small">
 							<th>Дата поиска</th>
@@ -163,7 +163,7 @@
 							th:attr="data-rid=${persData.rid}, data-done=${persData.hasError != null}"
 							onclick="goToResult(this.getAttribute('data-rid'), this.getAttribute('data-done'))"
 							style="cursor: pointer;"
-							th:classappend="|${persData.hasError != null && !persData.hasError ? 'bg-success' : ''} ${persData.hasError != null && persData.hasError ? 'bg-danger' : ''}|">
+							th:classappend="|${persData.hasError != null && !persData.hasError ? 'alert-success' : ''} ${persData.hasError != null && persData.hasError ? 'alert-danger' : ''}|">
 							<td th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy HH:mm:ss')}" />
 							<td th:text="${persData.oip}" />
 							<td th:text="${persData.pcy}" />
