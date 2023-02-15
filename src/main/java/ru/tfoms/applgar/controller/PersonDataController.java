@@ -153,7 +153,7 @@ public class PersonDataController {
 		
 		model.addAttribute("persData", service.getPersonDataByRid(rid));
 		model.addAttribute("policies", service.getPoliciesByRid(rid));
-		model.addAttribute("person", service.getPersonsByRid(rid).stream().findAny().get());
+		model.addAttribute("person", service.getPersonsByRid(rid).stream().findAny().orElse(null));
 		model.addAttribute("dudls", service.getDudlsByRid(rid));
 		model.addAttribute("snilses", service.getSnilsesByRid(rid));
 		model.addAttribute("attaches", service.getAttachiesByRid(rid));

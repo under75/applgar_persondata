@@ -74,14 +74,8 @@ public class PersonCritData {
 	@Column(name = "polis_type")
 	private String pcyType;
 	
-//	private String enp;
-	
-//	private String pcySer;
-	
 	@Column(name = "polis")
 	private String pcyNum;
-	
-//	private String tmpcertNum;
 	
 	@Column(name = "dudltype")
 	private Integer dudlType;

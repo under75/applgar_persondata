@@ -1,17 +1,27 @@
 package ru.tfoms.applgar.model;
 
+import javax.validation.constraints.Size;
+
 public class PersSearchParameters {
+	@Size(max=12)
 	private String oip;
 	private String policyType;
 	private String policySer;
+	@Size(max=16)
 	private String policyNum;
 	private Integer dudlType;
+	@Size(max=12)
 	private String dudlSer;
+	@Size(max=20)
 	private String dudlNum;
+	@Size(max=14)
 	private String snils;
 	private String birthDay;
+	@Size(max=40)
 	private String lastName;
+	@Size(max=40)
 	private String firstName;
+	@Size(max=40)
 	private String patronymic;
 	private Boolean historical = false;
 	private String dt;

@@ -1,9 +1,14 @@
 package ru.tfoms.applgar.model;
 
+import javax.validation.constraints.Size;
+
 public class PersCritSearchParameters {
 	private String terrOkato;
+	@Size(max=40)
 	private String lastName;
+	@Size(max=40)
 	private String firstName;
+	@Size(max=40)
 	private String patronymic;
 	private Boolean oldsfp;
 	private String dost;
@@ -13,17 +18,22 @@ public class PersCritSearchParameters {
 	private String birthDayTo;
 	private String deathDateFrom;
 	private String deathDateTo;
+	@Size(max=12)
 	private String oip;
 	private String policyType;
-	private String enp;
 	private String pcySer;
+	@Size(max=12)
 	private String pcyNum;
 	private String tmpcertNum;
 	private Integer dudlType;
+	@Size(max=12)
 	private String dudlSer;
+	@Size(max=20)
 	private String dudlNum;
+	@Size(max=14)
 	private String snils;
 	private String birthDay;
+	@Size(max=36)
 	private String ern;
 	private String dt;
 	private String dateFrom;
@@ -139,14 +149,6 @@ public class PersCritSearchParameters {
 
 	public void setPolicyType(String policyType) {
 		this.policyType = policyType;
-	}
-
-	public String getEnp() {
-		return enp;
-	}
-
-	public void setEnp(String enp) {
-		this.enp = enp;
 	}
 
 	public String getPcySer() {

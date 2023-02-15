@@ -8,10 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
 	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
-<style type="text/css">
-.bg-sc{background-color: #d1fad5}
-.bg-dg{background-color: #fad1d9}
-</style>
 </head>
 <body>
 	<div class="container">
@@ -43,7 +39,7 @@
 							th:classappend="${#fields.hasErrors('persCritSParam.lastName')} ? 'is-invalid' : ''" />
 						<div class="invalid-feedback"
 							th:if="${#fields.hasErrors('persCritSParam.lastName')}">Минимум
-							первые три буквы</div>
+							первые три буквы, максимум - 40</div>
 					</div>
 				</div>
 				<div class="col-sm">
@@ -54,7 +50,7 @@
 							th:classappend="${#fields.hasErrors('persCritSParam.firstName')} ? 'is-invalid' : ''" />
 						<div class="invalid-feedback"
 							th:if="${#fields.hasErrors('persCritSParam.firstName')}">Минимум
-							первые три буквы</div>
+							первые три буквы, максимум - 40</div>
 					</div>
 				</div>
 				<div class="col-sm">
@@ -65,7 +61,7 @@
 							th:classappend="${#fields.hasErrors('persCritSParam.patronymic')} ? 'is-invalid' : ''" />
 						<div class="invalid-feedback"
 							th:if="${#fields.hasErrors('persCritSParam.patronymic')}">Минимум
-							первые три буквы</div>
+							первые три буквы, максимум - 40</div>
 					</div>
 				</div>
 			</div>
@@ -129,6 +125,18 @@
 						</div>
 					</div>
 				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="oip">Обезличенный
+							идентификатор персоны</label> <input type="text"
+							th:field="*{persCritSParam.oip}" id="oip"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.oip')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.oip')}">Превышена
+							максимальная длина</div>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<div class="col-sm">
@@ -171,14 +179,6 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm">
-					<div class="form-group">
-						<label class="form-label" for="oip">Обезличенный
-							идентификатор персоны</label> <input type="text"
-							th:field="*{persCritSParam.oip}" id="oip"
-							class="form-control form-control-sm" />
-					</div>
-				</div>
 				<div class="col-sm-5">
 					<div class="form-group">
 						<label class="form-label" for="policyType">Тип полиса
@@ -194,35 +194,21 @@
 				</div>
 				<div class="col-sm">
 					<div class="form-group">
-						<label class="form-label" for="enp">Единый номер полиса</label> <input
-							type="text" th:field="*{persCritSParam.enp}" id="enp"
-							class="form-control form-control-sm" />
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm">
-					<div class="form-group">
 						<label class="form-label" for="pcySer">Серия полиса
 							(старого образца)</label> <input type="text"
 							th:field="*{persCritSParam.pcySer}" id="pcySer"
-							class="form-control form-control-sm" />
+							class="form-control form-control-sm" disabled="disabled" />
 					</div>
 				</div>
 				<div class="col-sm">
 					<div class="form-group">
-						<label class="form-label" for="pcyNum">Номер полиса
-							(старого образца)</label> <input type="text"
-							th:field="*{persCritSParam.pcyNum}" id="pcyNum"
-							class="form-control form-control-sm" />
-					</div>
-				</div>
-				<div class="col-sm">
-					<div class="form-group">
-						<label class="form-label" for="tmpcertNum">Номер
-							временного свидетельства</label> <input type="text"
-							th:field="*{persCritSParam.tmpcertNum}" id="tmpcertNum"
-							class="form-control form-control-sm" />
+						<label class="form-label" for="pcyNum">Номер полиса </label> <input
+							type="text" th:field="*{persCritSParam.pcyNum}" id="pcyNum"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.pcyNum')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.pcyNum')}">Превышена
+							максимальная длина</div>
 					</div>
 				</div>
 			</div>
@@ -243,14 +229,22 @@
 					<div class="form-group">
 						<label class="form-label" for="dudlSer">Серия ДУДЛ</label> <input
 							type="text" th:field="*{persCritSParam.dudlSer}" id="dudlSer"
-							class="form-control form-control-sm" />
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.dudlSer')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.dudlSer')}">Превышена
+							максимальная длина</div>
 					</div>
 				</div>
 				<div class="col-sm">
 					<div class="form-group">
 						<label class="form-label" for="dudlNum">Номер ДУДЛ</label> <input
 							type="text" th:field="*{persCritSParam.dudlNum}" id="dudlNum"
-							class="form-control form-control-sm" />
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.dudlNum')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.dudlNum')}">Превышена
+							максимальная длина</div>
 					</div>
 				</div>
 			</div>
@@ -259,7 +253,11 @@
 					<div class="form-group">
 						<label class="form-label" for="snils">СНИЛС</label> <input
 							type="text" th:field="*{persCritSParam.snils}" id="snils"
-							class="form-control form-control-sm" />
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.snils')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.snils')}">Превышена
+							максимальная длина</div>
 					</div>
 				</div>
 				<div class="col-sm">
@@ -274,7 +272,11 @@
 					<div class="form-group">
 						<label class="form-label" for="ern">ИД ЕРН</label> <input
 							type="text" th:field="*{persCritSParam.ern}" id="ern"
-							class="form-control form-control-sm" />
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persCritSParam.ern')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persCritSParam.ern')}">Превышена
+							максимальная длина</div>
 					</div>
 				</div>
 				<div class="col-sm">

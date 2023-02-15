@@ -19,7 +19,8 @@
 					<td class="small">Обезличенный идентификатор персоны</td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.oip}" id="oip"
-						class="form-control form-control-sm" /></td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.oip')} ? 'is-invalid' : ''" /></td>
 					<td class="small" colspan="4">
 				</tr>
 				<tr>
@@ -36,18 +37,21 @@
 					</select></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.policySer}" id="policySer"
-						class="form-control form-control-sm" placeholder="серия" disabled="disabled"/></td>
+						class="form-control form-control-sm" placeholder="серия"
+						disabled="disabled" /></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.policyNum}" id="policyNum"
-						class="form-control form-control-sm" placeholder="номер" /></td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.policyNum')} ? 'is-invalid' : ''"
+						placeholder="номер" /></td>
 				</tr>
 				<tr>
 					<td class="small">Документ,<br>удостоверяющий личность
 					</td>
-					<td class="small" colspan="3"
-						th:classappend="${#fields.hasErrors('persSParam.dudlType')} ? 'alert alert-danger' : ''"><select
+					<td class="small" colspan="3"><select
 						th:field="*{persSParam.dudlType}"
-						class="form-control form-control-sm">
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.dudlType')} ? 'is-invalid' : ''">
 							<option value=""></option>
 							<option th:each="dudlType : ${dudlTypes}"
 								th:value="${dudlType.docCode}" th:text="${dudlType.docName}"
@@ -55,28 +59,38 @@
 					</select></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.dudlSer}" id="dudlSer"
-						class="form-control form-control-sm" placeholder="серия" /></td>
-					<td class="small"
-						th:classappend="${#fields.hasErrors('persSParam.dudlNum')} ? 'alert alert-danger' : ''">
-						<input type="text" th:field="*{persSParam.dudlNum}" id="dudlNum"
-						class="form-control form-control-sm" placeholder="номер" />
-					</td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.dudlSer')} ? 'is-invalid' : ''"
+						placeholder="серия" /></td>
+					<td class="small"><input type="text"
+						th:field="*{persSParam.dudlNum}" id="dudlNum"
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.dudlNum')} ? 'is-invalid' : ''"
+						placeholder="номер" /></td>
 				</tr>
 				<tr>
 					<td class="small">ФИО, СНИЛС,<br />Дата рождения
 					</td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.lastName}" id="lastName"
-						class="form-control form-control-sm" placeholder="фамилия" /></td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.lastName')} ? 'is-invalid' : ''"
+						placeholder="фамилия" /></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.firstName}" id="firstName"
-						class="form-control form-control-sm" placeholder="имя" /></td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.firstName')} ? 'is-invalid' : ''"
+						placeholder="имя" /></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.patronymic}" id="patronymic"
-						class="form-control form-control-sm" placeholder="отчество" /></td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.patronymic')} ? 'is-invalid' : ''"
+						placeholder="отчество" /></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.snils}" id="snils"
-						class="form-control form-control-sm" placeholder="СНИЛС" /></td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.snils')} ? 'is-invalid' : ''"
+						placeholder="СНИЛС" /></td>
 					<td class="small"
 						th:classappend="${#fields.hasErrors('persSParam.birthDay')} ? 'alert alert-danger' : ''"><input
 						type="date" th:field="*{persSParam.birthDay}" id="birthDay"
@@ -164,7 +178,8 @@
 							onclick="goToResult(this.getAttribute('data-rid'), this.getAttribute('data-done'))"
 							style="cursor: pointer;"
 							th:classappend="|${persData.hasError != null && !persData.hasError ? 'alert-success' : ''} ${persData.hasError != null && persData.hasError ? 'alert-danger' : ''}|">
-							<td th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy HH:mm:ss')}" />
+							<td
+								th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy HH:mm:ss')}" />
 							<td th:text="${persData.oip}" />
 							<td th:text="${persData.pcy}" />
 							<td th:text="${persData.dudlSer}" />
