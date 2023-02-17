@@ -154,6 +154,7 @@ public class PersCritService {
 		critData.setDeathDateTo(!persCritSParam.getDeathDateTo().isEmpty() ? LocalDate.parse(persCritSParam.getDeathDateTo(), DATE_TIME_FORMATTER) : null);
 		critData.setOip(persCritSParam.getOip().trim());
 		critData.setPcyType(persCritSParam.getPolicyType());
+		critData.setPcySer(persCritSParam.getPcySer().trim());
 		critData.setPcyNum(persCritSParam.getPcyNum().trim());
 		critData.setDudlType(persCritSParam.getDudlType());
 		critData.setDudlSer(persCritSParam.getDudlSer().trim());

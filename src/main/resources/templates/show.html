@@ -283,7 +283,7 @@
 							<th>Идентификатор МО</th>
 							<th>Код МО в реестре ОМС</th>
 							<th>Идентификатор филиала МО</th>
-							<th>СНИЛС</th>
+							<th>СНИЛС врача</th>
 							<th>ИД участкового врача МО</th>
 							<th>Фактическая дата прикрепления к врачу</th>
 							<th>Описание</th>
@@ -302,7 +302,7 @@
 							<td th:text="${#dates.format(attach.dateAttachB, 'dd.MM.yyyy')}" />
 							<td th:text="${#dates.format(attach.dateAttachE, 'dd.MM.yyyy')}" />
 							<td th:text="${attach.moId}" />
-							<td th:text="${attach.lpu != null ? attach.lpu.title : ''}" />
+							<td th:text="${attach.lpu != null ? attach.lpu.title : attach.mocode}" />
 							<td th:text="${attach.moFId}" />
 							<td th:text="${attach.snilsDoctor}" />
 							<td th:text="${attach.doctorId}" />

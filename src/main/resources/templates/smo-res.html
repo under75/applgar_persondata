@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ApplGar - информация о полисе</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="container">
+		<br />
+		<div class="card">
+			<div class="card-header"
+				th:text="${person.lastName} + ' ' + ${person.firstName} + ' ' + ${person.patronymic} + ', ' + ${#dates.format(person.birthDay, 'dd.MM.yyyy')}"></div>
+			<div class="card-body">
+				<div class="row" th:if="${policies.size > 0}"
+					th:each="policy : ${policies}">
+					<div class="col-3">Полис(старого образца)</div>
+					<div class="col-9"
+						th:text="${policy.pcySer != null ? policy.pcySer : ''} + ' ' + ${policy.pcyNum != null ? policy.pcyNum : ''}"></div>
+					<div class="col-3">ЕНП расчетный</div>
+					<div class="col-9" th:text="${policy.enpCalc}"></div>
+					<div class="col-3">ЕНП (нового образца)</div>
+					<div class="col-9" th:text="${policy.enp}"></div>
+					<div class="col-3">Официальная СМО</div>
+					<div class="col-9" th:text="${policy.insurName}"></div>
+					<div class="col-3">Фактическая СМО</div>
+					<div class="col-9" th:text="${policy.insurfName}"></div>
+					<div class="col-3">Дата начала действия полиса</div>
+					<div class="col-9"
+						th:text="${#dates.format(policy.pcyDateB, 'dd.MM.yyyy')}"></div>
+					<div class="col-3">Дата окончания действия полиса</div>
+					<div class="col-9"
+						th:text="${#dates.format(policy.pcyDateE, 'dd.MM.yyyy')}"></div>
+					<div class="col-3">Статус полиса</div>
+					<div class="col-9" th:text="${policy.pcyStatus}"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

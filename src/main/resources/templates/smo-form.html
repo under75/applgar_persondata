@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>ApplGar – поиск персональных данных в ФЕРЗЛ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+</head>
+<body>
+	<div class="container">
+		<div th:insert="menu :: navbar"></div>
+		<br />
+		<form th:method="POST" th:action="@{/smo}" id="smoForm">
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label class="form-label" for="policyType">Тип полиса
+							страхования</label> <select th:field="*{persSParam.policyType}"
+							class="form-control form-control-sm">
+							<option value=""></option>
+							<option th:each="policyTypeEntry : ${policyTypes.entrySet}"
+								th:value="${policyTypeEntry.key}"
+								th:text="${policyTypeEntry.value}"
+								th:selected="${persSParam.policyType}"></option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="policySer">Серия полиса
+							(старого образца)</label> <input type="text"
+							th:field="*{persSParam.policySer}" id="policySer"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.policySer')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.policySer')}">Превышена
+							максимальная длина</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="policyNum">Номер полиса </label> <input
+							type="text" th:field="*{persSParam.policyNum}" id="policyNum"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.policyNum')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.policyNum')}">Превышена
+							максимальная длина</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-5">
+					<div class="form-group">
+						<label class="form-label" for="dudlType">Тип ДУДЛ</label> <select
+							th:field="*{persSParam.dudlType}"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.dudlType')} ? 'is-invalid' : ''">
+							<option value=""></option>
+							<option th:each="dudlType : ${dudlTypes}"
+								th:value="${dudlType.docCode}" th:text="${dudlType.docName}"
+								th:selected="${persSParam.dudlType}"></option>
+						</select>
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.dudlType')}">Не
+							выбран тип ДУДЛ</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="dudlSer">Серия ДУДЛ</label> <input
+							type="text" th:field="*{persSParam.dudlSer}" id="dudlSer"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.dudlSer')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.dudlSer')}">Превышена
+							максимальная длина</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="dudlNum">Номер ДУДЛ</label> <input
+							type="text" th:field="*{persSParam.dudlNum}" id="dudlNum"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.dudlNum')} ? 'is-invalid' : ''" />
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="lastName">Фамилия</label> <input
+							type="text" th:field="*{persSParam.lastName}" id="lastName"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.lastName')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.lastName')}">Поле не
+							может быть пустым, макс. 40 символов</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="firstName">Имя</label> <input
+							type="text" th:field="*{persSParam.firstName}" id="firstName"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.firstName')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.firstName')}">Поле
+							не может быть пустым, макс. 40 символов</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="patronymic">Отчество</label> <input
+							type="text" th:field="*{persSParam.patronymic}" id="patronymic"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.patronymic')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.patronymic')}">Поле
+							не может быть пустым, макс. 40 символов</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="snils">СНИЛС</label> <input
+							type="text" th:field="*{persSParam.snils}" id="snils"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.snils')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.snils')}">Превышена
+							максимальная длина</div>
+					</div>
+				</div>
+				<div class="col-sm">
+					<div class="form-group">
+						<label class="form-label" for="birthDay">Дата рождения</label> <input
+							type="date" th:field="*{persSParam.birthDay}" id="birthDay"
+							class="form-control form-control-sm"
+							th:classappend="${#fields.hasErrors('persSParam.birthDay')} ? 'is-invalid' : ''" />
+						<div class="invalid-feedback"
+							th:if="${#fields.hasErrors('persSParam.birthDay')}">Не
+							корректная дата</div>
+					</div>
+				</div>
+			</div>
+			<div class="alert alert-danger" role="alert"
+				th:if="${#fields.hasErrors('persSParam')}" th:errors="*{persSParam}"></div>
+			<div class="row justify-content-between">
+				<div class="col-sm">
+					<input type="submit" value="Поиск" class="btn btn-sm btn-primary"
+						name="saveRequest" />&nbsp;<input type="button" value="Очистить"
+						onclick="location.href='/smo'" class="btn btn-sm btn-secondary" />&nbsp;<input
+						type="button" value="Обновить"
+						th:onclick="|goToPage(${persDataPage.number + 1})|"
+						class="btn btn-sm btn-secondary" /> <input type="hidden"
+						id="page" name="page" />
+				</div>
+				<div class="col-sm-1">
+					<input type="button" value="Выход" class="btn btn-sm btn-dark"
+						onclick="location.href='/pers?exit=1'" />
+				</div>
+			</div>
+
+			<br />
+			<div th:if="${persDataPage.content.size} > 0">
+				<table class="table table-sm">
+					<thead class="thead-dark">
+						<tr class="small">
+							<th>Дата поиска</th>
+							<th>Серия полиса</th>
+							<th>Номер полиса</th>
+							<th>Серия ДУДЛ</th>
+							<th>Номер ДУДЛ</th>
+							<th>СНИЛС</th>
+							<th>Дата рождения</th>
+							<th>Фамилия</th>
+							<th>Имя</th>
+							<th>Отчество</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="persData, iStat : ${persDataPage.content}"
+							class='clickable-row small'
+							th:attr="data-rid=${persData.rid}, data-done=${persData.hasError != null}"
+							onclick="goToResult(this.getAttribute('data-rid'), this.getAttribute('data-done'))"
+							style="cursor: pointer;"
+							th:classappend="|${persData.hasError != null && !persData.hasError && requestStatusMap.get(persData.rid) != null && requestStatusMap.get(persData.rid) ? 'alert-success' : ''} ${persData.hasError != null && !persData.hasError && requestStatusMap.get(persData.rid) != null && !requestStatusMap.get(persData.rid) ? 'alert-warning' : ''} ${persData.hasError != null && persData.hasError ? 'alert-danger' : ''}|">
+							<td
+								th:text="${#dates.format(persData.dtIns, 'dd.MM.yyyy HH:mm:ss')}" />
+							<td th:text="${persData.pcySer}" />
+							<td th:text="${persData.pcy}" />
+							<td th:text="${persData.dudlSer}" />
+							<td th:text="${persData.dudlNum}" />
+							<td th:text="${persData.snils}" />
+							<td th:text="${#dates.format(persData.birthDay, 'dd.MM.yyyy')}" />
+							<td th:text="${persData.lastName}" />
+							<td th:text="${persData.firstName}" />
+							<td th:text="${persData.patronymic}" />
+						</tr>
+					</tbody>
+				</table>
+				<nav aria-label="Pagination" th:if="${persDataPage.totalPages gt 0}">
+					<ul
+						class="pagination pagination-sm justify-content-center font-weight-medium">
+						<li>Дата поиска&nbsp;</li>
+						<li><input type="date" th:field="*{persSParam.dateFrom}"
+							class="form-control form-control-sm" id="dateFrom" /></li>
+						<li>&nbsp;-&nbsp;</li>
+						<li><input type="date" th:field="*{persSParam.dateTo}"
+							class="form-control form-control-sm" id="dateTo" /></li>
+						<li class="page-item"
+							th:classappend="${persDataPage.number eq 0} ? 'disabled'">
+							<button type="button" class="btn btn-sm btn-link"
+								th:classappend="${persDataPage.number eq 0} ? 'disabled'"
+								th:onclick="|goToPage(${persDataPage.number lt 2 ? 1 : persDataPage.number})|">
+								<p>&#60;&#60;
+								<p>
+							</button>
+						</li>
+						<li class="page-item"
+							th:classappend="${i eq persDataPage.number + 1} ? 'active'"
+							th:each="i : ${#numbers.sequence(persDataPage.totalPages > persDataPage.number + 10 ? persDataPage.number + 1 : persDataPage.totalPages - 10 > 0 ? persDataPage.totalPages - 10 : 1, persDataPage.totalPages > 10 + persDataPage.number ? persDataPage.number + 10 : persDataPage.totalPages, 1)}">
+							<a class="page-link" href="#" th:onclick="|goToPage(${i})|"
+							th:text="${i}"><span class="sr-only">(current)</span></a>
+						</li>
+						<li class="page-item disabled"
+							th:if="${persDataPage.number + 10 < persDataPage.totalPages}"><a
+							class="page-link" href="#"> ... </a></li>
+						<li class="page-item"
+							th:classappend="${persDataPage.number + 1 eq persDataPage.totalPages} ? 'disabled'">
+							<button type="button" class="btn btn-sm btn-link"
+								th:classappend="${persDataPage.number + 1 eq persDataPage.totalPages} ? 'disabled'"
+								th:onclick="|goToPage(${persDataPage.number + 2})|">
+								<p>&#62;&#62;
+								<p>
+							</button>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</form>
+	</div>
+	<form th:method="POST" id="resForm">
+		<input type="hidden" name="rid" />
+	</form>
+	<script type="text/javascript">
+		document.getElementById("persForm").onkeypress = function(e) {
+			var key = e.charCode || e.keyCode || 0;
+			if (key == 13) {
+				e.preventDefault();
+			}
+		}
+		function goToPage(page) {
+			document.getElementById("smoForm").page.value = page;
+			document.getElementById("smoForm").submit();
+		}
+		function goToResult(rid, done) {
+			if (done == "true") {
+				form = document.getElementById("resForm");
+				form.rid.value = rid;
+				form.action = "/smo/res";
+				form.target = "_blank";
+				form.submit();
+			}
+		}
+	</script>
+	<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+	<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+</body>
+</html>

@@ -37,8 +37,9 @@
 					</select></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.policySer}" id="policySer"
-						class="form-control form-control-sm" placeholder="серия"
-						disabled="disabled" /></td>
+						class="form-control form-control-sm"
+						th:classappend="${#fields.hasErrors('persSParam.policySer')} ? 'is-invalid' : ''"
+						placeholder="серия" /></td>
 					<td class="small"><input type="text"
 						th:field="*{persSParam.policyNum}" id="policyNum"
 						class="form-control form-control-sm"

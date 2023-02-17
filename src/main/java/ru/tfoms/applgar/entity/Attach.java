@@ -47,8 +47,12 @@ public class Attach {
 	private String moId;
 	
 	@OneToOne
-	@JoinColumn(name = "mocode", referencedColumnName = "mcod")
+	@NotFound(action = NotFoundAction.IGNORE) 
+	@JoinColumn(name = "mocode", referencedColumnName = "mcod", insertable=false, updatable=false)
 	private Lpu lpu;
+	
+	@Column(name = "mocode")
+	private String mocode;
 	
 	@Column(name = "mofid")
 	private String moFId;

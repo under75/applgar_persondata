@@ -15,7 +15,7 @@ public class AuthFilterConfig {
 
 		FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<Filter>();
 		registration.setFilter(authFilter());
-		registration.addUrlPatterns("/appl/*", "/pers/*");
+		registration.addUrlPatterns("/appl/*", "/pers/*", "/smo/*");
 		registration.setName("authFilter");
 		registration.setOrder(1);
 		return registration;

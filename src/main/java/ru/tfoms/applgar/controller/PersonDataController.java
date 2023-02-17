@@ -11,12 +11,13 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.SmartValidator;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,6 +42,7 @@ import ru.tfoms.applgar.entity.SocialStatus;
 import ru.tfoms.applgar.entity.User;
 import ru.tfoms.applgar.model.PersCritSearchParameters;
 import ru.tfoms.applgar.model.PersSearchParameters;
+import ru.tfoms.applgar.model.SmoSearchParameters;
 import ru.tfoms.applgar.service.PersCritService;
 import ru.tfoms.applgar.service.PersDataService;
 
@@ -48,6 +50,8 @@ import ru.tfoms.applgar.service.PersDataService;
 public class PersonDataController {
 	private final PersDataService service;
 	private final PersCritService critService;
+	@Autowired
+	SmartValidator validator;
 
 	public PersonDataController(PersDataService service, PersCritService critService) {
 		super();
@@ -73,15 +77,17 @@ public class PersonDataController {
 	}
 
 	@PostMapping("/pers")
-	public String index(Model model, @ModelAttribute("persSParam") @Valid PersSearchParameters persSParam,
+	public String index(Model model, @ModelAttribute("persSParam") PersSearchParameters persSParam,
 			BindingResult bindingResult, @RequestParam("page") Optional<Integer> page) throws ParseException {
 
 		model.addAttribute("policyTypes", policyType);
 		model.addAttribute("dudlTypes", service.getDudlTypes());
 		model.addAttribute("resultTypes", resultType);
 
-		if (!page.isPresent())
+		if (!page.isPresent()) {
 			service.validate(persSParam, bindingResult);
+			validator.validate(persSParam, bindingResult);
+		}
 
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = attr.getRequest().getSession();
@@ -150,14 +156,14 @@ public class PersonDataController {
 
 	@PostMapping("/pers/res/report")
 	public String report(Model model, @RequestParam("rid") Long rid) {
-		
+
 		model.addAttribute("persData", service.getPersonDataByRid(rid));
 		model.addAttribute("policies", service.getPoliciesByRid(rid));
 		model.addAttribute("person", service.getPersonsByRid(rid).stream().findAny().orElse(null));
 		model.addAttribute("dudls", service.getDudlsByRid(rid));
 		model.addAttribute("snilses", service.getSnilsesByRid(rid));
 		model.addAttribute("attaches", service.getAttachiesByRid(rid));
-		
+
 		return "pers-report";
 	}
 
@@ -181,8 +187,7 @@ public class PersonDataController {
 	}
 
 	@PostMapping("/pers/crit")
-	public String criteria(Model model,
-			@ModelAttribute("persCritSParam") @Valid PersCritSearchParameters persCritSParam,
+	public String criteria(Model model, @ModelAttribute("persCritSParam") PersCritSearchParameters persCritSParam,
 			BindingResult bindingResult, @RequestParam("page") Optional<Integer> page) throws ParseException {
 
 		model.addAttribute("okatos", critService.findOkatos());
@@ -193,7 +198,11 @@ public class PersonDataController {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = attr.getRequest().getSession();
 
-		critService.validate(persCritSParam, bindingResult);
+		if (!page.isPresent()) {
+			critService.validate(persCritSParam, bindingResult);
+			validator.validate(persCritSParam, bindingResult);
+		}
+
 		if (!bindingResult.hasErrors() && !page.isPresent()) {
 			critService.saveRequest(persCritSParam, (User) session.getAttribute("user"));
 		}
@@ -219,5 +228,75 @@ public class PersonDataController {
 
 		return "pers-crit-res";
 
+	}
+
+	@GetMapping("/smo")
+	public String smo(Model model) throws ParseException {
+		SmoSearchParameters persSParam = new SmoSearchParameters();
+		model.addAttribute("persSParam", persSParam);
+		model.addAttribute("policyTypes", policyType);
+		model.addAttribute("dudlTypes", service.getDudlTypes());
+
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		HttpSession session = attr.getRequest().getSession();
+		Optional<Integer> page = Optional.of(1);
+		Page<PersonData> persDataPage = service.getPersDataPage(persSParam, (User) session.getAttribute("user"), page);
+		Map<Long, Boolean> requestStatusMap = service.getRequestStatusAsMap(persDataPage);
+
+		model.addAttribute("persDataPage", persDataPage);
+		model.addAttribute("requestStatusMap", requestStatusMap);
+
+		return "smo-form";
+	}
+
+	@PostMapping("/smo")
+	public String smo(Model model, @ModelAttribute("persSParam") SmoSearchParameters persSParam,
+			BindingResult bindingResult, @RequestParam("page") Optional<Integer> page) throws ParseException {
+
+		model.addAttribute("policyTypes", policyType);
+		model.addAttribute("dudlTypes", service.getDudlTypes());
+
+		if (!page.isPresent()) {
+			service.validate_smo(persSParam, bindingResult);
+			validator.validate(persSParam, bindingResult);
+		}
+
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		HttpSession session = attr.getRequest().getSession();
+
+		if (!bindingResult.hasErrors() && !page.isPresent())
+			service.saveRequest_smo(persSParam, (User) session.getAttribute("user"));
+
+		Page<PersonData> persDataPage = service.getPersDataPage(persSParam, (User) session.getAttribute("user"), page);
+		Map<Long, Boolean> requestStatusMap = service.getRequestStatusAsMap(persDataPage);
+
+		model.addAttribute("persDataPage", persDataPage);
+		model.addAttribute("requestStatusMap", requestStatusMap);
+
+		return "smo-form";
+	}
+	
+	@PostMapping("/smo/res")
+	public String smoResult(Model model, @RequestParam("rid") Long rid) {
+		Collection<PersDataError> errors = service.getErrorsByRid(rid);
+		if (errors.size() > 0) {
+			model.addAttribute("errors", errors);
+			return "pers-err";
+		} else if (!service.getRequestStatusByRid(rid)) {
+			PersDataError slovenly = new PersDataError();
+			slovenly.setCode("slovenly");
+			slovenly.setMessage("Ошибка во введенных данных, проверьте корректность ввода");
+			errors.add(slovenly);
+			model.addAttribute("errors", errors);
+			return "pers-err";
+		}
+		
+		Person person = service.getPersonsByRid(rid).stream().findAny().orElse(null);
+		Collection<OmsPolicy> policies = service.getPoliciesByRid(rid);
+		
+		model.addAttribute("person", person);
+		model.addAttribute("policies", policies);
+		
+		return "smo-res";
 	}
 }

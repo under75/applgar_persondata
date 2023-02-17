@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
+import ru.tfoms.applgar.dao.PersonDataDAO;
 import ru.tfoms.applgar.entity.AddrGar;
 import ru.tfoms.applgar.entity.Attach;
 import ru.tfoms.applgar.entity.Contact;
@@ -32,6 +33,9 @@ import ru.tfoms.applgar.entity.Snils;
 import ru.tfoms.applgar.entity.SocialStatus;
 import ru.tfoms.applgar.entity.User;
 import ru.tfoms.applgar.model.PersSearchParameters;
+import ru.tfoms.applgar.model.PersonDataForRequestValidation;
+import ru.tfoms.applgar.model.SearchParameters;
+import ru.tfoms.applgar.model.SmoSearchParameters;
 import ru.tfoms.applgar.repository.AddrGarRepository;
 import ru.tfoms.applgar.repository.AttachRepository;
 import ru.tfoms.applgar.repository.ContactRepository;
@@ -64,6 +68,7 @@ public class PersDataService {
 	private final PersAddressRepository addressRepository;
 	private final HouseGarRepository houseRepository;
 	private final AddrGarRepository addrGarRepository;
+	private final PersonDataDAO personDataDAO;
 
 	public enum Show {
 		Person, OmsPolicy, Dudl, Address, Attach, Contact, Snils, SocialStatus, All
@@ -99,7 +104,7 @@ public class PersDataService {
 			ContactRepository contactRepository, SnilsRepository snilsRepository,
 			SocialStatusRepository socialStatusRepository, DudlTypeRepository dudlTypeRepository,
 			PersonDataRepository personDataRepository, PersAddressRepository addressRepository,
-			HouseGarRepository houseRepository, AddrGarRepository addrGarRepository) {
+			HouseGarRepository houseRepository, AddrGarRepository addrGarRepository, PersonDataDAO personDataDAO) {
 		super();
 		this.errorRepository = errorRepository;
 		this.personRepository = personRepository;
@@ -114,6 +119,7 @@ public class PersDataService {
 		this.addressRepository = addressRepository;
 		this.houseRepository = houseRepository;
 		this.addrGarRepository = addrGarRepository;
+		this.personDataDAO = personDataDAO;
 
 	}
 
@@ -157,6 +163,7 @@ public class PersDataService {
 		PersonData personData = new PersonData();
 		personData.setOip(persSParam.getOip().trim());
 		personData.setPcyType(persSParam.getPolicyType());
+		personData.setPcySer(persSParam.getPolicySer().trim());
 		personData.setPcy(persSParam.getPolicyNum().trim());
 		if (persSParam.getDudlType() != null)
 			personData.setDudlType(persSParam.getDudlType());
@@ -184,7 +191,7 @@ public class PersDataService {
 		return personDataRepository.save(personData);
 	}
 
-	public Page<PersonData> getPersDataPage(PersSearchParameters persSParam, User user, Optional<Integer> page)
+	public Page<PersonData> getPersDataPage(SearchParameters persSParam, User user, Optional<Integer> page)
 			throws ParseException {
 		int currentPage = page.orElse(1);
 		Page<PersonData> dataPage;
@@ -223,18 +230,18 @@ public class PersDataService {
 		}
 		if (persSParam.getBirthDay() != null && !persSParam.getBirthDay().isEmpty()
 				&& !DateValidator.isValid(persSParam.getBirthDay())) {
-			bindingResult.rejectValue("birthDay", "Invalid date");
+			bindingResult.rejectValue("birthDay", "");
 		}
 		if (persSParam.getDt() != null && !persSParam.getDt().isEmpty() && !DateValidator.isValid(persSParam.getDt())) {
-			bindingResult.rejectValue("dt", "Invalid date");
+			bindingResult.rejectValue("dt", "");
 		}
 		if (persSParam.getDtFrom() != null && !persSParam.getDtFrom().isEmpty()
 				&& !DateValidator.isValid(persSParam.getDtFrom())) {
-			bindingResult.rejectValue("dtFrom", "Invalid date");
+			bindingResult.rejectValue("dtFrom", "");
 		}
 		if (persSParam.getDtTo() != null && !persSParam.getDtTo().isEmpty()
 				&& !DateValidator.isValid(persSParam.getDtTo())) {
-			bindingResult.rejectValue("dtTo", "Invalid date");
+			bindingResult.rejectValue("dtTo", "");
 		}
 	}
 
@@ -252,6 +259,85 @@ public class PersDataService {
 
 	public AddrGar getAddrByObjectguid(String objectguid) {
 		return addrGarRepository.findByObjectguidAndIsActualAndIsActive(objectguid, true, true);
+	}
+
+	public void validate_smo(SmoSearchParameters persSParam, BindingResult bindingResult) {
+		if (!DateValidator.isValid(persSParam.getBirthDay())) {
+			bindingResult.rejectValue("birthDay", "");
+		}
+		if (persSParam.getPolicyNum().trim().isEmpty() && persSParam.getDudlNum().trim().isEmpty()
+				&& persSParam.getSnils().trim().isEmpty()) {
+			bindingResult.addError(new ObjectError("globalError",
+					"Для успешного поиска, необходимо ввести данные одного из документов(Полис, ДУдЛ, СНИЛС)"));
+		} else if (persSParam.getDudlType() != null && persSParam.getDudlNum().trim().isEmpty()) {
+			bindingResult.rejectValue("dudlNum", "");
+		} else if (!persSParam.getDudlNum().trim().isEmpty() && persSParam.getDudlType() == null) {
+			bindingResult.rejectValue("dudlType", "");
+		}
+
+	}
+
+	public void saveRequest_smo(SmoSearchParameters persSParam, User user) throws ParseException {
+		PersonData personData = new PersonData();
+		personData.setPcyType(persSParam.getPolicyType());
+		personData.setPcySer(persSParam.getPolicySer().trim());
+		personData.setPcy(persSParam.getPolicyNum().trim());
+		if (persSParam.getDudlType() != null)
+			personData.setDudlType(persSParam.getDudlType());
+		personData.setDudlSer(persSParam.getDudlSer().trim());
+		personData.setDudlNum(persSParam.getDudlNum().trim());
+		personData.setSnils(persSParam.getSnils().trim());
+		personData.setUser(user.getName());
+		personData.setShow(Show.Person + " " + Show.OmsPolicy);
+
+		personData = personDataRepository.save(personData);
+		personDataDAO.save(personData.getRid(), persSParam.getLastName().trim(), persSParam.getFirstName().trim(),
+				persSParam.getPatronymic().trim(), DATE_FORMAT.parse(persSParam.getBirthDay()));
+
+	}
+
+	public PersonDataForRequestValidation getPersonDataForRequestValidation(Long rid) {
+		return personDataDAO.getPersonDataForRequestValidation(rid);
+	}
+
+	public Map<Long, Boolean> getRequestStatusAsMap(Page<PersonData> persDataPage) {
+		Map<Long, Boolean> map = new HashMap<>();
+		persDataPage.forEach(t -> {
+			PersonDataForRequestValidation data = getPersonDataForRequestValidation(t.getRid());
+			if (data != null) {
+				t.setBirthDay(data.getBirthDay());
+				t.setLastName(data.getLastName());
+				t.setFirstName(data.getFirstName());
+				t.setPatronymic(data.getPatronymic());
+				if (t != null && t.getHasError() != null && !t.getHasError()) {
+					Person person = getPersonsByRid(t.getRid()).stream().findAny().orElse(null);
+					map.put(t.getRid(), isRequestValid(data, person));
+				}
+			}
+		});
+
+		return map;
+	}
+
+	private Boolean isRequestValid(PersonDataForRequestValidation data, Person person) {
+		Boolean res = true;
+		if (!data.getBirthDay().equals(person.getBirthDay()))
+			res = false;
+		else if (!data.getLastName().trim().toLowerCase().equals(person.getLastName().trim().toLowerCase()))
+			res = false;
+		else if (!data.getFirstName().trim().toLowerCase().equals(person.getFirstName().trim().toLowerCase()))
+			res = false;
+		else if (!data.getPatronymic().trim().toLowerCase().equals(person.getPatronymic().trim().toLowerCase()))
+			res = false;
+
+		return res;
+	}
+
+	public boolean getRequestStatusByRid(Long rid) {
+		PersonDataForRequestValidation data = getPersonDataForRequestValidation(rid);
+		Person person = getPersonsByRid(rid).stream().findAny().orElse(null);
+		
+		return isRequestValid(data, person);
 	}
 
 }

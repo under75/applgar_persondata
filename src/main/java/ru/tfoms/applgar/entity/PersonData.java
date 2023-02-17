@@ -29,6 +29,9 @@ public class PersonData {
 
 	@Column(name = "polis_type")
 	private String pcyType;
+	
+	@Column(name = "pcyser")
+	private String pcySer;
 
 	@Column(name = "polis")
 	private String pcy;
@@ -119,6 +122,14 @@ public class PersonData {
 
 	public void setPcyType(String pcyType) {
 		this.pcyType = pcyType;
+	}
+
+	public String getPcySer() {
+		return pcySer;
+	}
+
+	public void setPcySer(String pcySer) {
+		this.pcySer = pcySer;
 	}
 
 	public String getPcy() {

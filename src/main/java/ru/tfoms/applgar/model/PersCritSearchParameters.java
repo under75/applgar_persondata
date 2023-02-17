@@ -21,8 +21,9 @@ public class PersCritSearchParameters {
 	@Size(max=12)
 	private String oip;
 	private String policyType;
+	@Size(max=10)
 	private String pcySer;
-	@Size(max=12)
+	@Size(max=16)
 	private String pcyNum;
 	private String tmpcertNum;
 	private Integer dudlType;

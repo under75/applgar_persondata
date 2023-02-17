@@ -39,8 +39,18 @@ public class AuthorizedUserFilter implements Filter {
 	}
 
 	private boolean hasRoleToAccess(HttpServletRequest request, String roles) {
-		return request.getRequestURI().contains("/appl") && (roles.contains(SMO_ROLE) || roles.contains(HSMO_ROLE))
-				|| (request.getRequestURI().contains("/pers") && roles.contains(TFOMS_ROLE));
+		boolean permitted = false;
+		if (roles.contains(SMO_ROLE) || roles.contains(HSMO_ROLE)) {
+			if (request.getRequestURI().contains("/appl") || request.getRequestURI().contains("/smo")) {
+				permitted = true;
+			}
+		} else if (roles.contains(TFOMS_ROLE)) {
+			if (request.getRequestURI().contains("/pers")) {
+				permitted = true;
+			}
+		}
+
+		return permitted;
 	}
 
 }
