@@ -169,6 +169,14 @@ public class Attach {
 		this.lpu = lpu;
 	}
 
+	public String getMocode() {
+		return mocode;
+	}
+
+	public void setMocode(String mocode) {
+		this.mocode = mocode;
+	}
+
 	public void setDsource(Okato dsource) {
 		this.dsource = dsource;
 	}

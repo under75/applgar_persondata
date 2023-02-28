@@ -35,7 +35,7 @@
 			<div class="col-9" th:text="${policy.pcyStatus}"></div>
 		</div>
 		<hr />
-		<div class="row" th:if = "${person != null}">
+		<div class="row" th:if="${person != null}">
 			<div class="col-3">ФИО</div>
 			<div class="col-9"
 				th:text="${person.lastName} + ' ' + ${person.firstName} + ' ' + ${person.patronymic}"></div>
@@ -47,7 +47,7 @@
 		<div class="row" th:if="${dudls.size > 0}" th:each="dudl : ${dudls}">
 			<div class="col-3">Документ</div>
 			<div class="col-9"
-				th:text="${dudl.dudlType.docName} + ' ' + ${dudl.dudlSer} + ' ' + ${dudl.dudlNum}"></div>
+				th:text="${dudl.dudlType != null ? dudl.dudlType.docName : ''} + ' ' + ${dudl.dudlSer != null ? dudl.dudlSer : ''} + ' ' + ${dudl.dudlNum != null ? dudl.dudlNum : ''}"></div>
 			<div class="col-3">Дата начала действия</div>
 			<div class="col-9"
 				th:text="${#dates.format(dudl.dudlDateB, 'dd.MM.yyyy')}"></div>
@@ -62,7 +62,8 @@
 		<div class="row" th:if="${attaches.size > 0}"
 			th:each="attach : ${attaches}">
 			<div class="col-3">МО в реестре ОМС</div>
-			<div class="col-9" th:text="${attach.lpu != null ? attach.lpu.title : ''}"></div>
+			<div class="col-9"
+				th:text="${attach.lpu != null ? attach.lpu.title : ''}"></div>
 			<div class="col-3">Дата прикрепления</div>
 			<div class="col-9"
 				th:text="${#dates.format(attach.dateAttachB, 'dd.MM.yyyy')}"></div>

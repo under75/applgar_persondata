@@ -69,7 +69,7 @@
 							<th>Статус полиса</th>
 							<th>ОКАТО территории страхования</th>
 							<th>Источник данных</th>
-							<th>Вид источника данных]</th>
+							<th>Вид источника данных</th>
 							<th>Описание</th>
 						</tr>
 					</thead>
@@ -240,9 +240,9 @@
 							<td th:text="${address.okato != null ? address.okato.title : ''}" />
 							<td th:text="${address.oksm != null ? address.oksm.name2 : ''}" />
 							<td
-								th:text="${address.aoguid != null ? streets.get(address.nr).toString() : ''}" />
+								th:text="${address.aoguid != null && streets.get(address.nr) != null ? streets.get(address.nr).toString() : ''}" />
 							<td
-								th:text="${address.hsguid != null ? houses.get(address.nr).toString() : ''}" />
+								th:text="${address.hsguid != null && houses.get(address.nr) != null ? houses.get(address.nr).toString() : ''}" />
 							<td th:text="${address.addressText}" />
 							<td th:text="${address.mailIndex}" />
 							<td th:text="${address.appNum}" />
