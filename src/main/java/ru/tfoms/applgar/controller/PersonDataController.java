@@ -288,7 +288,7 @@ public class PersonDataController {
 			slovenly.setMessage("Ошибка во введенных данных, проверьте корректность ввода");
 			errors.add(slovenly);
 			model.addAttribute("errors", errors);
-			return "pers-err";
+			return "pers-warn";
 		}
 		
 		Person person = service.getPersonsByRid(rid).stream().findAny().orElse(null);

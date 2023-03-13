@@ -5,11 +5,13 @@ import javax.servlet.Filter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import ru.tfoms.applgar.interceptor.AuthorizedUserFilter;
 
 @Configuration
-public class AuthFilterConfig {
+@EnableTransactionManagement
+public class ApplgarConfig {
 	@Bean
 	public FilterRegistrationBean<Filter> authFilterRegistration() {
 

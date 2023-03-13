@@ -12,7 +12,7 @@
 		<div id="collapsePerson" class="collapse" aria-labelledby="headingOne"
 			data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
+				<table class="table table-sm" th:if="${persons.size > 0}">
 					<thead>
 						<tr class="small">
 							<th>Фамилия</th>
@@ -52,97 +52,110 @@
 		<div id="collapsePolicy" class="collapse" aria-labelledby="headingOne"
 			data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
-					<thead>
-						<tr class="small">
-							<th>Cерия полиса (старого образца)</th>
-							<th>Номер полиса (старого образца)</th>
-							<th>ЕНП расчетный</th>
-							<th>ЕНП (нового образца)</th>
-							<th>Дата начала действия полиса</th>
-							<th>Дата окончания действия полиса</th>
-							<th>Дата выдачи полиса на руки</th>
-							<th>Дата обращения за полисом</th>
-							<th>Дата расчёта номера ЕНП</th>
-							<th>Дата изготовления полиса</th>
-							<th>Тип полиса страхования</th>
-							<th>Статус полиса</th>
-							<th>ОКАТО территории страхования</th>
-							<th>Источник данных</th>
-							<th>Вид источника данных</th>
-							<th>Описание</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="policy : ${policies}" class='small'>
-							<td th:text="${policy.pcySer}" />
-							<td th:text="${policy.pcyNum}" />
-							<td th:text="${policy.enpCalc}" />
-							<td th:text="${policy.enp}" />
-							<td align="center"
-								th:text="${#dates.format(policy.pcyDateB, 'dd.MM.yyyy')}" />
-							<td align="center"
-								th:text="${#dates.format(policy.pcyDateE, 'dd.MM.yyyy')}" />
-							<td align="center"
-								th:text="${#dates.format(policy.pcyDateH, 'dd.MM.yyyy')}" />
-							<td align="center"
-								th:text="${#dates.format(policy.pcyDateT, 'dd.MM.yyyy')}" />
-							<td align="center"
-								th:text="${#dates.format(policy.pcyDateEnpCalc, 'dd.MM.yyyy')}" />
-							<td align="center"
-								th:text="${#dates.format(policy.pcyDatePr, 'dd.MM.yyyy')}" />
-							<td th:text="${policy.pcyType}" />
-							<td th:text="${policy.pcyStatus}" />
-							<td th:text="${policy.okato != null ? policy.okato.title : ''}" />
-							<td
-								th:text="${policy.dsource != null ? policy.dsource.title : policy.dsourceStr}" />
-							<td th:text="${policy.dsourceType}" />
-							<td th:text="${policy.descr}" />
-						</tr>
-					</tbody>
-				</table>
-				<table class="table table-sm">
-					<thead>
-						<tr class="small">
-							<th>Половая принадлежность</th>
-							<th>Официальная СМО</th>
-							<th>Фактическая СМО</th>
-							<th>ОГРН официальной СМО</th>
-							<th>ОГРН фактической СМО</th>
-							<th>Код официальной СМО</th>
-							<th>Код фактической СМО</th>
-							<th>Дата начала работы с ЗЛ</th>
-							<th>Номер временного свидет-ва</th>
-							<th>Дата начала действия ВС</th>
-							<th>Дата окончания действия ВС</th>
-							<th>Номер универсал. элек. карты</th>
-							<th>Категория ЗЛ</th>
-							<th>Номер бланка полиса</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="policy : ${policies}" class='small'>
-							<td th:text="${policy.gender}" />
-							<td th:text="${policy.insurName}" />
-							<td th:text="${policy.insurfName}" />
-							<td th:text="${policy.insurOgrn}" />
-							<td th:text="${policy.insurfOgrn}" />
-							<td th:text="${policy.insurCode}" />
-							<td th:text="${policy.insurfCode}" />
-							<td align="center"
-								th:text="${#dates.format(policy.insurfDate, 'dd.MM.yyyy')}" />
-							<td th:text="${policy.tmpcertNum}" />
-							<td align="center"
-								th:text="${#dates.format(policy.tmpcertDateB, 'dd.MM.yyyy')}" />
-							<td align="center"
-								th:text="${#dates.format(policy.tmpcertDateE, 'dd.MM.yyyy')}" />
-							<td th:text="${policy.uekNum}" />
-							<td
-								th:text="${policy.pcyCategory != null ? policy.pcyCategory.name : ''}" />
-							<td th:text="${policy.blankNum}" />
-						</tr>
-					</tbody>
-				</table>
+				<div class="row" th:if="${policies.size > 0}"
+					th:each="policy : ${policies}">
+
+					<div class="col-4">Полис(старого образца)</div>
+					<div class="col-8"
+						th:text="${policy.pcySer != null ? policy.pcySer : ''} + ' ' + ${policy.pcyNum != null ? policy.pcyNum : ''}"></div>
+
+					<div class="col-4 bg-light">ЕНП расчетный</div>
+					<div class="col-8 bg-light" th:text="${policy.enpCalc}"></div>
+
+					<div class="col-4">ЕНП (нового образца)</div>
+					<div class="col-8" th:text="${policy.enp}"></div>
+
+					<div class="col-4 bg-light">Дата начала действия полиса</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(policy.pcyDateB, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4">Дата окончания действия полиса</div>
+					<div class="col-8"
+						th:text="${#dates.format(policy.pcyDateE, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Дата выдачи полиса на руки</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(policy.pcyDateH, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4">Дата обращения за полисом</div>
+					<div class="col-8"
+						th:text="${#dates.format(policy.pcyDateT, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Дата расчёта номера ЕНП</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(policy.pcyDateEnpCalc, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4">Дата изготовления полиса</div>
+					<div class="col-8"
+						th:text="${#dates.format(policy.pcyDatePr, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Тип полиса страхования</div>
+					<div class="col-8 bg-light" th:text="${policy.pcyType}"></div>
+
+					<div class="col-4">Статус полиса</div>
+					<div class="col-8" th:text="${policy.pcyStatus}"></div>
+
+					<div class="col-4 bg-light">ОКАТО территории страхования</div>
+					<div class="col-8 bg-light"
+						th:text="${policy.okato != null ? policy.okato.title : ''}"></div>
+
+					<div class="col-4">Источник данных</div>
+					<div class="col-8"
+						th:text="${policy.dsource != null ? policy.dsource.title : policy.dsourceStr}"></div>
+
+					<div class="col-4 bg-light">Вид источника данных</div>
+					<div class="col-8 bg-light" th:text="${policy.dsourceType}"></div>
+
+					<div class="col-4">Описание</div>
+					<div class="col-8" th:text="${policy.descr}"></div>
+
+					<div class="col-4 bg-light">Половая принадлежность</div>
+					<div class="col-8 bg-light"
+						th:text="${policy.gender == 1 ? 'М' : 'Ж'}"></div>
+
+					<div class="col-4">Официальная СМО</div>
+					<div class="col-8" th:text="${policy.insurName}"></div>
+
+					<div class="col-4 bg-light">Фактическая СМО</div>
+					<div class="col-8 bg-light" th:text="${policy.insurfName}"></div>
+
+					<div class="col-4">ОГРН официальной СМО</div>
+					<div class="col-8" th:text="${policy.insurOgrn}"></div>
+
+					<div class="col-4 bg-light">ОГРН фактической СМО</div>
+					<div class="col-8 bg-light" th:text="${policy.insurfOgrn}"></div>
+
+					<div class="col-4">Код официальной СМО</div>
+					<div class="col-8" th:text="${policy.insurCode}"></div>
+
+					<div class="col-4 bg-light">Код фактической СМО</div>
+					<div class="col-8 bg-light" th:text="${policy.insurfCode}"></div>
+
+					<div class="col-4">Дата начала работы с ЗЛ</div>
+					<div class="col-8"
+						th:text="${#dates.format(policy.insurfDate, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Номер временного свидет-ва</div>
+					<div class="col-8 bg-light" th:text="${policy.tmpcertNum}"></div>
+
+					<div class="col-4">Дата начала действия ВС</div>
+					<div class="col-8"
+						th:text="${#dates.format(policy.tmpcertDateB, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Дата окончания действия ВС</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(policy.tmpcertDateE, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4">Номер универсал. элек. карты</div>
+					<div class="col-8" th:text="${policy.uekNum}"></div>
+
+					<div class="col-4 bg-light">Категория ЗЛ</div>
+					<div class="col-8 bg-light"
+						th:text="${policy.pcyCategory != null ? policy.pcyCategory.name : ''}"></div>
+
+					<div class="col-4">Номер бланка полиса</div>
+					<div class="col-8" th:text="${policy.blankNum}"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -157,53 +170,62 @@
 		<div id="collapseDudl" class="collapse" aria-labelledby="headingOne"
 			data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
-					<thead>
-						<tr class="small">
-							<th>Cерия ДУДЛ</th>
-							<th>№ ДУДЛ</th>
-							<th>Дата начала действия</th>
-							<th>Дата окончания действия</th>
-							<th>Тип ДУДЛ</th>
-							<th>Кем выдан</th>
-							<th>Код страны выдачи</th>
-							<th>Гражданство</th>
-							<th>Признак отсутствия гражданства</th>
-							<th>Источник данных</th>
-							<th>Описание</th>
-							<th>Место рождения</th>
-							<th>Вид источника</th>
-							<th>Страна рождения</th>
-							<th>Статус ДУДЛ</th>
-							<th>Коды надежности идентификации</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="dudl : ${dudls}" class='small'>
-							<td th:text="${dudl.dudlSer}" />
-							<td th:text="${dudl.dudlNum}" />
-							<td align="center"
-								th:text="${#dates.format(dudl.dudlDateB, 'dd.MM.yyyy')}" />
-							<td align="center"
-								th:text="${#dates.format(dudl.dudlDateE, 'dd.MM.yyyy')}" />
-							<td
-								th:text="${dudl.dudlType != null ? dudl.dudlType.docName : dudl.dudlTypeStr}" />
-							<td th:text="${dudl.issuer}" />
-							<td
-								th:text="${dudl.issuerOksm != null ? dudl.issuerOksm.name2 : ''}" />
-							<td th:text="${dudl.ctznOksm != null ? dudl.ctznOksm.name2 : ''}" />
-							<td align="center" th:text="${dudl.noCitizenship}" />
-							<td th:text="${dudl.dsource != null ? dudl.dsource.title : dudl.dsourceStr}" />
-							<td th:text="${dudl.descr}" />
-							<td th:text="${dudl.birthPlace}" />
-							<td th:text="${dudl.dsourceType}" />
-							<td
-								th:text="${dudl.birthOksm != null ? dudl.birthOksm.name2 : ''}" />
-							<td th:text="${dudl.dudlStatus}" />
-							<td th:text="${dudl.dost}" />
-						</tr>
-					</tbody>
-				</table>
+				<div class="row" th:if="${dudls.size > 0}" th:each="dudl : ${dudls}">
+					<div class="col-4">Cерия ДУДЛ</div>
+					<div class="col-8" th:text="${dudl.dudlSer}"></div>
+
+					<div class="col-4 bg-light">№ ДУДЛ</div>
+					<div class="col-8 bg-light" th:text="${dudl.dudlNum}"></div>
+
+					<div class="col-4">Дата начала действия</div>
+					<div class="col-8"
+						th:text="${#dates.format(dudl.dudlDateB, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Дата окончания действия</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(dudl.dudlDateE, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4">Тип ДУДЛ</div>
+					<div class="col-8"
+						th:text="${dudl.dudlType != null ? dudl.dudlType.docName : dudl.dudlTypeStr}"></div>
+
+					<div class="col-4 bg-light">Кем выдан</div>
+					<div class="col-8 bg-light" th:text="${dudl.issuer}"></div>
+
+					<div class="col-4">Код страны выдачи</div>
+					<div class="col-8"
+						th:text="${dudl.issuerOksm != null ? dudl.issuerOksm.name2 : ''}"></div>
+
+					<div class="col-4 bg-light">Гражданство</div>
+					<div class="col-8 bg-light"
+						th:text="${dudl.ctznOksm != null ? dudl.ctznOksm.name2 : ''}"></div>
+
+					<div class="col-4">Признак отсутствия гражданства</div>
+					<div class="col-8" th:text="${dudl.noCitizenship}"></div>
+
+					<div class="col-4 bg-light">Источник данных</div>
+					<div class="col-8 bg-light"
+						th:text="${dudl.dsource != null ? dudl.dsource.title : dudl.dsourceStr}"></div>
+
+					<div class="col-4">Описание</div>
+					<div class="col-8" th:text="${dudl.descr}"></div>
+
+					<div class="col-4 bg-light">Место рождения</div>
+					<div class="col-8 bg-light" th:text="${dudl.birthPlace}"></div>
+
+					<div class="col-4">Вид источника</div>
+					<div class="col-8" th:text="${dudl.dsourceType}"></div>
+
+					<div class="col-4 bg-light">Страна рождения</div>
+					<div class="col-8 bg-light"
+						th:text="${dudl.birthOksm != null ? dudl.birthOksm.name2 : ''}"></div>
+
+					<div class="col-4">Статус ДУДЛ</div>
+					<div class="col-8" th:text="${dudl.dudlStatus}"></div>
+
+					<div class="col-4 bg-light">Коды надежности идентификации</div>
+					<div class="col-8 bg-light" th:text="${dudl.dost}"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -218,45 +240,51 @@
 		<div id="collapseAddress" class="collapse"
 			aria-labelledby="headingOne" data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
-					<thead>
-						<tr class="small">
-							<th>ОКАТО</th>
-							<th>ОКСМ</th>
-							<th>Улица</th>
-							<th>Дом</th>
-							<th>Адрес</th>
-							<th>Индекс</th>
-							<th>Квартира</th>
-							<th>Вид источника</th>
-							<th>Источник данных</th>
-							<th>Тип адреса</th>
-							<th>Начало действия</th>
-							<th>Конец действия</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="address : ${addresses}" class='small'>
-							<td th:text="${address.okato != null ? address.okato.title : ''}" />
-							<td th:text="${address.oksm != null ? address.oksm.name2 : ''}" />
-							<td
-								th:text="${address.aoguid != null && streets.get(address.nr) != null ? streets.get(address.nr).toString() : ''}" />
-							<td
-								th:text="${address.hsguid != null && houses.get(address.nr) != null ? houses.get(address.nr).toString() : ''}" />
-							<td th:text="${address.addressText}" />
-							<td th:text="${address.mailIndex}" />
-							<td th:text="${address.appNum}" />
-							<td th:text="${address.dsourceType}" />
-							<td
-								th:text="${address.dsource != null ? address.dsource.title : address.dsourceStr}" />
-							<td th:text="${address.addressType}" />
-							<td
-								th:text="${#dates.format(address.addressDateB, 'dd.MM.yyyy')}" />
-							<td
-								th:text="${#dates.format(address.addressDateE, 'dd.MM.yyyy')}" />
-						</tr>
-					</tbody>
-				</table>
+				<div class="row" th:if="${addresses.size > 0}"
+					th:each="address : ${addresses}">
+					<div class="col-4">ОКАТО</div>
+					<div class="col-8"
+						th:text="${address.okato != null ? address.okato.title : ''}"></div>
+
+					<div class="col-4 bg-light">ОКСМ</div>
+					<div class="col-8 bg-light"
+						th:text="${address.oksm != null ? address.oksm.name2 : ''}"></div>
+
+					<div class="col-4">Улица</div>
+					<div class="col-8"
+						th:text="${address.aoguid != null && streets.get(address.nr) != null ? streets.get(address.nr).toString() : ''}"></div>
+
+					<div class="col-4 bg-light">Дом</div>
+					<div class="col-8 bg-light"
+						th:text="${address.hsguid != null && houses.get(address.nr) != null ? houses.get(address.nr).toString() : ''}"></div>
+
+					<div class="col-4">Адрес</div>
+					<div class="col-8" th:text="${address.addressText}"></div>
+
+					<div class="col-4 bg-light">Индекс</div>
+					<div class="col-8 bg-light" th:text="${address.mailIndex}"></div>
+
+					<div class="col-4">Квартира</div>
+					<div class="col-8" th:text="${address.appNum}"></div>
+
+					<div class="col-4 bg-light">Вид источника</div>
+					<div class="col-8 bg-light" th:text="${address.dsourceType}"></div>
+
+					<div class="col-4">Источник данных</div>
+					<div class="col-8"
+						th:text="${address.dsource != null ? address.dsource.title : address.dsourceStr}"></div>
+
+					<div class="col-4 bg-light">Тип адреса</div>
+					<div class="col-8 bg-light" th:text="${address.addressType}"></div>
+
+					<div class="col-4">Начало действия</div>
+					<div class="col-8"
+						th:text="${#dates.format(address.addressDateB, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Конец действия</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(address.addressDateE, 'dd.MM.yyyy')}"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -271,51 +299,65 @@
 		<div id="collapseAttach" class="collapse" aria-labelledby="headingOne"
 			data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
-					<thead>
-						<tr class="small">
-							<th>Код типа участка</th>
-							<th>ИД участка МО</th>
-							<th>Способ прикрепления</th>
-							<th>Метка прикрепления</th>
-							<th>Дата начала прикрепления</th>
-							<th>Дата окончания прикрепления</th>
-							<th>Идентификатор МО</th>
-							<th>Код МО в реестре ОМС</th>
-							<th>Идентификатор филиала МО</th>
-							<th>СНИЛС врача</th>
-							<th>ИД участкового врача МО</th>
-							<th>Фактическая дата прикрепления к врачу</th>
-							<th>Описание</th>
-							<th>ОКАТО территории мед. организации</th>
-							<th>Статус прикрепления</th>
-							<th>Источник данных</th>
-							<th>Вид источника</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="attach : ${attachies}" class='small'>
-							<td th:text="${attach.areaType}" />
-							<td th:text="${attach.areaId}" />
-							<td th:text="${attach.attachMethod}" />
-							<td th:text="${attach.mCapitation}" />
-							<td th:text="${#dates.format(attach.dateAttachB, 'dd.MM.yyyy')}" />
-							<td th:text="${#dates.format(attach.dateAttachE, 'dd.MM.yyyy')}" />
-							<td th:text="${attach.moId}" />
-							<td th:text="${attach.lpu != null ? attach.lpu.title : attach.mocode}" />
-							<td th:text="${attach.moFId}" />
-							<td th:text="${attach.snilsDoctor}" />
-							<td th:text="${attach.doctorId}" />
-							<td th:text="${#dates.format(attach.doctorSince, 'dd.MM.yyyy')}" />
-							<td th:text="${attach.descr}" />
-							<td th:text="${attach.moOkato}" />
-							<td th:text="${attach.attachStatus}" />
-							<td
-								th:text="${attach.dsource != null ? attach.dsource.title : attach.dsourceStr}" />
-							<td th:text="${attach.dsourceType}" />
-						</tr>
-					</tbody>
-				</table>
+				<div class="row" th:if="${attaches.size > 0}"
+					th:each="attach : ${attaches}">
+					<div class="col-4">Код типа участка</div>
+					<div class="col-8" th:text="${attach.areaType}"></div>
+
+					<div class="col-4 bg-light">ИД участка МО</div>
+					<div class="col-8 bg-light" th:text="${attach.areaId}"></div>
+
+					<div class="col-4">Способ прикрепления</div>
+					<div class="col-8" th:text="${attach.attachMethod}"></div>
+
+					<div class="col-4 bg-light">Метка прикрепления</div>
+					<div class="col-8 bg-light" th:text="${{attach.mCapitation}"></div>
+
+					<div class="col-4">Дата начала прикрепления</div>
+					<div class="col-8"
+						th:text="${#dates.format(attach.dateAttachB, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4 bg-light">Дата окончания прикрепления</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(attach.dateAttachE, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4">Идентификатор МО</div>
+					<div class="col-8" th:text="${attach.moId}"></div>
+
+					<div class="col-4 bg-light">Код МО в реестре ОМС</div>
+					<div class="col-8 bg-light"
+						th:text="${attach.lpu != null ? attach.lpu.title : attach.mocode}"></div>
+
+					<div class="col-4">Идентификатор филиала МО</div>
+					<div class="col-8" th:text="${attach.moFId}"></div>
+
+					<div class="col-4 bg-light">СНИЛС врача</div>
+					<div class="col-8 bg-light" th:text="${attach.snilsDoctor}"></div>
+
+					<div class="col-4">ИД участкового врача МО</div>
+					<div class="col-8" th:text="${attach.doctorId}"></div>
+
+					<div class="col-4 bg-light">Фактическая дата прикрепления к
+						врачу</div>
+					<div class="col-8 bg-light"
+						th:text="${#dates.format(attach.doctorSince, 'dd.MM.yyyy')}"></div>
+
+					<div class="col-4">Описание</div>
+					<div class="col-8" th:text="${attach.descr}"></div>
+
+					<div class="col-4 bg-light">ОКАТО территории мед. организации</div>
+					<div class="col-8 bg-light" th:text="${attach.moOkato}"></div>
+
+					<div class="col-4">Статус прикрепления</div>
+					<div class="col-8" th:text="${attach.attachStatus}"></div>
+
+					<div class="col-4 bg-light">Источник данных</div>
+					<div class="col-8 bg-light"
+						th:text="${attach.dsource != null ? attach.dsource.title : attach.dsourceStr}"></div>
+
+					<div class="col-4">Вид источника</div>
+					<div class="col-8" th:text="${attach.dsourceType}"></div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -330,7 +372,7 @@
 		<div id="collapseContact" class="collapse"
 			aria-labelledby="headingOne" data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
+				<table class="table table-sm" th:if="${contacts.size > 0}">
 					<thead>
 						<tr class="small">
 							<th>Тип контакта</th>
@@ -365,7 +407,7 @@
 		<div id="collapseSnils" class="collapse" aria-labelledby="headingOne"
 			data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
+				<table class="table table-sm" th:if="${snilses.size > 0}">
 					<thead>
 						<tr class="small">
 							<th>СНИЛС</th>
@@ -377,7 +419,8 @@
 					<tbody>
 						<tr th:each="snils : ${snilses}" class='small'>
 							<td th:text="${snils.snils}" />
-							<td th:text="${snils.dsource != null ? snils.dsource.title : snils.dsourceStr}" />
+							<td
+								th:text="${snils.dsource != null ? snils.dsource.title : snils.dsourceStr}" />
 							<td th:text="${snils.dsourceType}" />
 							<td th:text="${snils.descr}" />
 						</tr>
@@ -394,10 +437,10 @@
 				data-target="#collapseSocialStatus" aria-expanded="false"
 				aria-controls="collapseSocialStatus"></button>
 		</div>
-		<div id="collapseSocialStatus" class="collapse" aria-labelledby="headingOne"
-			data-parent="#accordion">
+		<div id="collapseSocialStatus" class="collapse"
+			aria-labelledby="headingOne" data-parent="#accordion">
 			<div class="card-body">
-				<table class="table table-sm">
+				<table class="table table-sm" th:if="${statuses.size > 0}">
 					<thead>
 						<tr class="small">
 							<th>Cтатус</th>
@@ -411,7 +454,8 @@
 						<tr th:each="status : ${statuses}" class='small'>
 							<td th:text="${status.socialStatus}" />
 							<td th:text="${status.dsourceType}" />
-							<td th:text="${status.dsource != null ? status.dsource.title : status.dsourceStr}" />
+							<td
+								th:text="${status.dsource != null ? status.dsource.title : status.dsourceStr}" />
 							<td th:text="${status.descr}" />
 							<td th:text="${#dates.format(status.regDate, 'dd.MM.yyyy')}" />
 						</tr>
